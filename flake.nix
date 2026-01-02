@@ -185,6 +185,7 @@
       nixosConfigurations.surface = utils.mkSystem {
         name = "surface";
         targetSystem = "x86_64-linux";
+        hm = false;
       };
 
       #=========================================#

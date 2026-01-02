@@ -13,7 +13,8 @@
 
     sound.enable = true;
 
-    # hardware.pulseaudio.enable = false;
+    hardware.pulseaudio.enable = false;
+
     # https://discourse.nixos.org/t/bluetooth-a2dp-sink-not-showing-up-in-pulseaudio-on-nixos/32447/3
     services.pipewire = {
       enable = true;
