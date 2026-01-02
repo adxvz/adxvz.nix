@@ -13,6 +13,7 @@
   hardware.enableAllFirmware = true;
 
   environment.systemPackages = with pkgs; [
+    zed-editor
 
   ];
 
