@@ -86,8 +86,8 @@
   # Networking
   networking = {
     hostName = "surface";
-    networkmanager.enable = true;
-    wireless.enable = false;
+    #  networkmanager.enable = true;
+    #  wireless.enable = false;
   };
 
   # Avahi (unchanged)
