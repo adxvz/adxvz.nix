@@ -1,0 +1,10 @@
+ls
+clear
+exit
+q
+exit
+clear
+exit
+fish
+clear
+exit
