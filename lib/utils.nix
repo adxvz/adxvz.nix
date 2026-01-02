@@ -142,14 +142,19 @@ rec {
       targetSystem ? vars.currentSystem,
       nixpkgs ? inputs.nixos-unstable,
       configuration ? {
-        imports = [ (../hosts/nixos + "/${name}.nix") ];
+        imports = [ (../hosts/nixos + "/${name}") ];
       },
       hm ? true,
       darwin ? false,
     }:
     nixpkgs.lib.nixosSystem {
       specialArgs = {
-        inherit vars versions nixpkgs;
+        inherit
+          inputs
+          vars
+          versions
+          nixpkgs
+          ;
         self = self;
         systemName = name;
         pkgsStable = mkPkgs {
