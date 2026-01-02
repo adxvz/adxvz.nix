@@ -76,6 +76,8 @@
     };
   };
 
+  nixpkgs.config.allowUnfree = true;
+
   services.avahi = {
     enable = true;
     nssmdns = true;
