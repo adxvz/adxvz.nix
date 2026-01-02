@@ -97,6 +97,8 @@
     publish.enable = true;
   };
 
+  nixpkgs.config.allowUnfree = true;
+
   # Registry pinning (excellent – keep this)
   nix.registry = {
     nixpkgs.flake = inputs.nixos-unstable;
