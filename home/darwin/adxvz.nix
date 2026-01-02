@@ -10,16 +10,16 @@
 
   modules = {
 
-    ssh = {
-      enable = true;
-      keyDir = ../../bin/ssh;
-      # keyRepo = "git@github.com:adxvz/sshkeys.git";
-    };
-    gpg = {
-      enable = true;
-      keyDir = ../../bin/gpg;
-      # keyRepo = "git@github.com:adxvz/sshkeys.git";
-    };
+    #   ssh = {
+    #     enable = true;
+    #     keyDir = ../../bin/ssh;
+    #     # keyRepo = "git@github.com:adxvz/sshkeys.git";
+    #   };
+    #   gpg = {
+    #     enable = true;
+    #     keyDir = ../../bin/gpg;
+    #     # keyRepo = "git@github.com:adxvz/sshkeys.git";
+    #   };
 
     git = {
       enable = true;
