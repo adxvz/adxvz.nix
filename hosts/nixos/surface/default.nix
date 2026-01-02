@@ -23,7 +23,7 @@
   };
 
   # Bootloader
-  boot.loader.systemd-boot.enable = true;
+  # boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
   # Kernel (Surface kernels track linux-stable)
