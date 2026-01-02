@@ -1,4 +1,3 @@
-# hosts/nixos/surface/default.nix
 {
   config,
   pkgs,
@@ -12,62 +11,93 @@
   imports = [
     ./hardware-configuration.nix
     ./bootstrap.nix
-    inputs.nixos-hardware.nixosModules.microsoft-surface-pro-intel
+    inputs.lanzaboote.nixosModules.lanzaboote
+    inputs.nixos-hardware.nixosModules.microsoft-surface-pro-9
+    self.nixosModules.surface
   ];
 
-  # Use the systemd-boot EFI boot loader.
+  # Secure Boot on Surface Firmware
+  boot.lanzaboote = {
+    enable = true;
+    pkiBundle = "/etc/secureboot";
+  };
+
+  # Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # Kernel (Surface kernels track linux-stable)
+  hardware.microsoft-surface.kernelVersion = "stable";
+
+  # Fix flickering + power regressions
   boot.kernelParams = [
-    # Mitigate screen flickering
     "i915.enable_psr=0"
+    "mem_sleep_default=deep"
   ];
 
+  # IPTS + Surface stack
   boot.initrd.kernelModules = [
+    "intel_lpss"
+    "intel_lpss_pci"
+    "8250_dw"
+  ];
+
+  boot.kernelModules = [
     "surface_aggregator"
     "surface_aggregator_registry"
     "surface_aggregator_hub"
     "surface_hid_core"
     "surface_hid"
-    "pinctrl-tigerlake"
-    "intel_lpss"
-    "intel_lpss_pci"
-    "8250_dw"
-    "surface_platform_profile"
     "surface_kbd"
-    "surface_acpi_notify"
     "surface_battery"
     "surface_charger"
-    "surface_aggregator_cdev"
+    "surface_platform_profile"
   ];
 
+  boot.blacklistedKernelModules = [
+    "surface_gpe"
+  ];
+
+  # IPTS daemon (touch + pen)
+  services.iptsd = {
+    enable = true;
+    package = pkgs.iptsd;
+  };
+
+  hardware.enableRedistributableFirmware = true;
+  hardware.enableAllFirmware = true;
+
+  # Required for Wayland + proprietary apps
   programs.nix-ld.enable = true;
   programs.nix-ld.libraries = with pkgs; [
     alsa-lib
     libGL
     libglvnd
     libxkbcommon
+    wayland
     xorg.libX11
     xorg.libXi
     xorg.libXcursor
     xorg.libXrandr
     xorg.libXxf86vm
     xorg.libXinerama
-    wayland
   ];
 
-  hardware.microsoft-surface.kernelVersion = "stable";
+  # Networking
+  networking = {
+    hostName = "surface";
+    networkmanager.enable = true;
+    wireless.enable = false;
+  };
 
-  # Disable the problematic suspend kernel module, it makes waking up
-  # impossible after closing the cover.
-  boot.blacklistedKernelModules = [ "surface_gpe" ];
+  # Avahi (unchanged)
+  services.avahi = {
+    enable = true;
+    nssmdns = true;
+    publish.enable = true;
+  };
 
-  system.extraSystemBuilderCmds = ''
-    ln -s ${self} $out/flake
-    ln -s ${config.boot.kernelPackages.kernel.dev} $out/kernel-dev
-  '';
-
+  # Registry pinning (excellent – keep this)
   nix.registry = {
     nixpkgs.flake = inputs.nixos-unstable;
     current.to = {
@@ -76,24 +106,8 @@
     };
   };
 
-  nixpkgs.config.allowUnfree = true;
-
-  services.avahi = {
-    enable = true;
-    nssmdns = true;
-    publish.enable = true;
-  };
-
-  environment.variables = {
-    # This ensures TouchOSC can find libavahi-compat-libdnssd.so at runtime
-    LD_LIBRARY_PATH = "${pkgs.avahi-compat}/lib";
-  };
-
-  # Declare both to override base config for iso
-  networking = {
-    hostName = "surface";
-    wireless.enable = true;
-    networkmanager.enable = false;
-  };
-
+  system.extraSystemBuilderCmds = ''
+    ln -s ${self} $out/flake
+    ln -s ${config.boot.kernelPackages.kernel.dev} $out/kernel-dev
+  '';
 }

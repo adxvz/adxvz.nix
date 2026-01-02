@@ -276,7 +276,7 @@
       };
 
       nixosModules = {
-
+        surface = import ./modules/nixos/surface.nix;
       };
 
       overlays = {
