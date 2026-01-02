@@ -2,6 +2,8 @@
   config,
   pkgs,
   lib,
+  vars,
+  versions,
   ...
 }:
 
