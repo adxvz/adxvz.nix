@@ -203,7 +203,7 @@ rec {
             configuration
           else
             {
-              imports = [ (../hosts/nixos + "/${name}.nix") ];
+              imports = [ (../hosts/nixos + "/${name}") ];
             };
       };
 }
