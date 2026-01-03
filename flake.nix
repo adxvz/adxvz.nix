@@ -186,6 +186,7 @@
         name = "surface";
         targetSystem = "x86_64-linux";
         hm = false;
+        overlays = self.overlays;
       };
 
       #=========================================#
