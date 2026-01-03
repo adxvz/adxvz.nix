@@ -58,10 +58,10 @@
   ];
 
   # IPTS daemon (touch + pen)
-  services.iptsd = {
-    enable = true;
-    package = pkgs.iptsd;
-  };
+  # services.iptsd = {
+  #    enable = true;
+  #    package = pkgs.iptsd;
+  #  };
 
   # Firmware
   hardware.enableAllFirmware = true;
