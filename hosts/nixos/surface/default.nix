@@ -12,7 +12,7 @@
     ./hardware-configuration.nix
     ./bootstrap.nix
     inputs.lanzaboote.nixosModules.lanzaboote
-    inputs.nixos-hardware.nixosModules.microsoft-surface-pro-9
+    inputs.nixos-hardware.nixosModules.microsoft-surface-pro-intel
     self.nixosModules.surface
   ];
 

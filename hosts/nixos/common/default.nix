@@ -23,7 +23,7 @@
 
   environment.systemPackages = with pkgs; [
     vim
-    xfce.mousepad
+    mousepad
     git
     htop
   ];
