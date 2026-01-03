@@ -160,8 +160,8 @@
     { self, ... }@inputs:
     let
       nixpkgs = inputs.nixos-unstable;
-      utils = import ./lib/utils.nix { inherit self inputs pkgs; };
-      pkgs = utils.mkPkgs { };
+      utils = import ./lib/utils.nix { inherit self inputs; };
+      #   pkgs = utils.mkPkgs { };
       flakeUtils = import ./lib/vars.nix { inherit self inputs; };
       vars = flakeUtils.vars;
       versions = flakeUtils.versions;
