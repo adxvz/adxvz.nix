@@ -4,7 +4,6 @@
   pkgs,
 }:
 let
-  sources = import ../nix/sources.nix;
   flakeUtils = import ../lib/vars.nix { inherit self inputs; };
   vars = flakeUtils.vars;
   versions = flakeUtils.versions;
@@ -142,19 +141,14 @@ rec {
       targetSystem ? vars.currentSystem,
       nixpkgs ? inputs.nixos-unstable,
       configuration ? {
-        imports = [ (../hosts/nixos + "/${name}") ];
+        imports = [ (../hosts/nixos + "/${name}.nix") ];
       },
       hm ? true,
       darwin ? false,
     }:
     nixpkgs.lib.nixosSystem {
       specialArgs = {
-        inherit
-          inputs
-          vars
-          versions
-          nixpkgs
-          ;
+        inherit vars versions nixpkgs;
         self = self;
         systemName = name;
         pkgsStable = mkPkgs {

@@ -4,6 +4,7 @@
   inputs = {
     # Nix Package Manager
     nixos-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixos-stable.url = "github:nixos/nixpkgs/nixos-25.11";
     nur.url = "github:nix-community/NUR"; # Nix User Repository (Community ran repository for nix packages)
     nixos-hardware.url = "github:nixos/nixos-hardware/master"; # Hardware Specific Configurations
 
@@ -158,7 +159,6 @@
   outputs =
     { self, ... }@inputs:
     let
-      sources = import ./nix/sources.nix;
       nixpkgs = inputs.nixos-unstable;
       utils = import ./lib/utils.nix { inherit self inputs pkgs; };
       pkgs = utils.mkPkgs { };
@@ -185,15 +185,8 @@
       nixosConfigurations.surface = utils.mkSystem {
         name = "surface";
         targetSystem = "x86_64-linux";
+        nixpkgs = inputs.nixos-stable;
         hm = false;
-
-        pkgs = import inputs.nixos-unstable {
-          system = "x86_64-linux";
-          overlays = [
-            ./overlays/hidrd-fix.nix
-            # any other overlays you have
-          ];
-        };
       };
 
       #=========================================#
@@ -291,7 +284,6 @@
       overlays = {
         nixos-option = import ./overlays/tools/nix/nixos-option.nix;
         emacs = import ./overlays/applications/editors/emacs.nix;
-        hidrd = import ./overlays/hidrd/hidrd.nix;
       };
     };
 }
