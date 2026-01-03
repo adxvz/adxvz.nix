@@ -28,7 +28,7 @@ rec {
       ++ (attrsToValues self.overlays);
     };
 
-  callPkg = package: (mkPkgs { }).callPackage package { inherit sources; };
+  callPkg = package: (mkPkgs { }).callPackage package { inherit ; };
 
   mkHomeManagerModule =
     {
