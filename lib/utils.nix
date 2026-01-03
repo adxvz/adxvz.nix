@@ -1,7 +1,6 @@
 {
   self,
   inputs,
-  pkgs,
 }:
 let
   flakeUtils = import ../lib/vars.nix { inherit self inputs; };
