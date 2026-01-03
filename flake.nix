@@ -160,11 +160,18 @@
     let
       sources = import ./nix/sources.nix;
       nixpkgs = inputs.nixos-unstable;
-      utils = import ./lib/utils.nix { inherit self inputs pkgs; };
       pkgs = utils.mkPkgs { };
       flakeUtils = import ./lib/vars.nix { inherit self inputs; };
       vars = flakeUtils.vars;
       versions = flakeUtils.versions;
+      utils = import ./lib/utils.nix { inherit self inputs pkgs; };
+
+      # Combine all overlays to pass into mkPkgs
+      baseOverlays = [
+        ./overlays/tools/nix/nixos-option.nix
+        ./overlays/applications/editors/emacs.nix
+        ./overlays/hidrd.nix
+      ];
 
     in
     {
@@ -176,6 +183,8 @@
       darwinConfigurations."m1max" = utils.mkSystem {
         name = "m1max";
         darwin = true;
+        hostPkgs = utils.mkPkgs { overlays = baseOverlays; };
+
       };
 
       #=========================================#
@@ -186,6 +195,8 @@
         name = "surface";
         targetSystem = "x86_64-linux";
         hm = false;
+        hostPkgs = utils.mkPkgs { overlays = baseOverlays; };
+
       };
 
       #=========================================#
@@ -196,51 +207,55 @@
         name = "adxvz";
         targetSystem = "";
       };
-
       #=========================================#
       #         Homelab Servers                 #
       #=========================================#
-
       nixosConfigurations.do = utils.mkSystem {
         name = "do";
         targetSystem = "x86_64-linux";
         hm = false;
+        hostPkgs = utils.mkPkgs { overlays = baseOverlays; };
       };
       nixosConfigurations.re = utils.mkSystem {
         name = "re";
         targetSystem = "x86_64-linux";
         hm = false;
+        hostPkgs = utils.mkPkgs { overlays = baseOverlays; };
       };
       nixosConfigurations.mi = utils.mkSystem {
         name = "mi";
         targetSystem = "x86_64-linux";
         hm = false;
+        hostPkgs = utils.mkPkgs { overlays = baseOverlays; };
       };
       nixosConfigurations.fa = utils.mkSystem {
         name = "fa";
         targetSystem = "x86_64-linux";
         hm = false;
+        hostPkgs = utils.mkPkgs { overlays = baseOverlays; };
       };
       nixosConfigurations.so = utils.mkSystem {
         name = "so";
         targetSystem = "x86_64-linux";
         hm = false;
+        hostPkgs = utils.mkPkgs { overlays = baseOverlays; };
       };
       nixosConfigurations.la = utils.mkSystem {
         name = "la";
         targetSystem = "x86_64-linux";
         hm = false;
+        hostPkgs = utils.mkPkgs { overlays = baseOverlays; };
       };
       nixosConfigurations.ti = utils.mkSystem {
         name = "ti";
         targetSystem = "x86_64-linux";
         hm = false;
+        hostPkgs = utils.mkPkgs { overlays = baseOverlays; };
       };
 
       #=========================================#
       #    Modules, Overlays                    #
       #=========================================#
-
       darwinModules = {
         fonts = import ./modules/darwin/fonts.nix;
         hunspell = import ./modules/darwin/hunspell.nix;
@@ -250,29 +265,18 @@
       };
 
       homeManagerModules = {
-
-        # Shells
         fish = import ./modules/home/shells/fish.nix;
         nushell = import ./modules/home/shells/nushell.nix;
         zsh = import ./modules/home/shells/zsh.nix;
-
-        # Terminals
         ghostty = import ./modules/home/terminals/ghostty.nix;
         wezterm = import ./modules/home/terminals/wezterm.nix;
-
-        # CLI Tools
         scripts = import ./modules/home/cli/scripts.nix;
         ssh = import ./modules/home/cli/ssh.nix;
         gpg = import ./modules/home/cli/gpg.nix;
         git = import ./modules/home/cli/git.nix;
         jujutsu = import ./modules/home/cli/jujutsu.nix;
-
-        # Window Managers
         niri = import ./modules/home/wm/niri.nix;
-
-        # Applications
         emacs = import ./modules/home/apps/emacs.nix;
-
       };
 
       nixosModules = {
