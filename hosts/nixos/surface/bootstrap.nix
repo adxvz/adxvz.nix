@@ -10,11 +10,17 @@
     ../common
   ];
 
-  hardware.enableAllFirmware = true;
-
   environment.systemPackages = with pkgs; [
+    vim
     zed-editor
-
+    git
+    neovim
+    htop
+    wayland-protocols
+    wl-clipboard
+    sway
+    grim
+    slurp
+    ghostty
   ];
-
 }

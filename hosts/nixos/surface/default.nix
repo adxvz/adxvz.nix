@@ -16,32 +16,27 @@
     self.nixosModules.surface
   ];
 
-  # Secure Boot on Surface Firmware
+  # Secure Boot
   boot.lanzaboote = {
     enable = true;
     pkiBundle = "/etc/secureboot";
   };
 
   # Bootloader
-  # boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # Kernel (Surface kernels track linux-stable)
+  # Surface Pro 9 kernel (stable)
   hardware.microsoft-surface.kernelVersion = "stable";
 
-  # Fix flickering + power regressions
+  # Kernel parameters for power management / i915 flickering
   boot.kernelParams = [
     "i915.enable_psr=0"
     "mem_sleep_default=deep"
+    "intel_iommu=on"
   ];
 
-  # IPTS + Surface stack
-  boot.initrd.kernelModules = [
-    "intel_lpss"
-    "intel_lpss_pci"
-    "8250_dw"
-  ];
-
+  # Surface kernel modules
   boot.kernelModules = [
     "surface_aggregator"
     "surface_aggregator_registry"
@@ -52,6 +47,10 @@
     "surface_battery"
     "surface_charger"
     "surface_platform_profile"
+    "i915"
+    "intel_lpss"
+    "intel_lpss_pci"
+    "8250_dw"
   ];
 
   boot.blacklistedKernelModules = [
@@ -59,15 +58,16 @@
   ];
 
   # IPTS daemon (touch + pen)
-  #  services.iptsd = {
-  #    enable = true;
-  #    package = pkgs.iptsd;
-  #  };
+  services.iptsd = {
+    enable = true;
+    package = pkgs.iptsd;
+  };
 
-  hardware.enableRedistributableFirmware = true;
+  # Firmware
   hardware.enableAllFirmware = true;
+  hardware.enableRedistributableFirmware = true;
 
-  # Required for Wayland + proprietary apps
+  # Wayland / Xorg libraries for apps
   programs.nix-ld.enable = true;
   programs.nix-ld.libraries = with pkgs; [
     alsa-lib
@@ -84,22 +84,17 @@
   ];
 
   # Networking
-  networking = {
-    hostName = "surface";
-    #  networkmanager.enable = true;
-    #  wireless.enable = false;
-  };
+  networking.hostName = "surface";
+  networking.networkmanager.enable = true;
 
-  # Avahi (unchanged)
-  services.avahi = {
-    enable = true;
-    nssmdns = true;
-    publish.enable = true;
-  };
+  # Avahi
+  services.avahi.enable = true;
+  services.avahi.nssmdns = true;
+  services.avahi.publish.enable = true;
 
   nixpkgs.config.allowUnfree = true;
 
-  # Registry pinning (excellent – keep this)
+  # Registry pinning
   nix.registry = {
     nixpkgs.flake = inputs.nixos-unstable;
     current.to = {
