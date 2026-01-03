@@ -186,9 +186,14 @@
         name = "surface";
         targetSystem = "x86_64-linux";
         hm = false;
-        overlays = [
-          self.overlays.hidrd-fix
-        ];
+
+        pkgs = import inputs.nixos-unstable {
+          system = "x86_64-linux";
+          overlays = [
+            ./overlays/hidrd-fix.nix
+            # any other overlays you have
+          ];
+        };
       };
 
       #=========================================#
