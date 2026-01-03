@@ -283,7 +283,7 @@
       overlays = {
         nixos-option = import ./overlays/tools/nix/nixos-option.nix;
         emacs = import ./overlays/applications/editors/emacs.nix;
-        hidrd = import ./overlays/hidrd.nix;
+        hidrd = import ./overlays/hidrd/hidrd.nix;
       };
     };
 }
