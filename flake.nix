@@ -183,8 +183,6 @@
       darwinConfigurations."m1max" = utils.mkSystem {
         name = "m1max";
         darwin = true;
-        hostPkgs = utils.mkPkgs { overlays = baseOverlays; };
-
       };
 
       #=========================================#
