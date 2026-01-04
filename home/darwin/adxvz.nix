@@ -24,8 +24,8 @@
     git = {
       enable = true;
       useLatest = true;
-      userName = "vars.primaryUser";
-      userEmail = "vars.primaryEmail";
+      userName = "Adam Cooper";
+      userEmail = "adam@coopr.network";
       gpgSign = {
         enable = false;
         #  key = "C6F213570EE66A35";
@@ -36,8 +36,8 @@
     jujutsu = {
       enable = true;
       useLatest = true;
-      userName = "vars.primaryUser";
-      userEmail = "vars.primaryEmail";
+      userName = "Adam Cooper";
+      userEmail = "adam@coopr.network";
       # extraConfig = '' ''
     };
     nushell.enable = true;
