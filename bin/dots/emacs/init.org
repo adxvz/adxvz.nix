@@ -1,6 +1,8 @@
-#+title: Config
-#+startup: showeverything
-#+PROPERTY: header-args:emacs-lisp :tangle config.el
+#+TITLE: Emacs Configuration
+#+AUTHOR: Adam Cooper
+#+OPTIONS: toc:nil
+#+PROPERTY: header-args:emacs-lisp :tangle init.el
+
 * Initialization
 
 ** org-auto-tangle

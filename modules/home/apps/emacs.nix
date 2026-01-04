@@ -71,10 +71,6 @@ in
         pandoc
         luajitPackages.luacheck
         luajitPackages.lua-lsp
-        texlive.combined.scheme-full # provides latex, dvipng
-        imagemagick # provides convert
-        ghostscript # provides gs
-        poppler # provides pdftotext
       ]
       ++ haskellPkgs;
 
@@ -117,13 +113,5 @@ in
         fi
       ''
     );
-
-    # --- Vanilla Emacs native-comp cache ---
-    # Only when Doom is NOT enabled
-    home.file."~/.emacs.d/eln-cache/.gitignore".text = lib.mkIf (!cfg.doom.enable) "*\n";
-    home.file."~/.emacs.d/init.el".text = lib.mkIf (!cfg.doom.enable) ''
-      (setq native-comp-eln-load-path (list "~/.emacs.d/eln-cache/"))
-      (make-directory "~/.emacs.d/eln-cache/" t)
-    '';
   };
 }

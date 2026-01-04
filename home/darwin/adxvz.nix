@@ -45,8 +45,8 @@
     fish.enable = true;
     emacs = {
       enable = true;
-      doom.enable = false;
       org.enable = true;
+      doom.enable = false;
     };
   };
 
@@ -59,7 +59,7 @@
     file = {
       ".config/atuin/".source = ../../bin/dots/atuin;
       ".config/bat/".source = ../../bin/dots/bat;
-      ".config/emacs/".source = ../../bin/dots/emacs;
+      ".config/doom/".source = ../../bin/dots/doom;
       ".config/fastfetch".source = ../../bin/dots/fastfetch;
       ".config/ghostty/".source = ../../bin/dots/ghostty;
       ".config/jj/".source = ../../bin/dots/jj;
