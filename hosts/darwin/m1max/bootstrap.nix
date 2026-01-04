@@ -118,6 +118,7 @@
     cachix
     shottr
     raycast
+    obsidian
     itsycal
     tree
     tree-sitter
