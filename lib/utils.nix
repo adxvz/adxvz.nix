@@ -1,6 +1,8 @@
 {
   self,
   inputs,
+  pkgs,
+  ...
 }:
 let
   flakeUtils = import ../lib/vars.nix { inherit self inputs; };
@@ -27,33 +29,31 @@ rec {
       ++ (attrsToValues self.overlays);
     };
 
-  callPkg = package: (mkPkgs { }).callPackage package { inherit ; };
+  callPkg = package: (mkPkgs { }).callPackage package { };
 
   mkHomeManagerModule =
     {
       name,
       version ? versions.homeManager.stateVersion,
-      darwin ? false,
       ...
     }:
     let
-      # Base path of the repo / flake
       basePath = self;
+      user = vars.primaryUser;
 
-      # Determine the correct user config file based on flake flags
-      userHomeConfig =
-        if darwin && builtins.pathExists (basePath + "/home/darwin/${vars.primaryUser}.nix") then
-          basePath + "/home/darwin/${vars.primaryUser}.nix"
-        else if builtins.pathExists (basePath + "/home/nixos/${vars.primaryUser}.nix") then
-          basePath + "/home/nixos/${vars.primaryUser}.nix"
-        else
-          throw "No Home Manager config found for user ${vars.primaryUser}";
+      commonHome = basePath + "/home/common.nix";
+
+      darwinHome = basePath + "/home/darwin.nix";
+
+      nixosHome = basePath + "/home/nixos.nix";
+
+      assertExists = path: if builtins.pathExists path then path else null;
     in
     {
       home-manager = {
         useGlobalPkgs = true;
         useUserPackages = true;
-        backupFileExtension = "";
+        backupFileExtension = "backup";
 
         extraSpecialArgs = {
           systemName = name;
@@ -61,9 +61,12 @@ rec {
           pkgsStable = mkPkgs { nixpkgs = inputs.nixos-stable; };
         };
 
-        users = {
-          # Assign the selected Home Manager config
-          ${vars.primaryUser} = userHomeConfig;
+        users.${user} = {
+          imports = [
+            (assertExists commonHome)
+          ]
+          ++ nixpkgs.lib.optional pkgs.stdenv.isDarwin (assertExists darwinHome)
+          ++ nixpkgs.lib.optional pkgs.stdenv.isLinux (assertExists nixosHome);
         };
 
         sharedModules = [
