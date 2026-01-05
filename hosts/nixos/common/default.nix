@@ -31,9 +31,6 @@
   services.xserver.enable = true;
   services.xserver.layout = "gb";
 
-  # Optional: Sway/Wayland for Surface touch/pen
-  services.xserver.windowManager.sway.enable = true;
-
   programs.zsh.enable = true;
 
 }
