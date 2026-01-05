@@ -1,6 +1,7 @@
 {
   imports = [
-    ./gnome
+    # ./gnome
+    ./niri.nix
     ./systemPkgs.nix
   ];
 
