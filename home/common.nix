@@ -79,8 +79,6 @@
     git = {
       enable = true;
       useLatest = true;
-      userName = "Adam Cooper";
-      userEmail = "adam@coopr.network";
       githubCli = true;
     };
 

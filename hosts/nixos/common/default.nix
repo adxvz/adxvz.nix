@@ -1,9 +1,5 @@
 {
-  config,
   pkgs,
-  lib,
-  vars,
-  versions,
   ...
 }:
 
@@ -12,6 +8,7 @@
 
   users.users.adxvz = {
     isNormalUser = true;
+    password = "Testing123!";
     extraGroups = [
       "wheel"
       "video"
@@ -20,6 +17,8 @@
     ];
     shell = pkgs.zsh;
   };
+
+  users.mutableUsers = false;
 
   environment.systemPackages = with pkgs; [
     vim

@@ -21,13 +21,13 @@ in
 
     userName = mkOption {
       type = types.nullOr types.str;
-      default = null;
+      default = "Adam Cooper";
       description = "Git user.name configuration value.";
     };
 
     userEmail = mkOption {
       type = types.nullOr types.str;
-      default = null;
+      default = "adam@coopr.network";
       description = "Git user.email configuration value.";
     };
 

@@ -1,4 +1,5 @@
-{ config, pkgs, ... }: {
+{ pkgs, ... }:
+{
 
   # imports = [ ./gnome-osk.nix ];
 
@@ -6,10 +7,7 @@
 
   config = {
 
-    # Configure keymap in X11
- 
-
-#services.xserver.desktopManager.xfce.enable = true;
+    #services.xserver.desktopManager.xfce.enable = true;
 
     # Display manager settings
     services.displayManager.gdm = {
@@ -24,7 +22,10 @@
       {
         #lockAll = false;
         settings."org/gnome/shell" = {
-          enabled-extensions = [ "${pkgs.gnomeExtensions.tray-icons-reloaded}" "${pkgs.gnomeExtensions.blur-my-shell}" ];
+          enabled-extensions = [
+            "${pkgs.gnomeExtensions.tray-icons-reloaded}"
+            "${pkgs.gnomeExtensions.blur-my-shell}"
+          ];
         };
       }
 
@@ -39,6 +40,7 @@
     services.desktopManager.gnome.enable = true;
 
     services.gnome.core-apps.enable = false;
+    services.gnome.core-utilities.enable = false;
 
     environment.gnome.excludePackages = with pkgs; [
       baobab # disk usage analyzer
@@ -63,6 +65,7 @@
       gnome-connections
       gnome-tour
       orca
+      gnome.gnome-terminal
     ];
 
     # We also lose nautilus now though, so we add back stuff we actually care about...
