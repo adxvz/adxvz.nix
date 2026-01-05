@@ -7,7 +7,7 @@
 
 {
   imports = [
-    ./hardware-configuration.nix
+    ../common
     ./modules/kappa
     ./modules/kappa/hardware/apfs.nix
     ./modules/shared/hideDesktopEntry.nix
@@ -34,25 +34,9 @@
     yad
     vim
     xfce.mousepad
-    rtpmidid
     alsa-utils
 
   ];
-
-  systemd.services.rtpmidid = {
-    description = "RTP-MIDI daemon";
-    wantedBy = [ "multi-user.target" ];
-
-    serviceConfig = {
-      ExecStart = "${pkgs.rtpmidid}/bin/rtpmidid --name SurfacePro";
-      Restart = "always";
-      RuntimeDirectory = "rtpmidid"; # creates /run/rtpmidid
-      User = "avahi";
-      Group = "audio";
-      StandardOutput = "journal";
-      StandardError = "journal";
-    };
-  };
 
   services.avahi = {
     enable = true;
