@@ -32,9 +32,8 @@
   services.xserver.layout = "gb";
 
   # Optional: Sway/Wayland for Surface touch/pen
-  # services.xserver.windowManager.sway.enable = true;
+  services.xserver.windowManager.sway.enable = true;
 
   programs.zsh.enable = true;
 
-  system.stateVersion = "25.11";
 }

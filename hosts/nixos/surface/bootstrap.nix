@@ -21,15 +21,6 @@
 
   hardware.apfs.autoMount = true;
 
-  users.users.adxvz = {
-    isNormalUser = true;
-    extraGroups = [
-      "wheel"
-      "audio"
-    ];
-    shell = pkgs.zsh;
-  };
-
   environment.systemPackages = with pkgs; [
     yad
     vim
@@ -47,16 +38,6 @@
   environment.variables = {
     # This ensures TouchOSC can find libavahi-compat-libdnssd.so at runtime
     LD_LIBRARY_PATH = "${pkgs.avahi-compat}/lib";
-  };
-
-  networking.firewall.allowedUDPPorts = [
-    5004
-    5005
-  ];
-
-  services.xserver = {
-    enable = true;
-    xkb.layout = "gb";
   };
 
   virtualisation.docker.enable = true;
