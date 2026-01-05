@@ -64,5 +64,15 @@
   # impossible after closing the cover.
   boot.blacklistedKernelModules = [ "surface_gpe" ];
 
+  services.iptsd.enable = true;
+
+  nixpkgs.overlays = [
+    (final: prev: {
+      hidrd = prev.hidrd.overrideAttrs (old: {
+        NIX_CFLAGS_COMPILE = (old.NIX_CFLAGS_COMPILE or "") + " -Wno-error";
+      });
+    })
+  ];
+
   nixpkgs.hostPlatform = "x86_64-linux";
 }
