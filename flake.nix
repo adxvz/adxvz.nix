@@ -188,12 +188,11 @@
       nixosConfigurations.surface = utils.mkSystem {
         name = "surface";
         targetSystem = "x86_64-linux";
-        nixpkgs = inputs.nixos-stable;
-        hm = false;
 
         extraNixosModules = [
           inputs.nixos-hardware.nixosModules.microsoft-surface-common
           inputs.nixos-hardware.nixosModules.microsoft-surface-pro-intel
+          inputs.nixos-hardware.nixosModules.microsoft-surface-pro-9
         ];
       };
 
