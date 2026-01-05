@@ -59,4 +59,6 @@
   # Disable the problematic suspend kernel module, it makes waking up
   # impossible after closing the cover.
   boot.blacklistedKernelModules = [ "surface_gpe" ];
+
+  nixpkgs.hostPlatform = "x86_64-linux";
 }
