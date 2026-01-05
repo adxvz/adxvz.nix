@@ -19,6 +19,9 @@
   boot.kernelParams = [
     # Mitigate screen flickering
     "i915.enable_psr=0"
+
+    # Linux 6.15.9 kernel assumes old rust, but nixpkgs is providing new rust. Disabling for now
+    "rust=off"
   ];
 
   boot.initrd.kernelModules = [
