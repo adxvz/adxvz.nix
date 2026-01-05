@@ -6,7 +6,11 @@
 }:
 
 {
-  imports = [ ./modules/kappa/hardware/thermald/thermald.nix ];
+  imports = [
+    ./hardware-configuration.nix
+    ./bootstrap.nix
+    ./modules/kappa/hardware/thermald/thermald.nix
+  ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
