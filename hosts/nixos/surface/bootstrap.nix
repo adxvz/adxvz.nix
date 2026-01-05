@@ -9,10 +9,10 @@
   imports = [
     ../common
     ./modules/kappa
-    ./modules/kappa/hardware/apfs.nix
-    ./modules/shared/hideDesktopEntry.nix
+    #  ./modules/kappa/hardware/apfs.nix
+    #  ./modules/shared/hideDesktopEntry.nix
     ./modules/shared/nh.nix
-    ./modules/shared/git.nix
+    #  ./modules/shared/git.nix
     ./modules/shared/disk.nix
     ./modules/shared/timeZone.nix
   ];
