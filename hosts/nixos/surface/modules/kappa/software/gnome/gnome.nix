@@ -65,7 +65,7 @@
       gnome-connections
       gnome-tour
       orca
-      gnome.gnome-terminal
+      gnome-terminal
     ];
 
     # We also lose nautilus now though, so we add back stuff we actually care about...
