@@ -16,4 +16,13 @@
     ".config/yazi/".source = ../bin/dots/yazi;
   };
 
+  modules = {
+
+    emacs = {
+      enable = true;
+      org.enable = true;
+      doom.enable = false;
+    };
+  };
+
 }
