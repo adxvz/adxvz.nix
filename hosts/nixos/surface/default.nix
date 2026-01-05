@@ -16,6 +16,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  boot.kernelPackages = pkgs.linuxPackages_6_6;
   boot.kernelParams = [
     # Mitigate screen flickering
     "i915.enable_psr=0"

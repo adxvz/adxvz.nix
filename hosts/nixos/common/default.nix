@@ -29,7 +29,7 @@
   ];
 
   services.xserver.enable = true;
-  services.xserver.layout = "gb";
+  services.xserver.xkb.layout = "gb";
 
   programs.zsh.enable = true;
 
