@@ -40,11 +40,8 @@ rec {
     let
       basePath = self;
       user = vars.primaryUser;
-
       commonHome = basePath + "/home/common.nix";
-
       darwinHome = basePath + "/home/darwin.nix";
-
       nixosHome = basePath + "/home/nixos.nix";
 
       assertExists = path: if builtins.pathExists path then path else null;
@@ -95,6 +92,9 @@ rec {
       name,
       hm ? true,
       darwin ? false,
+      extraModules ? [ ],
+      extraDarwinModules ? [ ],
+
     }:
     inputs.nix-darwin.lib.darwinSystem {
       specialArgs = {
@@ -131,6 +131,8 @@ rec {
         (../hosts/darwin + "/${name}")
       ]
       ++ (attrsToValues self.darwinModules)
+      ++ extraModules
+      ++ extraDarwinModules
       ++ nixpkgs.lib.optionals hm [
         inputs.home-manager.darwinModules.home-manager
         (mkHomeManagerModule { inherit name darwin; })
@@ -147,6 +149,9 @@ rec {
       },
       hm ? true,
       darwin ? false,
+
+      extraModules ? [ ],
+      extraNixosModules ? [ ],
     }:
     nixpkgs.lib.nixosSystem {
       specialArgs = {
@@ -164,6 +169,8 @@ rec {
       ]
 
       ++ (attrsToValues self.nixosModules)
+      ++ extraModules
+      ++ extraNixosModules
       ++ nixpkgs.lib.optionals hm [
         inputs.home-manager.nixosModules.home-manager
         (mkHomeManagerModule { inherit name darwin; })
@@ -177,9 +184,13 @@ rec {
       nixos ? false,
       targetSystem ? vars.currentSystem,
       nixpkgs ? inputs.nixos-unstable,
-      hostPkgs ? mkPkgs { },
+
+      # hostPkgs ? mkPkgs { },
       configuration ? null,
       hm ? true,
+      extraModules ? [ ],
+      extraNixosModules ? [ ],
+      extraDarwinModules ? [ ],
       ...
     }:
     if darwin then
@@ -188,6 +199,8 @@ rec {
           name
           hm
           darwin
+          extraModules
+          extraDarwinModules
           ;
       }
     else
@@ -198,6 +211,9 @@ rec {
           nixpkgs
           hm
           darwin
+          extraModules
+          extraNixosModules
+
           ;
         configuration =
           if configuration != null then

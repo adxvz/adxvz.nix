@@ -176,6 +176,9 @@
       darwinConfigurations."m1max" = utils.mkSystem {
         name = "m1max";
         darwin = true;
+
+        extraDarwinModules = [ ];
+
       };
 
       #=========================================#
@@ -187,6 +190,11 @@
         targetSystem = "x86_64-linux";
         nixpkgs = inputs.nixos-stable;
         hm = false;
+
+        extraNixosModules = [
+          inputs.nixos-hardware.nixosModules.microsoft-surface-common
+          inputs.nixos-hardware.nixosModules.microsoft-surface-pro-intel
+        ];
       };
 
       #=========================================#
