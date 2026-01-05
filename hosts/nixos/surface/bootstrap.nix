@@ -72,11 +72,11 @@
   };
 
   # Declare both to override base config for iso
-  networking = {
-    hostName = "surface";
-    wireless.enable = false;
-    networkmanager.enable = true;
-  };
+  # networking = {
+  #   hostName = "surface";
+  #   wireless.enable = false;
+  #   networkmanager.enable = true;
+  # };
 
   system.stateVersion = "25.11";
 }

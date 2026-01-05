@@ -55,8 +55,8 @@
   ];
 
   # Use wpa_supplicant in iso but not for full install
-  #networking.wireless.enable = lib.mkDefault true;
-  #networking.networkmanager.enable = lib.mkDefault false;
+  networking.wireless.enable = lib.mkDefault true;
+  networking.networkmanager.enable = lib.mkDefault false;
 
   hardware.microsoft-surface.kernelVersion = "stable";
 
