@@ -32,52 +32,51 @@ in
     };
   };
 
-    environment.etc = {
-      "nix/current".source = self;
-      "nix/nixpkgs".source = nixpkgs;
-    };
+  environment.etc = {
+    "nix/current".source = self;
+    "nix/nixpkgs".source = nixpkgs;
+  };
 
-    environment.systemPackages = with pkgs; [
-      nil
-      niv
-      nixd
-      nix-index
-      nvd
-    ];
+  environment.systemPackages = with pkgs; [
+    nil
+    niv
+    nixd
+    nix-index
+    nvd
+  ];
 
-    nix = {
-      channel.enable = false;
-      nixPath = [ "nixpkgs=${nixpkgs}" ];
+  nix = {
+    channel.enable = false;
+    nixPath = [ "nixpkgs=${nixpkgs}" ];
 
-      registry = {
-        nixpkgs = {
-          from = {
-            id = "nixpkgs";
-            type = "indirect";
-          };
-          to = lib.mkForce {
-            path = "${nixpkgs}";
-            type = "path";
-          };
+    registry = {
+      nixpkgs = {
+        from = {
+          id = "nixpkgs";
+          type = "indirect";
         };
-
-        nixos-stable = mkRegistry "nixos-stable" "nixos-${versions.nixos.stableVersion}";
-        nixos-unstable = mkRegistry "nixos-unstable" "nixos-unstable";
+        to = lib.mkForce {
+          path = "${nixpkgs}";
+          type = "path";
+        };
       };
 
-      optimise.automatic = true;
-
-      settings = {
-        experimental-features = "nix-command flakes";
-        narinfo-cache-positive-ttl = 604800;
-        keep-outputs = true;
-        keep-derivations = true;
-      };
+      nixos-stable = mkRegistry "nixos-stable" "nixos-${versions.nixos.stableVersion}";
+      nixos-unstable = mkRegistry "nixos-unstable" "nixos-unstable";
     };
 
-    nixpkgs.flake = {
-      setNixPath = false;
-      setFlakeRegistry = false;
+    optimise.automatic = true;
+
+    settings = {
+      experimental-features = "nix-command flakes";
+      narinfo-cache-positive-ttl = 604800;
+      keep-outputs = true;
+      keep-derivations = true;
     };
+  };
+
+  nixpkgs.flake = {
+    setNixPath = false;
+    setFlakeRegistry = false;
   };
 }
