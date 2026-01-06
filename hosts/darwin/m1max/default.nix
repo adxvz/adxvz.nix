@@ -6,6 +6,4 @@
     ../../common/pkgs.nix
   ];
 
-  nixpkgs.config.allowUnfree = true;
-
 }

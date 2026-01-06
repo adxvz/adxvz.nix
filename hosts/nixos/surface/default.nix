@@ -15,7 +15,6 @@
     nix.enable = true;
     thermald.enable = true;
     iptsd.enable = true;
-    edidCustom.enable = true;
     audio = {
       enable = true;
       disablePulseAudio = true;
