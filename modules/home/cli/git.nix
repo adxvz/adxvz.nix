@@ -43,7 +43,7 @@ in
 
     useLatest = mkOption {
       type = types.bool;
-      default = true;
+      default = false;
       description = "If true, use the latest Git from pkgs instead of pkgsStable.";
     };
 
@@ -63,7 +63,7 @@ in
 
     githubCli = mkOption {
       type = types.bool;
-      default = true;
+      default = false;
       description = "Enable GitHub CLI (gh) integration.";
     };
   };

@@ -81,7 +81,7 @@
       useLatest = true;
       githubCli = true;
     };
-
+    ssh.enable = true;
     jujutsu = {
       enable = true;
       useLatest = true;

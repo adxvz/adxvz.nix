@@ -195,20 +195,6 @@
           inputs.nixos-hardware.nixosModules.microsoft-surface-common
           inputs.nixos-hardware.nixosModules.microsoft-surface-pro-intel
           inputs.nixos-hardware.nixosModules.microsoft-surface-pro-9
-          #   {
-          #     system.extraSystemBuilderCmds = ''
-          #       ln -s ${self} $out/flake
-          #       ln -s ${self.nixosConfigurations.surface.config.boot.kernelPackages.kernel.dev} $out/kernel-dev
-          #     '';
-          #   }
-          #   { nix.registry.nixpkgs.flake = nixpkgs; }
-          #
-          #   {
-          #     nix.registry.current.to = {
-          #       type = "path";
-          #       path = "/run/booted-system/flake/";
-          #     };
-          #   }
         ];
       };
 
