@@ -13,10 +13,9 @@ in
 {
   imports = [ ../common/nix.nix ];
   config = mkIf cfg.enable {
+    nixpkgs.config.allowUnfree = true;
+
     system = {
-
-      nixpkgs.config.allowUnfree = true;
-
       # Workaround for issue: 'sandbox-exec: pattern serialization length X exceeds maximum (65535)'
       # See: https://github.com/NixOS/nix/issues/4119
       # systemBuilderArgs.sandboxProfile = ''
