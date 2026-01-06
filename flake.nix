@@ -5,6 +5,7 @@
     # Nix Package Manager
     nixos-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-stable.url = "github:nixos/nixpkgs/nixos-25.11";
+
     nur.url = "github:nix-community/NUR"; # Nix User Repository (Community ran repository for nix packages)
     nixos-hardware.url = "github:nixos/nixos-hardware/master"; # Hardware Specific Configurations
 

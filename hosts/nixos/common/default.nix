@@ -8,7 +8,7 @@
 
   users.users.adxvz = {
     isNormalUser = true;
-    password = "Testing123!";
+    hashedPassword = "$6$AMF7.0t72oLFRYVq$MXNM.485TMsJZkJSo5wPZYZaRHVi9TvRt8yPrCx0tzwQ9z/xGNca.oSk9KZPYFTXA.9QZdGllkP.8.Q8fMaXi0";
     extraGroups = [
       "wheel"
       "video"

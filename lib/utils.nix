@@ -184,8 +184,7 @@ rec {
       nixos ? false,
       targetSystem ? vars.currentSystem,
       nixpkgs ? inputs.nixos-unstable,
-
-      # hostPkgs ? mkPkgs { },
+      hostPkgs ? mkPkgs { },
       configuration ? null,
       hm ? true,
       extraModules ? [ ],
