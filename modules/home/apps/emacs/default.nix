@@ -18,7 +18,6 @@ let
     mpg123
     mpv
     mupdf
-    libreoffice
     imagemagick # convert
     texlive.combined.scheme-basic
     graphviz # org-babel dot support
@@ -26,7 +25,7 @@ let
 
   # Linux-specific packages
   linuxPkgs = with pkgs; [
-
+    libreoffice
   ];
 
   # Darwin/macOS-specific packages
