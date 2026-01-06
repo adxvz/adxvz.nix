@@ -1,4 +1,4 @@
-{ config, lib, pkgs, nixpkgs, vars, ... }:
+{ config, lib, ... }:
 with lib;
 let
   cfg = config.modules.nix;
