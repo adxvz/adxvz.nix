@@ -11,23 +11,17 @@ let
   # Common external tools required on both Linux and Darwin
   commonPkgs = with pkgs; [
     emacs
-    git
-    curl
-    zip
     hunspell
     ghostscript
     poppler # pdftotext
     djvulibre # ddjvu
     mpg123
     mpv
-    vlc
     mupdf
-    ripgrep
     libreoffice
     imagemagick # convert
     texlive.combined.scheme-basic
     graphviz # org-babel dot support
-    gimp
   ];
 
   # Linux-specific packages
