@@ -5,15 +5,16 @@
 let
   # Shared modules (cross-platform)
   sharedModules = {
-    fonts = import ../modules/common/fonts.nix;
     nix = import ../modules/common/nix.nix;
+    fonts = import ../modules/common/fonts.nix;
+    hunspell = import ../modules/common/hunspell.nix;
+
   };
 in
 {
   darwinModules = {
     fonts = sharedModules.fonts;
     nix = sharedModules.nix;
-    hunspell = import ../modules/darwin/hunspell.nix;
     socket-vmnet = import ../modules/darwin/socket-vmnet.nix;
     tuptime = import ../modules/darwin/tuptime.nix;
   };
@@ -21,6 +22,8 @@ in
   nixosModules = {
     fonts = sharedModules.fonts;
     nix = sharedModules.nix;
+
+    # Surface Pro Hardware Modules
     apfs = import ../modules/nixos/surface/apfs.nix;
     audio = import ../modules/nixos/surface/audio.nix;
     iptsd = import ../modules/nixos/surface/iptsd.nix;
