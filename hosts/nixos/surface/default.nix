@@ -6,6 +6,7 @@
 
 {
   imports = [
+    ../../common/pkgs.nix
     ./hardware-configuration.nix
     ./bootstrap.nix
     ./modules/kappa/hardware/thermald/thermald.nix
