@@ -14,7 +14,7 @@
   modules = {
     nix.enable = true;
     thermald.enable = true;
-    touchscreen.enable = true;
+    iptsd.enable = true;
     edidCustom.enable = true;
     audio = {
       enable = true;
