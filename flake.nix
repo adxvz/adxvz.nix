@@ -290,7 +290,7 @@
         thermald = import ./modules/nixos/surface/thermald.nix;
         apfs = import ./modules/nixos/surface/apfs.nix;
         audio = import ./modules/nixos/surface/audio.nix;
-        iptsd = import ./modules/nixos/surface/touchscreen.nix;
+        iptsd = import ./modules/nixos/surface/iptsd.nix;
         sp8Edid = import ./modules/nixos/surface/sp8Edid.nix;
       };
 
