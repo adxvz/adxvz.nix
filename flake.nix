@@ -291,7 +291,7 @@
         apfs = import ./modules/nixos/surface/apfs.nix;
         audio = import ./modules/nixos/surface/audio.nix;
         iptsd = import ./modules/nixos/surface/iptsd.nix;
-        sp8Edid = import ./modules/nixos/surface/sp8Edid.nix;
+        # sp8Edid = import ./modules/nixos/surface/sp8Edid.nix;
       };
 
       overlays = {
