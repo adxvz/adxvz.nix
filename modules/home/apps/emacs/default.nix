@@ -130,7 +130,7 @@ in
     };
 
     # Native compilation cache
-    home.file.".emacs.d/eln-cache".directory = true;
+    #   home.file.".emacs.d/eln-cache".directory = true;
 
     # Platform-specific system dependencies
     home.packages =
