@@ -3,7 +3,6 @@
   lib,
   pkgs,
   pkgsStable,
-  vars,
   ...
 }:
 
@@ -22,13 +21,13 @@ in
 
     userName = mkOption {
       type = types.nullOr types.str;
-      default = vars.primaryUser;
+      default = "Adam Cooper";
       description = "Git user.name configuration value.";
     };
 
     userEmail = mkOption {
       type = types.nullOr types.str;
-      default = vars.primaryEmail;
+      default = "adam@coopr.network";
       description = "Git user.email configuration value.";
     };
 
