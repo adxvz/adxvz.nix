@@ -9,8 +9,26 @@
     ../../common/pkgs.nix
     ./hardware-configuration.nix
     ./bootstrap.nix
-    ./modules/kappa/hardware/thermald/thermald.nix
   ];
+
+  modules = {
+    fonts.enable = true;
+    hunspell.enable = true;
+    tuptime.enable = true;
+    nix.enable = true;
+    thermald.enable = true;
+    touchscreen.enable = true;
+    edidCustom.enable = true;
+    audio = {
+      enable = true;
+      disablePulseAudio = true;
+      rtkitEnable = true;
+      pipewireEnable = true;
+      pipewireAlsaEnable = true;
+      pipewireAlsa32BitSupport = true;
+      pipewirePulseEnable = true;
+    };
+  };
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;

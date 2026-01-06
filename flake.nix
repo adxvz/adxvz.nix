@@ -286,8 +286,11 @@
       };
 
       nixosModules = {
-        surface = import ./modules/nixos/surface.nix;
-
+        thermald = import ./modules/nixos/surface/thermald.nix;
+        apfs = import ./modules/nixos/surface/apfs.nix;
+        audio = import ./modules/nixos/surface/audio.nix;
+        touchscreen = import ./modules/nixos/surface/touchscreen.nix;
+        sp8Edid = import ./modules/nixos/surface/sp8Edid.nix;
       };
 
       overlays = {
