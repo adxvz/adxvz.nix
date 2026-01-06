@@ -5,11 +5,8 @@
 {
   imports = [
     ../common
-    ./modules/kappa/software/gnome
-    # ./modules/kappa/hardware/apfs.nix
-    #  ./modules/shared/hideDesktopEntry.nix
+    ./gnome
     ./modules/shared/nh.nix
-    #  ./modules/shared/git.nix
     ./modules/shared/disk.nix
     ./modules/shared/timeZone.nix
   ];

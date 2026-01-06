@@ -9,7 +9,7 @@
     ../../common/pkgs.nix
     ./hardware-configuration.nix
     ./bootstrap.nix
-    ./modules/kappa/hardware
+    ./sp8Edid.nix
   ];
 
   modules = {
@@ -47,7 +47,6 @@
   boot.kernelParams = [
     # Mitigate screen flickering
     "i915.enable_psr=0"
-
   ];
 
   boot.kernelPatches = [

@@ -68,6 +68,10 @@ in
       };
       envExtra = ''
         ZDOTDIR="$HOME/.config/zsh"
+        EDITOR = "nvim";
+        TERM = "ghostty";
+        TERMINAL = "ghostty";
+        MOZ_ENABLE_WAYLAND = 1;
       '';
       initContent = ''
         # Nix
