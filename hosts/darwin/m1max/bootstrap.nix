@@ -45,10 +45,10 @@
     #  nix run nixpkgs#mas search "<Application Name>"
     #BUG: MacOS Tahoe Developer Beta has currently broken mas cli function. https://github.com/mas-cli/mas/issues/1029
 
-    # masApps = {
-    #   "Pixelmator Pro" = 1289583905;
-    #   "Photomator" = 1444636541;
-    # };
+    masApps = {
+      "Pixelmator Pro" = 1289583905;
+      "Photomator" = 1444636541;
+    };
 
     casks = [
       "ghostty"

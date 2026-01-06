@@ -18,8 +18,6 @@
   };
 
   modules = {
-    # git.enable = true;
-    # ssh.enable = true;
     emacs = {
       enable = true;
       org.enable = true;
