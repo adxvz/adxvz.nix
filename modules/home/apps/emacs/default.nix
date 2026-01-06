@@ -56,7 +56,7 @@ in
 
     configPath = mkOption {
       type = types.path;
-      default = null;
+      default = "./init.el";
       description = "Optional path to Emacs configuration (e.g., inside the nix flake). Defaults to ~/.config/emacs";
     };
   };

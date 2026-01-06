@@ -280,16 +280,18 @@
         niri = import ./modules/home/wm/niri.nix;
 
         # Applications
-        emacs = import ./modules/home/apps/emacs.nix;
+        emacs = import ./modules/home/apps/emacs;
 
       };
 
       nixosModules = {
         nix = import ./modules/common/nix.nix;
-        thermald = import ./modules/nixos/surface/thermald.nix;
+
+        # Surface Pro Modules
         apfs = import ./modules/nixos/surface/apfs.nix;
         audio = import ./modules/nixos/surface/audio.nix;
         iptsd = import ./modules/nixos/surface/iptsd.nix;
+        thermald = import ./modules/nixos/surface/thermald;
       };
 
       overlays = {

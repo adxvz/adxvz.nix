@@ -23,7 +23,7 @@ in
 
     configFile = mkOption {
       type = types.path;
-      default = ./thermald/thermal-conf.xml;
+      default = ./thermal-conf.xml;
       description = "Path to the thermald XML configuration file.";
     };
   };
