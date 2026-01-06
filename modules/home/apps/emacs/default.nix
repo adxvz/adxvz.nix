@@ -1,145 +1,139 @@
 {
   config,
-  lib,
   pkgs,
+  lib,
   ...
 }:
-
-with lib;
 
 let
   cfg = config.modules.emacs;
 
-  isDarwin = pkgs.stdenv.isDarwin;
-  isLinux = pkgs.stdenv.isLinux;
-
-  # --------------------
-  # Emacs base package
-  # --------------------
-  emacsBase = if isDarwin && pkgs ? emacs-plus then pkgs.emacs-plus else pkgs.emacs;
-
-  emacsPkg = (pkgs.emacsPackagesFor emacsBase).emacsWithPackages (
-    epkgs:
-    let
-      defaultPkgs = [
-        vterm
-        treesit-grammars.with-all-grammars
-      ];
-      orgPkg = optionals cfg.org.enable [ epkgs.org ];
-    in
-    defaultPkgs ++ orgPkg
-  );
-
-  # --------------------
-  # Haskell packages
-  # --------------------
-  defaultHaskellPkgs = [
-    pkgs.ghc
-    haskellPackages.convert
-    haskellPackages.pdftotext
-
+  # Common external tools required on both Linux and Darwin
+  commonPkgs = with pkgs; [
+    emacs
+    git
+    curl
+    zip
+    hunspell
+    ghostscript # gs
+    poppler # pdftotext
+    djvulibre # ddjvu
+    mpg123
+    mplayer
+    mpv
+    vlc
+    grep
+    ripgrep
+    imagemagick # convert
+    dvipng
+    texlive.combined.scheme-basic
+    graphviz # org-babel dot support
+    gimp
   ];
-  haskellPkgs = cfg.haskellPackages or defaultHaskellPkgs;
 
-  # --------------------
-  # TeXLive packages
-  # --------------------
-  defaultTexPkgs = [
-    texlivePackages.dvipng
-    texlivePackages.latex
-    pkgs.texlive.combined.scheme-full
+  # Linux-specific packages
+  linuxPkgs = with pkgs; [
+    libreoffice
+    mupdf-tools # mutool
+    texlive.combined.scheme-full
   ];
-  texPkgs = cfg.texlivePackages or defaultTexPkgs;
+
+  # Darwin/macOS-specific packages
+  darwinPkgs = with pkgs; [
+    # macOS nixpkgs equivalents
+    libreoffice
+    mupdf-tools
+    texlive.combined.scheme-full
+  ];
+
+  # Emacs packages to install via use-package
+  emacsPackages = with pkgs.emacsPackages; [
+    use-package
+    spacious-padding
+    modus-themes
+    ef-themes
+    mixed-pitch
+    balanced-windows
+    vertico
+    savehist
+    orderless
+    marginalia
+    which-key
+    helpful
+    flyspell
+    org
+    org-appear
+    org-fragtog
+    org-modern
+    doc-view
+    nov
+    bibtex
+    biblio
+    citar
+    elfeed
+    elfeed-org
+    org-web-tools
+    emms
+    openwith
+    denote
+    denote-journal
+    denote-org
+    denote-sequence
+    consult
+    consult-notes
+    citar-denote
+    denote-explore
+    olivetti
+    vundo
+    dictionary
+    writegood-mode
+    titlecase
+    lorem-ipsum
+    ediff
+    fountain-mode
+    markdown-mode
+    ox-epub
+    ox-latex
+  ];
 
 in
 {
-  # --------------------
-  # Options
-  # --------------------
   options.modules.emacs = {
-    enable = mkEnableOption "Enable Emacs configuration";
-
-    org.enable = mkOption {
-      type = types.bool;
+    enable = lib.mkOption {
+      type = lib.types.bool;
       default = false;
-      description = "Enable Org mode package in Emacs.";
+      description = "Enable Emacs configuration.";
     };
 
-    haskellPackages = mkOption {
-      type = types.listOf types.package;
-      default = defaultHaskellPkgs;
-      description = "Extra Haskell-related packages to install alongside Emacs.";
+    org = {
+      enable = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+        description = "Enable Org mode package in Emacs.";
+      };
     };
 
-    texlivePackages = mkOption {
-      type = types.listOf types.package;
-      default = defaultTexPkgs;
-      description = "TeXLive packages to install alongside Emacs.";
-    };
-
-    daemon.enable = mkOption {
-      type = types.bool;
-      default = true;
-      description = "Run Emacs as a background daemon.";
+    extraPackages = lib.mkOption {
+      type = lib.types.listOf lib.types.package;
+      default = [ ];
+      description = "Extra Emacs packages to install via Home Manager.";
     };
   };
 
-  # --------------------
-  # Configuration
-  # --------------------
-  config = mkIf cfg.enable {
-    home.packages = [
-      emacsPkg
-      pkgs.git
-      pkgs.ripgrep
-      pkgs.fd
-      pkgs.pandoc
-      pkgs.luajitPackages.luacheck
-      pkgs.luajitPackages.lua-lsp
-    ]
-    ++ haskellPkgs
-    ++ texPkgs;
+  config = lib.mkIf cfg.enable {
+    programs.home-manager.enable = true;
 
-    # --------------------
-    # Copy custom Emacs config from flake to home
-    # --------------------
-    home.file.".emacs.d/init.el".source = ./config/init.el;
-    home.file.".emacs.d/ews.el".source = ./config/ews.el;
-
-    # Linux systemd daemon
-    systemd.user.services.emacs = mkIf (cfg.daemon.enable && isLinux) {
-      Unit = {
-        Description = "Emacs text editor daemon";
-        After = [ "graphical-session.target" ];
-      };
-      Service = {
-        ExecStart = "${emacsPkg}/bin/emacs --fg-daemon";
-        Restart = "on-failure";
-        Environment = "PATH=${
-          lib.makeBinPath ([
-            emacsPkg
-            pkgs.git
-            pkgs.ripgrep
-            pkgs.fd
-          ])
-        }";
-      };
-      Install = {
-        WantedBy = [ "default.target" ];
-      };
-    };
-
-    # macOS launchd daemon
-    launchd.agents.emacs = mkIf (cfg.daemon.enable && isDarwin) {
+    programs.emacs = {
       enable = true;
-      config = {
-        ProgramArguments = [
-          "${emacsPkg}/bin/emacs"
-          "--daemon"
-        ];
-        RunAtLoad = true;
-        KeepAlive = true;
-      };
+      package = pkgs.emacs;
+      extraPackages = epkgs: emacsPackages ++ cfg.extraPackages;
     };
+
+    # Native compilation cache
+    home.file.".emacs.d/eln-cache".directory = true;
+
+    # Platform-specific system dependencies
+    home.packages =
+      commonPkgs ++ lib.optionals lib.isLinux linuxPkgs ++ lib.optionals lib.isDarwin darwinPkgs;
   };
 }
