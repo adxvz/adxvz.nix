@@ -26,7 +26,20 @@
       pipewirePulseEnable = true;
     };
   };
+  powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
 
+  services.upower.enable = true;
+
+  # Better tablet behavior
+  services.logind = {
+    lidSwitch = "suspend";
+    lidSwitchDocked = "ignore";
+    lidSwitchExternalPower = "suspend";
+  };
+
+  environment.systemPackages = with pkgs; [
+    surface-control
+  ];
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
