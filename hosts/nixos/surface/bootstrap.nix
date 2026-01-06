@@ -7,8 +7,8 @@
     ../common
     ./gnome
     ../common/nh.nix
-    ./common/disk.nix
-    ./common/timeZone.nix
+    ../common/disk.nix
+    ../common/timeZone.nix
   ];
 
   modules = {
