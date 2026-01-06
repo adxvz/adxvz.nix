@@ -18,7 +18,7 @@
   };
 
   modules = {
-
+    git.enable = true;
     emacs = {
       enable = true;
       org.enable = true;
