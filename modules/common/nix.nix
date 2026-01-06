@@ -27,7 +27,7 @@ in
 {
   options.modules.nix = {
     enable = mkOption {
-      default = false;
+      default = true;
       type = types.bool;
       description = "Enable custom nix environment configuration.";
     };
@@ -72,6 +72,7 @@ in
             type = "path";
           };
         };
+        nixpkgs-unstable = mkRegistry "nixpkgs-unstable" "nixpkgs-unstable";
         nixos-stable = mkRegistry "nixos-stable" "nixos-${versions.nixos.stableVersion}";
         nixos-unstable = mkRegistry "nixos-unstable" "nixos-unstable";
       };
