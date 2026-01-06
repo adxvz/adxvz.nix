@@ -31,6 +31,9 @@ let
   # Default Emacs config path inside the flake
   defaultConfigPath = ./config;
 
+  # Writable ELN cache directory for native compilation
+  elnCacheDir = "${config.home.homeDirectory}/.config/emacs/eln-cache";
+
 in
 {
   # --------------------
@@ -83,6 +86,11 @@ in
     # Deploy Emacs configuration from flake folder
     home.file.".config/emacs" = {
       source = cfg.configPath;
+    };
+
+    # Ensure ELN cache exists for native compilation
+    home.file.".config/emacs/eln-cache" = {
+      directory = true;
     };
 
     # Linux systemd daemon

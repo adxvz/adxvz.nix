@@ -30,6 +30,7 @@
 ;;
 ;;; Code:
 
+
 ;; Emacs 29 available?
 
 (when (< emacs-major-version 29)
@@ -65,7 +66,7 @@
    "zip"
    "ddjvu"
    "curl"
-   ("mpg321" "ogg123" "mplayer" "mpv" "vlc") 
+   ("mpg321" "ogg123" "mplayer" "mpv" "vlc")
    ("grep" "ripgrep")
    ("convert" "gm")
    "dvipng"
@@ -627,7 +628,7 @@
      "\\documentclass[11pt, twoside, hidelinks]{memoir}
         \\setstocksize{9.25in}{7.5in}
         \\settrimmedsize{\\stockheight}{\\stockwidth}{*}
-        \\setlrmarginsandblock{1.5in}{1in}{*} 
+        \\setlrmarginsandblock{1.5in}{1in}{*}
         \\setulmarginsandblock{1in}{1.5in}{*}
         \\checkandfixthelayout
         \\layout
@@ -758,3 +759,15 @@
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((dot . t)))
+
+;; Nix Home Manager Options
+
+;; Make sure native compilation has a writable directory
+(when (featurep 'native-compile)
+  (setq native-comp-eln-load-path (list (expand-file-name "eln-cache/" user-emacs-directory)))
+  (setq native-comp-async-report-warnings-errors 'silent)
+
+  ;; Create the directory if it doesn't exist
+  (let ((dir (car native-comp-eln-load-path)))
+    (unless (file-directory-p dir)
+      (make-directory dir t))))
