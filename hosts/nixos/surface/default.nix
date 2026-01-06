@@ -12,9 +12,6 @@
   ];
 
   modules = {
-    fonts.enable = true;
-    hunspell.enable = true;
-    tuptime.enable = true;
     nix.enable = true;
     thermald.enable = true;
     touchscreen.enable = true;
