@@ -35,8 +35,9 @@ let
   # --------------------
   defaultHaskellPkgs = [
     pkgs.ghc
-    pkgs.convert
-    pkgs.pdftotext
+    haskellPackages.convert
+    haskellPackages.pdftotext
+
   ];
   haskellPkgs = cfg.haskellPackages or defaultHaskellPkgs;
 
@@ -44,8 +45,8 @@ let
   # TeXLive packages
   # --------------------
   defaultTexPkgs = [
-    pkgs.dvipng
-    pkgs.latex
+    texlivePackages.dvipng
+    texlivePackages.latex
     pkgs.texlive.combined.scheme-full
   ];
   texPkgs = cfg.texlivePackages or defaultTexPkgs;
