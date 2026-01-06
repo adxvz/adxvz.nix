@@ -309,4 +309,3 @@ generate links in titlecase for attachments."
      (t
       (let ((clean-title (replace-regexp-in-string "\\([a-zA-Z0-9]\\)-\\([a-zA-Z0-9]\\)" "\\1 \\2" title)))
         (format "%s" (titlecase--string clean-title titlecase-style)))))))
-
