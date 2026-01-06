@@ -35,7 +35,6 @@ let
   # --------------------
   defaultHaskellPkgs = [
     pkgs.ghc
-    pkgs.haskellPackages.haskellLanguageServer
     pkgs.latex
     pkgs.convert
     pkgs.pdftotext
