@@ -11,17 +11,20 @@
     ./modules/shared/timeZone.nix
   ];
 
+  modules = {
+    audio = {
+      enable = true;
+      disablePulseAudio = true;
+      rtkitEnable = true;
+      pipewireEnable = true;
+      pipewireAlsaEnable = true;
+      pipewireAlsa32BitSupport = true;
+      pipewirePulseEnable = true;
+    };
+  };
+
   hardware.enableAllFirmware = true;
   hardware.apfs.autoMount = true;
-
-  services.avahi = {
-    enable = true;
-    nssmdns4 = true;
-    publish.enable = true;
-  };
-
-  environment.variables = {
-  };
 
   virtualisation.docker.enable = true;
 
@@ -34,13 +37,6 @@
       microfetch
     '';
   };
-
-  # Declare both to override base config for iso
-  # networking = {
-  #   hostName = "surface";
-  #   wireless.enable = false;
-  #   networkmanager.enable = true;
-  # };
 
   system.stateVersion = "25.11";
 }

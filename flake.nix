@@ -254,7 +254,7 @@
       darwinModules = {
         fonts = import ./modules/darwin/fonts.nix;
         hunspell = import ./modules/darwin/hunspell.nix;
-        nix = import ./modules/darwin/nix.nix;
+        nix = import ./modules/common/nix.nix;
         socket-vmnet = import ./modules/darwin/socket-vmnet.nix;
         tuptime = import ./modules/darwin/tuptime.nix;
       };
@@ -286,12 +286,11 @@
       };
 
       nixosModules = {
-        nix = import ./modules/nixos/nix.nix;
+        nix = import ./modules/common/nix.nix;
         thermald = import ./modules/nixos/surface/thermald.nix;
         apfs = import ./modules/nixos/surface/apfs.nix;
         audio = import ./modules/nixos/surface/audio.nix;
         iptsd = import ./modules/nixos/surface/iptsd.nix;
-        # sp8Edid = import ./modules/nixos/surface/sp8Edid.nix;
       };
 
       overlays = {
