@@ -73,7 +73,7 @@ in
         keep-derivations = true;
       };
     };
-
+    nixpkgs.config.allowUnfree = true;
     nixpkgs.flake = {
       # We take care of this on our own
       setNixPath = false;
