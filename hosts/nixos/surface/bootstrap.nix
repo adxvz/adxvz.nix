@@ -6,9 +6,9 @@
   imports = [
     ../common
     ./gnome
-    ./modules/shared/nh.nix
-    ./modules/shared/disk.nix
-    ./modules/shared/timeZone.nix
+    ../common/nh.nix
+    ./common/disk.nix
+    ./common/timeZone.nix
   ];
 
   modules = {
