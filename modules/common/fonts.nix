@@ -9,14 +9,6 @@ with lib;
 let
   cfg = config.modules.fonts;
 
-  # Correct cross-platform font directory
-  fontTargetDir =
-    if pkgs.stdenv.isDarwin then
-      "${config.home.homeDirectory}/Library/Fonts"
-    else
-      "${config.home.homeDirectory}/.local/share/fonts";
-
-  # Fonts to install
   fontList = [
     pkgs.maple-mono.NF
     pkgs.fira-code
@@ -29,20 +21,14 @@ let
 in
 {
   options.modules.fonts = {
-    enable = mkOption {
-      type = types.bool;
+    enable = lib.mkOption {
+      type = lib.types.bool;
       default = false;
       description = "Enable installation of additional fonts.";
     };
   };
 
-  config = mkIf cfg.enable {
-    fonts = {
-      packages = fontList;
-
-      # Ensure fonts go to the proper directory
-      enableFontDirs = true;
-      fontDirs = [ fontTargetDir ];
-    };
+  config = lib.mkIf cfg.enable {
+    fonts.packages = fontList;
   };
 }
