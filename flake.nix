@@ -181,8 +181,6 @@
     {
       inherit utils;
 
-
-
       #=========================================#
       #    Modules, Overlays                    #
       #=========================================#
@@ -237,9 +235,6 @@
         nixos-option = import ./overlays/tools/nix/nixos-option.nix;
         emacs = import ./overlays/applications/editors/emacs.nix;
       };
-
-
-
 
       #=========================================#
       #         Mac M1 Max                      #
@@ -315,7 +310,5 @@
         targetSystem = "x86_64-linux";
         hm = false;
       };
-
-
-
+    };
 }
