@@ -59,7 +59,7 @@ in
     };
 
     configPath = mkOption {
-      type = types.path + types.null;
+      type = types.nullOr types.path;
       default = defaultConfigPath;
       description = "Path to Emacs configuration inside the flake.";
     };
