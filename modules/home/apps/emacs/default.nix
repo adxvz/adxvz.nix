@@ -19,10 +19,11 @@ let
     poppler # pdftotext
     djvulibre # ddjvu
     mpg123
-    mplayer
     mpv
     vlc
+    mupdf
     ripgrep
+    libreoffice
     imagemagick # convert
     texlive.combined.scheme-basic
     graphviz # org-babel dot support
@@ -31,16 +32,12 @@ let
 
   # Linux-specific packages
   linuxPkgs = with pkgs; [
-    libreoffice
-    mupdf
-    texlive.combined.scheme-full
+
   ];
 
   # Darwin/macOS-specific packages
   darwinPkgs = with pkgs; [
-    libreoffice
-    mupdf-tools
-    texlive.combined.scheme-full
+
   ];
 
   # Emacs packages to install via use-package
