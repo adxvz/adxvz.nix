@@ -163,7 +163,7 @@
       pkgs = utils.mkPkgs { };
       nixpkgs = inputs.nixos-unstable;
       utils = import ./lib/utils.nix { inherit self inputs pkgs; };
-      modules = import ./modules.nix { inherit pkgs inputs utils; };
+      modules = import ./lib/modules.nix { inherit pkgs inputs utils; };
       flakeUtils = import ./lib/vars.nix { inherit self inputs; };
       vars = flakeUtils.vars;
       versions = flakeUtils.versions;
