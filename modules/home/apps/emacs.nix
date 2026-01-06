@@ -8,40 +8,32 @@ with lib;
 let
   cfg = config.modules.emacs;
 
+  isDarwin = pkgs.stdenv.isDarwin;
+  isLinux = pkgs.stdenv.isLinux;
+
   homeDir = config.home.homeDirectory;
-  doomDir = "${homeDir}/.config/emacs";
-  oldDir = "${homeDir}/.emacs.d";
-  doomRepo = "https://github.com/doomemacs/doomemacs.git";
+  emacsConfigDir = cfg.configPath or "${config.home.file."emacs"}";
 
-  # Emacs base package set
-  emacsPkg = (pkgs.emacsPackagesFor pkgs.emacs-plus).emacsWithPackages (
-    epkgs:
-    with epkgs;
-    [
-      vterm
-      treesit-grammars.with-all-grammars
-    ]
-    ++ lib.optionals cfg.org.enable [ org ]
-  );
+  # Base Emacs package with optional features
+  emacsPkg =
+    let
+      baseEmacs = if isDarwin && pkgs ? emacs-plus then pkgs.emacs-plus else pkgs.emacs;
+    in
+    (pkgs.emacsPackagesFor baseEmacs).emacsWithPackages (
+      epkgs:
+      with epkgs;
+      [
+        vterm
+        treesit-grammars.with-all-grammars
+      ]
+      ++ optionals cfg.org.enable [ org ]
+    );
 
-  # Haskell support packages
-  haskellPkgs = cfg.haskellPackages or [ ];
-
-  isDarwin = config.system.isDarwin or false;
+  haskellPkgs = cfg.haskellPackages;
 in
 {
   options.modules.emacs = {
-    enable = mkOption {
-      type = types.bool;
-      default = false;
-      description = "Enable Emacs configuration.";
-    };
-
-    doom.enable = mkOption {
-      type = types.bool;
-      default = false;
-      description = "Install and manage Doom Emacs automatically.";
-    };
+    enable = mkEnableOption "Emacs configuration";
 
     org.enable = mkOption {
       type = types.bool;
@@ -53,65 +45,81 @@ in
       type = types.listOf types.package;
       default = [ ];
       example = literalExample "[ pkgs.ghc pkgs.haskellPackages.haskellLanguageServer ]";
-      description = ''
-        Extra Haskell packages to install alongside Emacs.
-        Useful for Haskell development environments in Doom Emacs.
-      '';
+      description = "Extra Haskell-related packages to install alongside Emacs.";
+    };
+
+    daemon.enable = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Run Emacs as a background daemon.";
+    };
+
+    configPath = mkOption {
+      type = types.path;
+      default = null;
+      description = "Optional path to Emacs configuration (e.g., inside the nix flake). Defaults to ~/.config/emacs";
     };
   };
 
-  config = mkIf cfg.enable {
-    home.packages =
-      with pkgs;
-      [
-        emacsPkg
-        git
-        ripgrep
-        fd
-        pandoc
-        luajitPackages.luacheck
-        luajitPackages.lua-lsp
-      ]
-      ++ haskellPkgs;
+  config = mkIf (cfg.enable) {
+    home.packages = [
+      emacsPkg
+      pkgs.git
+      pkgs.ripgrep
+      pkgs.fd
+      pkgs.pandoc
+      pkgs.luajitPackages.luacheck
+      pkgs.luajitPackages.lua-lsp
+    ]
+    ++ haskellPkgs;
 
-    # Launchd only on Darwin
-    home.activation.emacsLaunchd = mkIf isDarwin (
-      lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        launchd.enable = true
-        launchd.agents.emacs = {
-          enable = true;
-          config = {
-            ProgramArguments = [
-              "${emacsPkg}/bin/emacs"
-              "--daemon=default"
-            ];
-            RunAtLoad = true;
-          };
-        };
-      ''
-    );
+    # Deploy Emacs configuration from flake path if provided
+    home.file.".config/emacs" = mkIf cfg.configPath {
+      source = cfg.configPath;
+    };
 
-    # --- Doom installation / upgrade ---
-    home.activation.doomEmacs = mkIf cfg.doom.enable (
-      lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        set -e
-        export PATH="${pkgs.git}/bin:${emacsPkg}/bin:$PATH"
+    # ----------------------------
+    # Emacs daemon (Linux: systemd)
+    # ----------------------------
+    systemd.user.services.emacs = mkIf (cfg.daemon.enable && isLinux) {
+      Unit = {
+        Description = "Emacs text editor daemon";
+        After = [ "graphical-session.target" ];
+      };
 
-        echo "→ Cleaning any old ~/.emacs.d..."
-        rm -rf "${oldDir}"
+      Service = {
+        ExecStart = "${emacsPkg}/bin/emacs --fg-daemon";
+        Restart = "on-failure";
+        Environment = "PATH=${
+          lib.makeBinPath [
+            emacsPkg
+            pkgs.git
+            pkgs.ripgrep
+            pkgs.fd
+          ]
+        }";
+      };
 
-        if [ ! -d "${doomDir}" ]; then
-          echo "→ Cloning Doom Emacs from ${doomRepo}..."
-          git clone --depth=1 "${doomRepo}" "${doomDir}"
-          echo "→ Running initial doom install..."
-          "${doomDir}/bin/doom" install --force || true
-        else
-          echo "→ Updating Doom Emacs..."
-          git -C "${doomDir}" pull --ff-only || true
-          echo "→ Syncing Doom Emacs..."
-          "${doomDir}/bin/doom" sync || true
-        fi
-      ''
-    );
+      Install = {
+        WantedBy = [ "default.target" ];
+      };
+    };
+
+    # -----------------------------
+    # Emacs daemon (macOS: launchd)
+    # -----------------------------
+    launchd.agents.emacs = mkIf (cfg.daemon.enable && isDarwin) {
+      enable = true;
+
+      config = {
+        ProgramArguments = [
+          "${emacsPkg}/bin/emacs"
+          "--daemon"
+        ];
+
+        RunAtLoad = true;
+        KeepAlive = true;
+      };
+    };
   };
 }

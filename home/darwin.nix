@@ -21,7 +21,6 @@
     emacs = {
       enable = true;
       org.enable = true;
-      doom.enable = false;
     };
   };
 
