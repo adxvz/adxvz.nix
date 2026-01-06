@@ -83,15 +83,15 @@ in
     ]
     ++ haskellPkgs;
 
-    # Deploy Emacs configuration from flake folder
+    # Deploy Emacs config
     home.file.".config/emacs" = {
       source = cfg.configPath;
     };
 
-    # Ensure ELN cache exists for native compilation
-    home.file.".config/emacs/eln-cache" = {
-      directory = true;
-    };
+    # Make ELN cache writable
+    home.directories = [
+      "${config.home.homeDirectory}/.config/emacs/eln-cache"
+    ];
 
     # Linux systemd daemon
     systemd.user.services.emacs = mkIf (cfg.daemon.enable && isLinux) {
