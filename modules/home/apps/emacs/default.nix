@@ -15,17 +15,15 @@ let
     curl
     zip
     hunspell
-    ghostscript # gs
+    ghostscript
     poppler # pdftotext
     djvulibre # ddjvu
     mpg123
     mplayer
     mpv
     vlc
-    grep
     ripgrep
     imagemagick # convert
-    dvipng
     texlive.combined.scheme-basic
     graphviz # org-babel dot support
     gimp
@@ -34,13 +32,12 @@ let
   # Linux-specific packages
   linuxPkgs = with pkgs; [
     libreoffice
-    mupdf-tools # mutool
+    mupdf
     texlive.combined.scheme-full
   ];
 
   # Darwin/macOS-specific packages
   darwinPkgs = with pkgs; [
-    # macOS nixpkgs equivalents
     libreoffice
     mupdf-tools
     texlive.combined.scheme-full
@@ -129,11 +126,10 @@ in
       extraPackages = epkgs: emacsPackages ++ cfg.extraPackages;
     };
 
-    # Native compilation cache
-    #   home.file.".emacs.d/eln-cache".directory = true;
-
     # Platform-specific system dependencies
     home.packages =
-      commonPkgs ++ lib.optionals lib.isLinux linuxPkgs ++ lib.optionals lib.isDarwin darwinPkgs;
+      commonPkgs
+      ++ lib.optionals pkgs.stdenv.isLinux linuxPkgs
+      ++ lib.optionals pkgs.stdenv.isDarwin darwinPkgs;
   };
 }
