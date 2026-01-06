@@ -43,7 +43,6 @@
 
     # To look up the App ID for the application you want installed, run the following command in a teminal:
     #  nix run nixpkgs#mas search "<Application Name>"
-    #BUG: MacOS Tahoe Developer Beta has currently broken mas cli function. https://github.com/mas-cli/mas/issues/1029
 
     masApps = {
       "Pixelmator Pro" = 1289583905;
@@ -51,19 +50,23 @@
     };
 
     casks = [
+
+      # Web Dev
       "ghostty"
       "transmit"
       "devtoys"
+      "local"
+      "canva"
+      "zed"
+
+      # Productivity
       "logos"
+      "whatsapp"
       "microsoft-word"
       "microsoft-excel"
       "microsoft-powerpoint"
       "microsoft-teams"
-      "whatsapp"
-      "local"
       "vivaldi"
-      "canva"
-      "zed"
 
       # Mac Tools
       # "cleanmymac"
@@ -92,48 +95,5 @@
     caskArgs.no_quarantine = true;
 
   };
-
-  environment.shells = with pkgs; [
-    bashInteractive
-    zsh
-    fish
-  ];
-
-  environment.systemPackages = with pkgs; [
-    asciinema_3
-    atuin
-    croc
-    ttyd
-    fd
-    ripgrep
-    doctl
-    exercism
-    gh
-    gnupg
-    lsd
-    fzf
-    mpv
-    nushell
-    pinentry_mac
-    cachix
-    shottr
-    raycast
-    obsidian
-    itsycal
-    tree
-    tree-sitter
-    tlrc
-    p7zip
-    ffmpeg
-    ffmpegthumbnailer
-    zoom-us
-    zoxide
-    nixos-rebuild
-    wget
-    nodejs_24
-    cargo
-    go
-    gzip
-  ];
 
 }

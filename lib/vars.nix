@@ -11,6 +11,14 @@ let
     primaryUser = "adxvz";
     primaryEmail = "adam@coopr.network";
     m1max = "m1max";
+    surface = "surface";
+    ks1 = "do";
+    ks2 = "re";
+    ks3 = "mi";
+    ks4 = "fa";
+    ks5 = "so";
+    ks6 = "la";
+    ks7 = "ti";
   };
 
   versions = {
