@@ -32,14 +32,6 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
-    ## ✅ Cross-platform (NixOS + Darwin)
-    nixpkgs = {
-      config = {
-        allowUnfree = true;
-      };
-    };
-
     environment.etc = {
       "nix/current".source = self;
       "nix/nixpkgs".source = nixpkgs;
