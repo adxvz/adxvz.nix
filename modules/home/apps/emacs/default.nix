@@ -8,81 +8,103 @@
 let
   cfg = config.modules.emacs;
 
-  # Common external tools required on both Linux and Darwin
+  # Common external tools for all platforms
   commonPkgs = with pkgs; [
     emacs
     hunspell
     ghostscript
-    poppler # pdftotext
-    djvulibre # ddjvu
+    poppler
+    djvulibre
     mpg123
     mpv
     mupdf
-    imagemagick # convert
+    imagemagick
     texlive.combined.scheme-basic
-    graphviz # org-babel dot support
+    graphviz
   ];
 
   # Linux-specific packages
   linuxPkgs = with pkgs; [
     libreoffice
+    ripgrep
+    maim
   ];
 
   # Darwin/macOS-specific packages
   darwinPkgs = with pkgs; [
-
+    libreoffice-still
+    ripgrep
   ];
 
-  # Emacs packages to install via use-package
-  emacsPackages = lib.filterAttrs (_: v: v != null) (
-    with pkgs.emacsPackages;
-    {
-      use-package = use-package;
-      modus-themes = modus-themes;
-      ef-themes = ef-themes;
-      mixed-pitch = mixed-pitch;
-      balanced-windows = balanced-windows;
-      vertico = vertico;
-      orderless = orderless;
-      marginalia = marginalia;
-      which-key = which-key;
-      helpful = helpful;
-      flyspell = flyspell;
-      org = org;
-      org-appear = org-appear;
-      org-fragtog = org-fragtog;
-      org-modern = org-modern;
-      doc-view = doc-view;
-      nov = nov;
-      bibtex = bibtex;
-      biblio = biblio;
-      citar = citar;
-      elfeed = elfeed;
-      elfeed-org = elfeed-org;
-      org-web-tools = org-web-tools;
-      emms = emms;
-      openwith = openwith;
-      denote = denote;
-      denote-journal = denote-journal;
-      denote-org = denote-org;
-      denote-sequence = denote-sequence;
-      consult = consult;
-      consult-notes = consult-notes;
-      citar-denote = citar-denote;
-      denote-explore = denote-explore;
-      olivetti = olivetti;
-      vundo = vundo;
-      dictionary = dictionary;
-      writegood-mode = writegood-mode;
-      titlecase = titlecase;
-      lorem-ipsum = lorem-ipsum;
-      ediff = ediff;
-      fountain-mode = fountain-mode;
-      markdown-mode = markdown-mode;
-      ox-epub = ox-epub;
-      ox-latex = ox-latex;
-    }
-  );
+  # Core Emacs packages
+  coreEmacsPackages = with pkgs.emacsPackages; [
+    use-package
+    spacious-padding
+    modus-themes
+    ef-themes
+    mixed-pitch
+    balanced-windows
+    vertico
+    orderless
+    marginalia
+    which-key
+    helpful
+    flyspell
+    doc-view
+    nov
+    bibtex
+    consult
+    consult-notes
+    olivetti
+    vundo
+    dictionary
+    writegood-mode
+    titlecase
+    lorem-ipsum
+    ediff
+    fountain-mode
+    markdown-mode
+    ox-epub
+    ox-latex
+  ];
+
+  # Optional modules
+  orgPackages = with pkgs.emacsPackages; [
+    org
+    org-appear
+    org-fragtog
+    org-modern
+    org-web-tools
+  ];
+
+  denotePackages = with pkgs.emacsPackages; [
+    denote
+    denote-journal
+    denote-org
+    denote-sequence
+    denote-explore
+  ];
+
+  citarPackages = with pkgs.emacsPackages; [
+    citar
+    citar-denote
+    biblio
+  ];
+
+  multimediaPackages = with pkgs.emacsPackages; [
+    emms
+    openwith
+  ];
+
+  # Compose full package list based on user options
+  selectedPackages = lib.concatLists [
+    (if cfg.config then coreEmacsPackages else [ ])
+    (if cfg.enableOrg then orgPackages else [ ])
+    (if cfg.enableDenote then denotePackages else [ ])
+    (if cfg.enableCitar then citarPackages else [ ])
+    (if cfg.enableMultimedia then multimediaPackages else [ ])
+    cfg.extraPackages
+  ];
 
 in
 {
@@ -93,12 +115,34 @@ in
       description = "Enable Emacs configuration.";
     };
 
-    org = {
-      enable = lib.mkOption {
-        type = lib.types.bool;
-        default = false;
-        description = "Enable Org mode package in Emacs.";
-      };
+    config = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Enable full Emacs configuration (packages + init/ews).";
+    };
+
+    enableOrg = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Enable Org mode and related packages.";
+    };
+
+    enableDenote = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Enable Denote and note-taking packages.";
+    };
+
+    enableCitar = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Enable Citar and bibliography management.";
+    };
+
+    enableMultimedia = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Enable EMMS and multimedia support.";
     };
 
     extraPackages = lib.mkOption {
@@ -114,13 +158,22 @@ in
     programs.emacs = {
       enable = true;
       package = pkgs.emacs;
-      extraPackages = epkgs: builtins.attrValues emacsPackages ++ cfg.extraPackages;
+
+      extraPackages = epkgs: selectedPackages;
+
+      extraConfig = lib.mkIf cfg.config ''
+        ;; Load init.el and ews.el if config is enabled
+        (load-file "${config.home.file."init.el".source}")
+        (load-file "${config.home.file."ews.el".source}")
+      '';
     };
 
-    # Platform-specific system dependencies
     home.packages =
       commonPkgs
       ++ lib.optionals pkgs.stdenv.isLinux linuxPkgs
       ++ lib.optionals pkgs.stdenv.isDarwin darwinPkgs;
+
+    home.file."init.el".source = if cfg.config then ./init.el else null;
+    home.file."ews.el".source = if cfg.config then ./ews.el else null;
   };
 }

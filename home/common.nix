@@ -102,7 +102,11 @@
     };
     emacs = {
       enable = true;
-      org.enable = true;
+      config = true;
+      enableOrg = true;
+      enableDenote = true;
+      enableCitar = true;
+      enableMultimedia = true;
     };
     nushell.enable = true;
     zsh.enable = true;
