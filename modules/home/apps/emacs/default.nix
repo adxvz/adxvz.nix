@@ -28,9 +28,6 @@ let
 
   haskellPkgs = cfg.haskellPackages;
 
-  # Default Emacs config path inside the flake
-  defaultConfigPath = ./config;
-
 in
 {
   # --------------------
@@ -58,11 +55,6 @@ in
       description = "Run Emacs as a background daemon.";
     };
 
-    configPath = mkOption {
-      type = types.nullOr types.path;
-      default = defaultConfigPath;
-      description = "Path to Emacs configuration inside the flake.";
-    };
   };
 
   # --------------------
@@ -79,11 +71,6 @@ in
       pkgs.luajitPackages.lua-lsp
     ]
     ++ haskellPkgs;
-
-    # Deploy Emacs configuration from flake folder
-    home.file.".config/emacs" = {
-      source = cfg.configPath;
-    };
 
     # Linux systemd daemon
     systemd.user.services.emacs = mkIf (cfg.daemon.enable && isLinux) {
@@ -119,17 +106,6 @@ in
         RunAtLoad = true;
         KeepAlive = true;
       };
-    };
-
-    # Provide init snippet for native compilation (creates writable eln-cache)
-    home.sessionVariables.NIX_EMACS_NATIVE_CACHE_DIR = "${config.home.homeDirectory}/.config/emacs/eln-cache";
-    home.file.".config/emacs/native-comp-init.el" = {
-      text = ''
-        (let ((eln-dir (expand-file-name "eln-cache/" user-emacs-directory)))
-          (setq native-comp-eln-load-path (list eln-dir))
-          (unless (file-directory-p eln-dir)
-            (make-directory eln-dir t)))
-      '';
     };
   };
 }
