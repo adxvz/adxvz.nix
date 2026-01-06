@@ -27,8 +27,15 @@ let
     );
 
   haskellPkgs = cfg.haskellPackages;
+
+  # Default Emacs config path inside the flake
+  defaultConfigPath = ./config;
+
 in
 {
+  # --------------------
+  # Option declarations
+  # --------------------
   options.modules.emacs = {
     enable = mkEnableOption "Emacs configuration";
 
@@ -51,60 +58,66 @@ in
       description = "Run Emacs as a background daemon.";
     };
 
-    config = mkIf (cfg.enable) {
-      home.packages = [
-        emacsPkg
-        pkgs.git
-        pkgs.ripgrep
-        pkgs.fd
-        pkgs.pandoc
-        pkgs.luajitPackages.luacheck
-        pkgs.luajitPackages.lua-lsp
-      ]
-      ++ haskellPkgs;
+    configPath = mkOption {
+      type = types.path + types.null;
+      default = defaultConfigPath;
+      description = "Path to Emacs configuration inside the flake.";
+    };
+  };
 
-      # ----------------------------
-      # Emacs daemon (Linux: systemd)
-      # ----------------------------
-      systemd.user.services.emacs = mkIf (cfg.daemon.enable && isLinux) {
-        Unit = {
-          Description = "Emacs text editor daemon";
-          After = [ "graphical-session.target" ];
-        };
+  # --------------------
+  # Module configuration
+  # --------------------
+  config = mkIf cfg.enable {
+    home.packages = [
+      emacsPkg
+      pkgs.git
+      pkgs.ripgrep
+      pkgs.fd
+      pkgs.pandoc
+      pkgs.luajitPackages.luacheck
+      pkgs.luajitPackages.lua-lsp
+    ]
+    ++ haskellPkgs;
 
-        Service = {
-          ExecStart = "${emacsPkg}/bin/emacs --fg-daemon";
-          Restart = "on-failure";
-          Environment = "PATH=${
-            lib.makeBinPath [
-              emacsPkg
-              pkgs.git
-              pkgs.ripgrep
-              pkgs.fd
-            ]
-          }";
-        };
+    # Deploy Emacs configuration from flake folder
+    home.file.".config/emacs" = {
+      source = cfg.configPath;
+    };
 
-        Install = {
-          WantedBy = [ "default.target" ];
-        };
+    # Linux systemd daemon
+    systemd.user.services.emacs = mkIf (cfg.daemon.enable && isLinux) {
+      Unit = {
+        Description = "Emacs text editor daemon";
+        After = [ "graphical-session.target" ];
       };
+      Service = {
+        ExecStart = "${emacsPkg}/bin/emacs --fg-daemon";
+        Restart = "on-failure";
+        Environment = "PATH=${
+          lib.makeBinPath [
+            emacsPkg
+            pkgs.git
+            pkgs.ripgrep
+            pkgs.fd
+          ]
+        }";
+      };
+      Install = {
+        WantedBy = [ "default.target" ];
+      };
+    };
 
-      # -----------------------------
-      # Emacs daemon (macOS: launchd)
-      # -----------------------------
-      launchd.agents.emacs = mkIf (cfg.daemon.enable && isDarwin) {
-        enable = true;
-
-        config = {
-          ProgramArguments = [
-            "${emacsPkg}/bin/emacs"
-            "--daemon"
-          ];
-
-          RunAtLoad = true;
-          KeepAlive = true;
-        };
+    # macOS launchd daemon
+    launchd.agents.emacs = mkIf (cfg.daemon.enable && isDarwin) {
+      enable = true;
+      config = {
+        ProgramArguments = [
+          "${emacsPkg}/bin/emacs"
+          "--daemon"
+        ];
+        RunAtLoad = true;
+        KeepAlive = true;
       };
     };
   };
