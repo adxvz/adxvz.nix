@@ -1,5 +1,4 @@
 {
-  pkgs,
   ...
 }:
 
@@ -16,16 +15,7 @@
   ];
 
   hardware.enableAllFirmware = true;
-
   hardware.apfs.autoMount = true;
-
-  environment.systemPackages = with pkgs; [
-    yad
-    vim
-    xfce.mousepad
-    alsa-utils
-
-  ];
 
   services.avahi = {
     enable = true;
@@ -34,8 +24,6 @@
   };
 
   environment.variables = {
-    # This ensures TouchOSC can find libavahi-compat-libdnssd.so at runtime
-    LD_LIBRARY_PATH = "${pkgs.avahi-compat}/lib";
   };
 
   virtualisation.docker.enable = true;
