@@ -32,7 +32,6 @@ let
 
   # Darwin/macOS-specific packages
   darwinPkgs = with pkgs; [
-    libreoffice-still
     ripgrep
   ];
 
@@ -49,7 +48,7 @@ let
     marginalia
     which-key
     helpful
-    flyspell
+    # flyspell
     doc-view
     nov
     bibtex
@@ -173,7 +172,7 @@ in
       ++ lib.optionals pkgs.stdenv.isLinux linuxPkgs
       ++ lib.optionals pkgs.stdenv.isDarwin darwinPkgs;
 
-    home.file."init.el".source = if cfg.config then ./init.el else null;
-    home.file."ews.el".source = if cfg.config then ./ews.el else null;
+    home.file."init.el".source = if cfg.config then ./config/init.el else null;
+    home.file."ews.el".source = if cfg.config then ./config/ews.el else null;
   };
 }
