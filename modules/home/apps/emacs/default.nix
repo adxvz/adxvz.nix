@@ -4,37 +4,60 @@
   pkgs,
   ...
 }:
+
 with lib;
+
 let
   cfg = config.modules.emacs;
 
   isDarwin = pkgs.stdenv.isDarwin;
   isLinux = pkgs.stdenv.isLinux;
 
-  # Base Emacs package with optional features
-  emacsPkg =
+  # --------------------
+  # Emacs base package
+  # --------------------
+  emacsBase = if isDarwin && pkgs ? emacs-plus then pkgs.emacs-plus else pkgs.emacs;
+
+  emacsPkg = (pkgs.emacsPackagesFor emacsBase).emacsWithPackages (
+    epkgs:
     let
-      baseEmacs = if isDarwin && pkgs ? emacs-plus then pkgs.emacs-plus else pkgs.emacs;
-    in
-    (pkgs.emacsPackagesFor baseEmacs).emacsWithPackages (
-      epkgs:
-      with epkgs;
-      [
+      defaultPkgs = [
         vterm
         treesit-grammars.with-all-grammars
-      ]
-      ++ optionals cfg.org.enable [ org ]
-    );
+      ];
+      orgPkg = optionals cfg.org.enable [ epkgs.org ];
+    in
+    defaultPkgs ++ orgPkg
+  );
 
-  haskellPkgs = cfg.haskellPackages;
+  # --------------------
+  # Haskell packages
+  # --------------------
+  defaultHaskellPkgs = [
+    pkgs.ghc
+    pkgs.haskellPackages.haskellLanguageServer
+    pkgs.latex
+    pkgs.convert
+    pkgs.pdftotext
+  ];
+  haskellPkgs = cfg.haskellPackages or defaultHaskellPkgs;
+
+  # --------------------
+  # TeXLive packages
+  # --------------------
+  defaultTexPkgs = [
+    pkgs.dvipng
+    pkgs.texlive.combined.scheme-full
+  ];
+  texPkgs = cfg.texlivePackages or defaultTexPkgs;
 
 in
 {
   # --------------------
-  # Option declarations
+  # Options
   # --------------------
   options.modules.emacs = {
-    enable = mkEnableOption "Emacs configuration";
+    enable = mkEnableOption "Enable Emacs configuration";
 
     org.enable = mkOption {
       type = types.bool;
@@ -44,9 +67,14 @@ in
 
     haskellPackages = mkOption {
       type = types.listOf types.package;
-      default = [ ];
-      example = literalExample "[ pkgs.ghc pkgs.haskellPackages.haskellLanguageServer ]";
+      default = defaultHaskellPkgs;
       description = "Extra Haskell-related packages to install alongside Emacs.";
+    };
+
+    texlivePackages = mkOption {
+      type = types.listOf types.package;
+      default = defaultTexPkgs;
+      description = "TeXLive packages to install alongside Emacs.";
     };
 
     daemon.enable = mkOption {
@@ -54,11 +82,10 @@ in
       default = true;
       description = "Run Emacs as a background daemon.";
     };
-
   };
 
   # --------------------
-  # Module configuration
+  # Configuration
   # --------------------
   config = mkIf cfg.enable {
     home.packages = [
@@ -70,7 +97,14 @@ in
       pkgs.luajitPackages.luacheck
       pkgs.luajitPackages.lua-lsp
     ]
-    ++ haskellPkgs;
+    ++ haskellPkgs
+    ++ texPkgs;
+
+    # --------------------
+    # Copy custom Emacs config from flake to home
+    # --------------------
+    home.file.".emacs.d/init.el".source = ./config/init.el;
+    home.file.".emacs.d/ews.el".source = ./config/ews.el;
 
     # Linux systemd daemon
     systemd.user.services.emacs = mkIf (cfg.daemon.enable && isLinux) {
@@ -82,12 +116,12 @@ in
         ExecStart = "${emacsPkg}/bin/emacs --fg-daemon";
         Restart = "on-failure";
         Environment = "PATH=${
-          lib.makeBinPath [
+          lib.makeBinPath ([
             emacsPkg
             pkgs.git
             pkgs.ripgrep
             pkgs.fd
-          ]
+          ])
         }";
       };
       Install = {
