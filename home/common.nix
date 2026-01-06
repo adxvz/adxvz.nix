@@ -12,6 +12,18 @@
       lazygit
     ];
 
+    file = {
+      ".config/atuin/".source = ../bin/dots/atuin;
+      ".config/bat/".source = ../bin/dots/bat;
+      ".config/emacs/".source = ../bin/dots/emacs;
+      ".config/fastfetch".source = ../bin/dots/fastfetch;
+      ".config/ghostty/".source = ../bin/dots/ghostty;
+      ".config/jj/".source = ../bin/dots/jj;
+      ".config/nvim/".source = ../bin/dots/nvim;
+      ".config/nushell/".source = ../bin/dots/nushell;
+      ".config/starship/".source = ../bin/dots/starship;
+      ".config/yazi/".source = ../bin/dots/yazi;
+    };
   };
 
   programs = {
@@ -88,7 +100,10 @@
       userName = "Adam Cooper";
       userEmail = "adam@coopr.network";
     };
-
+    emacs = {
+      enable = true;
+      org.enable = true;
+    };
     nushell.enable = true;
     zsh.enable = true;
     fish.enable = true;

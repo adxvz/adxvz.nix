@@ -4,23 +4,4 @@
 
   targets.darwin.linkApps.enable = false;
 
-  home.file = {
-    ".config/atuin/".source = ../bin/dots/atuin;
-    ".config/bat/".source = ../bin/dots/bat;
-    ".config/fastfetch".source = ../bin/dots/fastfetch;
-    ".config/ghostty/".source = ../bin/dots/ghostty;
-    ".config/jj/".source = ../bin/dots/jj;
-    ".config/nvim/".source = ../bin/dots/nvim;
-    ".config/nushell/".source = ../bin/dots/nushell;
-    ".config/starship/".source = ../bin/dots/starship;
-    ".config/yazi/".source = ../bin/dots/yazi;
-  };
-
-  modules = {
-    emacs = {
-      enable = true;
-      org.enable = true;
-    };
-  };
-
 }
