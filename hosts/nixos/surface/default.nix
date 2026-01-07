@@ -37,7 +37,6 @@
     lidSwitchDocked = "ignore";
     lidSwitchExternalPower = "ignore";
     powerKey = "suspend";
-    idleAction = "ignore";
   };
 
   environment.systemPackages = with pkgs; [
