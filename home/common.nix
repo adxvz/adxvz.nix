@@ -8,8 +8,9 @@
   modules = {
     git = {
       enable = true;
-      useLatest = true;
+      useLatestGit = true;
       githubCli = true;
+      installTools = true;
     };
     ssh.enable = true;
     jujutsu = {
@@ -35,7 +36,6 @@
 
     packages = with pkgs; [
       direnv
-      lazygit
     ];
 
     file = {
