@@ -26,6 +26,18 @@
     htop
   ];
 
+  programs.ssh.enable = true;
+
+  services.xserver = {
+    enable = true;
+    layout = "gb"; # UK keyboard
+    xkbOptions = "grp:alt_shift_toggle"; # optional
+  };
+
+  environment.sessionVariables = {
+    XKB_DEFAULT_LAYOUT = "gb";
+  };
+
   programs.nh = {
     enable = true;
     clean = {
@@ -43,9 +55,6 @@
   boot.tmp.cleanOnBoot = true;
 
   time.timeZone = "Europe/London";
-
-  services.xserver.enable = true;
-  services.xserver.xkb.layout = "gb";
 
   programs.zsh.enable = true;
 

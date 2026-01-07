@@ -24,9 +24,7 @@
   programs.fish = {
     enable = true;
     useBabelfish = true;
-    interactiveShellInit = ''
-      microfetch
-    '';
+
   };
 
   system.stateVersion = "25.11";
