@@ -28,14 +28,18 @@
 
   services.openssh = {
     enable = true;
-    permitRootLogin = "no";
-    passwordAuthentication = true;
+    settings = {
+      permitRootLogin = "no";
+      passwordAuthentication = true;
+    };
   };
 
   services.xserver = {
     enable = true;
-    layout = "gb"; # UK keyboard
-    xkbOptions = "grp:alt_shift_toggle"; # optional
+    xkb = {
+      layout = "gb"; # UK keyboard
+      options = "grp:alt_shift_toggle"; # optional
+    };
   };
 
   environment.sessionVariables = {

@@ -40,7 +40,6 @@
     services.desktopManager.gnome.enable = true;
 
     services.gnome.core-apps.enable = false;
-    services.gnome.core-utilities.enable = false;
 
     environment.gnome.excludePackages = with pkgs; [
       baobab # disk usage analyzer
