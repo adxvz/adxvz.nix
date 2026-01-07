@@ -26,7 +26,11 @@
     htop
   ];
 
-  programs.ssh.enable = true;
+  services.openssh = {
+    enable = true;
+    permitRootLogin = "no";
+    passwordAuthentication = true;
+  };
 
   services.xserver = {
     enable = true;
