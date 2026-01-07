@@ -32,10 +32,12 @@
   services.upower.enable = true;
 
   # Better tablet behavior
-  services.logind = {
-    lidSwitch = "suspend";
+  services.logind.settings = {
+    lidSwitch = "ignore";
     lidSwitchDocked = "ignore";
-    lidSwitchExternalPower = "suspend";
+    lidSwitchExternalPower = "ignore";
+    HandlePowerKey = "suspend";
+    IdleAction = "ignore";
   };
 
   environment.systemPackages = with pkgs; [
