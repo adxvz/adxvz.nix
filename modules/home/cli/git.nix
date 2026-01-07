@@ -71,6 +71,9 @@ in
           pull.rebase = false;
           push.default = "current";
           core.autocrlf = "input";
+          init.defaultBranch = "main";
+          log.decorate = "full";
+          merge.conflictStyle = "diff3";
         }
         // (optionalAttrs cfg.gpgSign.enable {
           commit.gpgSign = true;

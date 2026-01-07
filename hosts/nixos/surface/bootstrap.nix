@@ -4,7 +4,7 @@
 
 {
   imports = [
-    ./modules/gnome
+    # ./modules/gnome
     ../../common/pkgs.nix
 
   ];
@@ -21,11 +21,7 @@
 
   programs.zsh.enable = true;
 
-  programs.fish = {
-    enable = true;
-    useBabelfish = true;
-
-  };
+  services.xserver.desktopManager.xfce.enable = true;
 
   system.stateVersion = "25.11";
 }
