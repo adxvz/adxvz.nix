@@ -5,6 +5,32 @@
 }:
 
 {
+  modules = {
+    git = {
+      enable = true;
+      useLatest = true;
+      githubCli = true;
+    };
+    ssh.enable = true;
+    jujutsu = {
+      enable = true;
+      useLatest = true;
+      userName = "Adam Cooper";
+      userEmail = "adam@coopr.network";
+    };
+    emacs = {
+      enable = true;
+      config = true;
+      enableOrg = true;
+      enableDenote = true;
+      enableCitar = true;
+      enableMultimedia = true;
+    };
+    nushell.enable = true;
+    zsh.enable = true;
+    fish.enable = true;
+  };
+
   home = {
 
     packages = with pkgs; [
@@ -85,33 +111,6 @@
         };
       };
     };
-  };
-
-  modules = {
-    git = {
-      enable = true;
-      useLatest = true;
-      githubCli = true;
-    };
-    ssh.enable = true;
-    jujutsu = {
-      enable = true;
-      useLatest = true;
-      userName = "Adam Cooper";
-      userEmail = "adam@coopr.network";
-    };
-    emacs = {
-      enable = true;
-      config = true;
-      enableOrg = true;
-      enableDenote = true;
-      enableCitar = true;
-      enableMultimedia = true;
-    };
-    nushell.enable = true;
-    zsh.enable = true;
-    fish.enable = true;
-    tuptime.enable = true;
   };
 
 }
