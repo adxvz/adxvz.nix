@@ -12,15 +12,8 @@
   ];
 
   modules = {
-    audio = {
-      enable = true;
-      disablePulseAudio = true;
-      rtkitEnable = true;
-      pipewireEnable = true;
-      pipewireAlsaEnable = true;
-      pipewireAlsa32BitSupport = true;
-      pipewirePulseEnable = true;
-    };
+    fonts.enable = true;
+
   };
 
   hardware.enableAllFirmware = true;

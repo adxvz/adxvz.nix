@@ -11,7 +11,7 @@ let
   cfg = config.modules.fonts;
 
   # Standard fonts
-  fontList = [
+  standardFonts = [
     pkgs.maple-mono.NF
     pkgs.fira-code
     pkgs.nerd-fonts.jetbrains-mono
@@ -20,40 +20,40 @@ let
     pkgs.nerd-fonts.symbols-only
   ];
 
-  # Directory inside the flake containing custom fonts
+  # Local fonts inside the flake
   customFontsDir = ./bible;
 
-  # List of custom font paths
-  customFonts = builtins.attrValues (builtins.readDir customFontsDir);
+  # Collect *.ttf and *.otf files
+  customFontFiles =
+    let
+      entries = builtins.readDir customFontsDir;
+    in
+    map (name: customFontsDir + "/${name}") (
+      filter (name: hasSuffix ".ttf" name || hasSuffix ".otf" name) (attrNames entries)
+    );
+
+  # Turn each font into a proper Nix font package
+  customFontPkgs = map (
+    font:
+    pkgs.stdenvNoCC.mkDerivation {
+      pname = "custom-font-${baseNameOf font}";
+      version = "1.0";
+      src = font;
+      dontUnpack = true;
+
+      installPhase = ''
+        mkdir -p $out/share/fonts
+        cp $src $out/share/fonts/
+      '';
+    }
+  ) customFontFiles;
 
 in
 {
-  options.modules.fonts = {
-    enable = mkOption {
-      type = types.bool;
-      default = false;
-      description = "Enable installation of additional fonts, including custom ones inside the flake.";
-    };
+  options.modules.fonts.enable = mkEnableOption "system fonts";
+
+  config = mkIf cfg.enable {
+    # ONE option, works everywhere
+    fonts.packages = standardFonts ++ customFontPkgs;
   };
-
-  config = mkIf cfg.enable ({
-
-    # Standard fonts for all platforms
-    fonts.packages = fontList;
-
-    # Linux/NixOS: add custom fonts declaratively
-    fonts.fonts = pkgs.lib.mkIf pkgs.stdenv.isLinux customFonts;
-
-    # Darwin: install fonts using darwin.mkFont
-    environment.systemPackages = pkgs.lib.mkIf pkgs.stdenv.isDarwin (
-      map (
-        fontPath:
-        pkgs.runCommand (builtins.baseNameOf fontPath) { } ''
-          mkdir -p $out
-          cp -R ${customFontsDir}/${fontPath}/* $out/
-        ''
-      ) customFonts
-    );
-
-  });
 }
