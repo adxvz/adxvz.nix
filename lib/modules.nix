@@ -16,7 +16,6 @@ in
     fonts = sharedModules.fonts;
     nix = sharedModules.nix;
     hunspell = sharedModules.hunspell;
-    socket-vmnet = import ../modules/darwin/socket-vmnet.nix;
     tuptime = import ../modules/darwin/tuptime.nix;
   };
 
