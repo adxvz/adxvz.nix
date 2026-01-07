@@ -60,14 +60,6 @@
   programs = {
     fzf.enable = true;
 
-    starship = {
-      enable = true;
-      enableBashIntegration = true;
-      enableZshIntegration = true;
-      enableFishIntegration = true;
-      enableNushellIntegration = true;
-    };
-
     zoxide = {
       enableBashIntegration = true;
       enableZshIntegration = true;
@@ -82,15 +74,6 @@
       vimAlias = true;
       vimdiffAlias = true;
       package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
-    };
-
-    bat = {
-      enable = true;
-      extraPackages = with pkgs.bat-extras; [
-        batdiff
-        batman
-        batwatch
-      ];
     };
 
     yazi = {

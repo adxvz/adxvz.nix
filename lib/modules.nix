@@ -48,6 +48,8 @@ in
     atuin = import ../modules/home/cli/atuin.nix;
     bat = import ../modules/home/cli/bat.nix;
     fastfetch = import ../modules/home/cli/fastfetch.nix;
+    starship = import ../modules/home/cli/starship.nix;
+
     ssh = import ../modules/home/cli/ssh.nix;
     gpg = import ../modules/home/cli/gpg.nix;
     git = import ../modules/home/cli/git.nix;
