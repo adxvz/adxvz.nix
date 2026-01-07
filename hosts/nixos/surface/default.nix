@@ -34,11 +34,8 @@
   # Better tablet behavior
   services.logind = {
     lidSwitch = "ignore";
-    powerKey = "suspend";
-    settings = {
-      lidSwitchDocked = "ignore";
-      lidSwitchExternalPower = "ignore";
-    };
+    lidSwitchDocked = "ignore";
+    lidSwitchExternalPower = "ignore";
   };
 
   environment.systemPackages = with pkgs; [
