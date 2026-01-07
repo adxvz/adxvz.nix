@@ -1,7 +1,6 @@
 {
   lib,
   pkgs,
-  config,
   ...
 }:
 
@@ -45,41 +44,45 @@
     surface-control
   ];
   # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot = {
+    loader.systemd-boot.enable = true;
+    loader.efi.canTouchEfiVariables = true;
+    kernelParams = [
+      # Mitigate screen flickering
+      "i915.enable_psr=0"
+    ];
+    kernelPatches = [
+      {
+        name = "disable-rust";
+        patch = null;
+        extraConfig = ''
+          RUST n
+        '';
+      }
+    ];
 
-  boot.kernelParams = [
-    # Mitigate screen flickering
-    "i915.enable_psr=0"
-  ];
+    initrd.kernelModules = [
+      "surface_aggregator"
+      "surface_aggregator_registry"
+      "surface_aggregator_hub"
+      "surface_hid_core"
+      "surface_hid"
+      "pinctrl-tigerlake"
+      "intel_lpss"
+      "intel_lpss_pci"
+      "8250_dw"
+      "surface_platform_profile"
+      "surface_kbd"
+      "surface_acpi_notify"
+      "surface_battery"
+      "surface_charger"
+      "surface_aggregator_cdev"
+    ];
 
-  boot.kernelPatches = [
-    {
-      name = "disable-rust";
-      patch = null;
-      extraConfig = ''
-        RUST n
-      '';
-    }
-  ];
-
-  boot.initrd.kernelModules = [
-    "surface_aggregator"
-    "surface_aggregator_registry"
-    "surface_aggregator_hub"
-    "surface_hid_core"
-    "surface_hid"
-    "pinctrl-tigerlake"
-    "intel_lpss"
-    "intel_lpss_pci"
-    "8250_dw"
-    "surface_platform_profile"
-    "surface_kbd"
-    "surface_acpi_notify"
-    "surface_battery"
-    "surface_charger"
-    "surface_aggregator_cdev"
-  ];
+    # Disable the problematic suspend kernel module, it makes waking up
+    # impossible after closing the cover.
+    blacklistedKernelModules = [ "surface_gpe" ];
+  };
 
   programs.nix-ld.enable = true;
   programs.nix-ld.libraries = with pkgs; [
@@ -102,20 +105,18 @@
 
   hardware.microsoft-surface.kernelVersion = "stable";
 
-  # Disable the problematic suspend kernel module, it makes waking up
-  # impossible after closing the cover.
-  boot.blacklistedKernelModules = [ "surface_gpe" ];
-
   services.iptsd.enable = true;
 
-  nixpkgs.overlays = [
-    (final: prev: {
-      hidrd = prev.hidrd.overrideAttrs (old: {
-        NIX_CFLAGS_COMPILE = (old.NIX_CFLAGS_COMPILE or "") + " -Wno-error";
-      });
-    })
-  ];
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs = {
 
-  nixpkgs.hostPlatform = "x86_64-linux";
+    overlays = [
+      (final: prev: {
+        hidrd = prev.hidrd.overrideAttrs (old: {
+          NIX_CFLAGS_COMPILE = (old.NIX_CFLAGS_COMPILE or "") + " -Wno-error";
+        });
+      })
+    ];
+    config.allowUnfree = true;
+    hostPlatform = "x86_64-linux";
+  };
 }
