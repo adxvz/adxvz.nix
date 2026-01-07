@@ -8,6 +8,7 @@ let
     nix = import ../modules/common/nix.nix;
     fonts = import ../modules/common/fonts.nix;
     hunspell = import ../modules/common/hunspell.nix;
+    tuptime = import ../modules/common/tuptime.nix;
 
   };
 in
@@ -16,13 +17,16 @@ in
     fonts = sharedModules.fonts;
     nix = sharedModules.nix;
     hunspell = sharedModules.hunspell;
-    tuptime = import ../modules/darwin/tuptime.nix;
+    tuptime = sharedModules.tuptime;
+
   };
 
   nixosModules = {
     fonts = sharedModules.fonts;
     nix = sharedModules.nix;
     hunspell = sharedModules.hunspell;
+    tuptime = sharedModules.tuptime;
+
     # Surface Pro Hardware Modules
     apfs = import ../modules/nixos/surface/apfs.nix;
     audio = import ../modules/nixos/surface/audio.nix;
