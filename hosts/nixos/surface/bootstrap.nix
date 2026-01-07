@@ -4,9 +4,7 @@
 
 {
   imports = [
-    # ./modules/gnome
     ../../common/pkgs.nix
-
   ];
 
   modules = {

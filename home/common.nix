@@ -6,6 +6,8 @@
 
 {
   modules = {
+    bat.enable = true;
+    atuin.enable = true;
     git = {
       enable = true;
       useLatestGit = true;
@@ -38,18 +40,19 @@
       direnv
     ];
 
-    file = {
-      ".config/atuin/".source = ../bin/dots/atuin;
-      ".config/bat/".source = ../bin/dots/bat;
-      ".config/emacs/".source = ../bin/dots/emacs;
-      ".config/fastfetch".source = ../bin/dots/fastfetch;
-      ".config/ghostty/".source = ../bin/dots/ghostty;
-      ".config/jj/".source = ../bin/dots/jj;
-      ".config/nvim/".source = ../bin/dots/nvim;
-      ".config/nushell/".source = ../bin/dots/nushell;
-      ".config/starship/".source = ../bin/dots/starship;
-      ".config/yazi/".source = ../bin/dots/yazi;
-    };
+    #   file = {
+    #     ".config/atuin/".source = ../bin/dots/atuin;
+    #     ".config/bat/".source = ../bin/dots/bat;
+    #     ".config/emacs/".source = ../bin/dots/emacs;
+    #     ".config/fastfetch".source = ../bin/dots/fastfetch;
+    #     ".config/ghostty/".source = ../bin/dots/ghostty;
+    #     ".config/jj/".source = ../bin/dots/jj;
+    #     ".config/nvim/".source = ../bin/dots/nvim;
+    #     ".config/nushell/".source = ../bin/dots/nushell;
+    #     ".config/starship/".source = ../bin/dots/starship;
+    #     ".config/yazi/".source = ../bin/dots/yazi;
+    #   };
+
   };
 
   programs = {
@@ -57,14 +60,6 @@
     fzf.enable = true;
 
     starship = {
-      enable = true;
-      enableBashIntegration = true;
-      enableZshIntegration = true;
-      enableFishIntegration = true;
-      enableNushellIntegration = true;
-    };
-
-    atuin = {
       enable = true;
       enableBashIntegration = true;
       enableZshIntegration = true;

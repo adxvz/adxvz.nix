@@ -45,7 +45,8 @@ in
     wezterm = import ../modules/home/terminals/wezterm.nix;
 
     # CLI Tools
-    scripts = import ../modules/home/cli/scripts.nix;
+    atuin = import ../modules/home/cli/atuin.nix;
+    bat = import ../modules/home/cli/bat.nix;
     ssh = import ../modules/home/cli/ssh.nix;
     gpg = import ../modules/home/cli/gpg.nix;
     git = import ../modules/home/cli/git.nix;
