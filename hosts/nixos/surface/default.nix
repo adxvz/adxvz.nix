@@ -38,17 +38,6 @@
     lidSwitchExternalPower = "suspend";
   };
 
-  systemd.user.services.tuptime = {
-    description = "Tuptime monitoring service";
-    serviceConfig = {
-      ExecStart = "${config.environment.systemPackages}/bin/tuptimed"; # or full path
-      Restart = "always";
-      StandardOutput = "append:/var/log/tuptime/stdout";
-      StandardError = "append:/var/log/tuptime/stderr";
-    };
-    wantedBy = [ "default.target" ];
-  };
-
   environment.systemPackages = with pkgs; [
     surface-control
   ];
