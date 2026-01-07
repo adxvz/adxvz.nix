@@ -41,19 +41,7 @@ in
 
   config = mkIf cfg.enable {
     environment.systemPackages = [ pkgs.tuptime ];
-
-    # macOS launchd service
-    launchd.daemons.tuptime = mkIf pkgs.stdenv.isDarwin {
-      serviceConfig = {
-        ProgramArguments = [
-          "/bin/sh"
-          "-c"
-          "/bin/wait4path ${pkgs.tuptime} && ${tuptimed}"
-        ];
-        RunAtLoad = true;
-        StandardOutPath = "/var/log/tuptime/stdout";
-        StandardErrorPath = "/var/log/tuptime/stderr";
-      };
-    };
+    # Export wrapper script path so platforms can use it
+    environment.etc."tuptimed.sh".text = tuptimed;
   };
 }

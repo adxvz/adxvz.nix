@@ -17,7 +17,6 @@
     nix.enable = true;
     thermald.enable = true;
     iptsd.enable = true;
-    tuptime.enable = true;
     audio = {
       enable = true;
       disablePulseAudio = true;

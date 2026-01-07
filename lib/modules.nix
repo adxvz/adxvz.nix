@@ -6,9 +6,9 @@ let
   # Shared modules (cross-platform)
   sharedModules = {
     nix = import ../modules/common/nix.nix;
-    fonts = import ../modules/common/fonts.nix;
+    fonts = import ../modules/common/fonts;
     hunspell = import ../modules/common/hunspell.nix;
-    tuptime = import ../modules/common/tuptime.nix;
+    # tuptime = import ../modules/common/tuptime.nix;
 
   };
 in
@@ -17,7 +17,7 @@ in
     fonts = sharedModules.fonts;
     nix = sharedModules.nix;
     hunspell = sharedModules.hunspell;
-    tuptime = sharedModules.tuptime;
+    #  tuptime = sharedModules.tuptime;
 
   };
 
@@ -25,7 +25,7 @@ in
     fonts = sharedModules.fonts;
     nix = sharedModules.nix;
     hunspell = sharedModules.hunspell;
-    tuptime = sharedModules.tuptime;
+    # tuptime = sharedModules.tuptime;
 
     # Surface Pro Hardware Modules
     apfs = import ../modules/nixos/surface/apfs.nix;
