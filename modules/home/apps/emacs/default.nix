@@ -146,19 +146,8 @@ in
     programs.emacs = {
       enable = true;
 
-      /*
-        CRITICAL FIX:
-        - Darwin: emacs-plus ONLY
-        - Linux: stock emacs
-      */
       package = if isDarwin then pkgs.emacs-plus else pkgs.emacs;
 
-      /*
-        CRITICAL FIX:
-        - MUST be a function
-        - Linux only
-        - Darwin returns empty list
-      */
       extraPackages = epkgs: lib.optionals isLinux (linuxEmacsPackages epkgs);
 
       extraConfig = lib.mkIf cfg.config ''

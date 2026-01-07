@@ -25,7 +25,7 @@ in
     fonts = sharedModules.fonts;
     nix = sharedModules.nix;
     hunspell = sharedModules.hunspell;
-    tuptime = sharedModules.tuptime;
+    #    tuptime = sharedModules.tuptime;
 
     # Surface Pro Hardware Modules
     apfs = import ../modules/nixos/surface/apfs.nix;
