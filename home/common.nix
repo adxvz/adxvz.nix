@@ -9,6 +9,7 @@
     atuin.enable = true;
     bat.enable = true;
     fastfetch.enable = true;
+    starship.enable = true;
 
     git = {
       enable = true;
