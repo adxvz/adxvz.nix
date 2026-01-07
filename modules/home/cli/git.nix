@@ -42,7 +42,7 @@ in
       };
       key = mkOption {
         type = types.nullOr types.str;
-        default = null;
+        default = "4C5D067A827FA98D60EA4742B9E578B362BE5DC6";
         description = "GPG key ID";
       };
     };
@@ -55,7 +55,7 @@ in
     installTools = mkOption {
       type = types.bool;
       default = false;
-      description = "Install lazygit and tig";
+      description = "Install additional git tools";
     };
   };
 
