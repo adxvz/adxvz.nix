@@ -47,7 +47,6 @@
     #     ".config/bat/".source = ../bin/dots/bat;
     #     ".config/emacs/".source = ../bin/dots/emacs;
     #     ".config/fastfetch".source = ../bin/dots/fastfetch;
-    #     ".config/ghostty/".source = ../bin/dots/ghostty;
     #     ".config/jj/".source = ../bin/dots/jj;
     #     ".config/nvim/".source = ../bin/dots/nvim;
     #     ".config/nushell/".source = ../bin/dots/nushell;

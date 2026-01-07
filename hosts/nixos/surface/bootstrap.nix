@@ -5,6 +5,7 @@
 {
   imports = [
     ../../common/pkgs.nix
+    ../../../modules/home/wm/gnome.nix
   ];
 
   modules = {
