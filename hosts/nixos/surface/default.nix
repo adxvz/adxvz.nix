@@ -6,10 +6,9 @@
 
 {
   imports = [
-    ../../common/pkgs.nix
-    ./hardware-configuration.nix
+    ./hardware/hardware-configuration.nix
+    ./hardware/sp8Edid.nix
     ./bootstrap.nix
-    ./sp8Edid.nix
   ];
 
   modules = {

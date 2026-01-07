@@ -4,7 +4,11 @@
 }:
 
 {
-  imports = [ ];
+  imports = [
+    ./disk.nix
+    ./nh.nix
+    ./timeZone.nix
+  ];
 
   users.users.adxvz = {
     isNormalUser = true;

@@ -5,10 +5,9 @@
 {
   imports = [
     ../common
-    ./gnome
-    ../common/nh.nix
-    ../common/disk.nix
-    ../common/timeZone.nix
+    ./modules/gnome
+    ../../common/pkgs.nix
+
   ];
 
   modules = {
