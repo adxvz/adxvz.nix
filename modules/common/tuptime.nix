@@ -4,43 +4,46 @@
   pkgs,
   ...
 }:
+
 with lib;
+
 let
   cfg = config.modules.tuptime;
 
   tuptimed = pkgs.writeShellScript "tuptimed" ''
-    function shutdown()
-    {
+    LOGDIR="/var/log/tuptime"
+    mkdir -p "$LOGDIR"
+    chmod 755 "$LOGDIR"
+
+    function shutdown() {
       ${pkgs.tuptime}/bin/tuptime -q -g
       exit 0
     }
 
-    function startup()
-    {
+    function startup() {
       ${pkgs.tuptime}/bin/tuptime -q
       tail -f /dev/null &
       wait $!
     }
 
     trap shutdown SIGTERM
-
-    startup;
+    startup
   '';
 in
 {
   options.modules.tuptime = {
     enable = mkOption {
-      default = false;
       type = types.bool;
+      default = false;
+      description = "Enable tuptime monitoring service";
     };
   };
 
   config = mkIf cfg.enable {
-    environment.systemPackages = with pkgs; [
-      tuptime
-    ];
+    environment.systemPackages = [ pkgs.tuptime ];
 
-    launchd.daemons.tuptime = {
+    # macOS launchd service
+    launchd.daemons.tuptime = mkIf pkgs.stdenv.isDarwin {
       serviceConfig = {
         ProgramArguments = [
           "/bin/sh"

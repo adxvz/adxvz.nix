@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  config,
   ...
 }:
 
@@ -16,6 +17,7 @@
     nix.enable = true;
     thermald.enable = true;
     iptsd.enable = true;
+    tuptime.enable = true;
     audio = {
       enable = true;
       disablePulseAudio = true;
@@ -35,6 +37,17 @@
     lidSwitch = "suspend";
     lidSwitchDocked = "ignore";
     lidSwitchExternalPower = "suspend";
+  };
+
+  systemd.user.services.tuptime = {
+    description = "Tuptime monitoring service";
+    serviceConfig = {
+      ExecStart = "${config.environment.systemPackages}/bin/tuptimed"; # or full path
+      Restart = "always";
+      StandardOutput = "append:/var/log/tuptime/stdout";
+      StandardError = "append:/var/log/tuptime/stderr";
+    };
+    wantedBy = [ "default.target" ];
   };
 
   environment.systemPackages = with pkgs; [
