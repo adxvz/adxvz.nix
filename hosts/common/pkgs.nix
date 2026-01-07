@@ -6,7 +6,6 @@ let
 
   commonPackages = with pkgs; [
     asciinema_3
-    atuin
     croc
     ttyd
     fd

@@ -6,8 +6,10 @@
 
 {
   modules = {
-    bat.enable = true;
     atuin.enable = true;
+    bat.enable = true;
+    fastfetch.enable = true;
+
     git = {
       enable = true;
       useLatestGit = true;
@@ -56,7 +58,6 @@
   };
 
   programs = {
-    fastfetch.enable = true;
     fzf.enable = true;
 
     starship = {
