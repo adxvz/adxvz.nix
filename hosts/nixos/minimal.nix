@@ -4,11 +4,6 @@
 }:
 
 {
-  imports = [
-    ./disk.nix
-    ./nh.nix
-    ./timeZone.nix
-  ];
 
   users.users.adxvz = {
     isNormalUser = true;
@@ -30,6 +25,24 @@
     git
     htop
   ];
+
+  programs.nh = {
+    enable = true;
+    clean = {
+      enable = true;
+      extraArgs = "--keep 5 --keep-since 3d";
+    };
+    flake = "/home/adxvz/Developer/adxvz.nix/";
+  };
+
+  services.fstrim = {
+    enable = true;
+    interval = "weekly";
+  };
+
+  boot.tmp.cleanOnBoot = true;
+
+  time.timeZone = "Europe/London";
 
   services.xserver.enable = true;
   services.xserver.xkb.layout = "gb";

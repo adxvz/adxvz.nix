@@ -4,7 +4,6 @@
 
 {
   imports = [
-    ../common
     ./modules/gnome
     ../../common/pkgs.nix
 

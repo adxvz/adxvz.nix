@@ -6,6 +6,7 @@
 
 {
   imports = [
+    ../minimal.nix
     ./hardware/hardware-configuration.nix
     ./hardware/sp8Edid.nix
     ./bootstrap.nix
