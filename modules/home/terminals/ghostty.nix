@@ -9,7 +9,7 @@ with lib;
 
 let
   cfg = config.modules.ghostty;
-  homeDir = config.home.homeDirectory;
+  isDarwin = pkgs.stdenv.isDarwin;
 in
 {
   ##############################################################################
@@ -32,15 +32,12 @@ in
         default = true;
       };
     };
-
   };
 
   ##############################################################################
   # CONFIG
   ##############################################################################
   config = mkIf cfg.enable {
-    # Ensure Ghostty binary is installed
-    home.packages = [ pkgs.ghostty ];
 
     programs.ghostty = {
       enable = true;
@@ -53,14 +50,14 @@ in
         background-opacity = 0.95;
         background-blur-radius = 20;
         macos-non-native-fullscreen = true;
-        macos-option-as-alt = left;
+        macos-option-as-alt = "left";
         mouse-hide-while-typing = true;
         font-family = "Maple Mono NF";
         font-style-bold = "Medium";
         font-style-bold-italic = "Medium Italic";
         font-size = 13.4;
         font-thicken = true;
-        grapheme-width-method = unicode;
+        grapheme-width-method = "unicode";
         adjust-cell-width = "-5%";
         selection-invert-fg-bg = true;
         cursor-style = "bar";
