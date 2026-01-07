@@ -49,6 +49,7 @@ in
     bat = import ../modules/home/cli/bat.nix;
     fastfetch = import ../modules/home/cli/fastfetch.nix;
     starship = import ../modules/home/cli/starship.nix;
+    yazi = import ../modules/home/cli/yazi.nix;
 
     ssh = import ../modules/home/cli/ssh.nix;
     gpg = import ../modules/home/cli/gpg.nix;

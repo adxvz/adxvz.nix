@@ -10,6 +10,7 @@
     bat.enable = true;
     fastfetch.enable = true;
     starship.enable = true;
+    yazi.enable = true;
 
     git = {
       enable = true;
@@ -77,20 +78,6 @@
       package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
     };
 
-    yazi = {
-      enableBashIntegration = true;
-      enableZshIntegration = true;
-      enableFishIntegration = true;
-      enableNushellIntegration = true;
-      settings = {
-        manager = {
-          show_hidden = true;
-          sort_by = "modified";
-          sort_dir_first = true;
-          sort_reverse = true;
-        };
-      };
-    };
   };
 
 }

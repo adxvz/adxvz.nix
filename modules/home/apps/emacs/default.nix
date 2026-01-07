@@ -155,17 +155,15 @@ in
         (when (file-exists-p "${config.home.homeDirectory}/.emacs.d/early-init.el")
           (load-file "${config.home.homeDirectory}/.emacs.d/early-init.el"))
 
-        (load-file "${config.home.file."init.el".source}")
-        (load-file "${config.home.file."ews.el".source}")
+        (load-file "${config.home.homeDirectory}/.config/emacs/init.el")
+        (load-file "${config.home.homeDirectory}/.config/emacs/ews.el")
       '';
     };
 
     home.packages = commonPkgs ++ lib.optionals isLinux linuxPkgs ++ lib.optionals isDarwin darwinPkgs;
 
-    home.file."init.el".source = lib.mkIf cfg.config ./config/init.el;
-
-    home.file."ews.el".source = lib.mkIf cfg.config ./config/ews.el;
-
+    home.file.".emacs.d/init.el".source = lib.mkIf cfg.config ./config/init.el;
+    home.file.".emacs.d/ews.el".source = lib.mkIf cfg.config ./config/ews.el;
     home.file.".emacs.d/early-init.el".source = ./config/early-init.el;
   };
 }
