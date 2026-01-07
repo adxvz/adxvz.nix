@@ -33,13 +33,13 @@ in
 
     userName = mkOption {
       type = types.nullOr types.str;
-      default = null;
+      default = "Adam Cooper";
       description = "Jujutsu user.name configuration value.";
     };
 
     userEmail = mkOption {
       type = types.nullOr types.str;
-      default = null;
+      default = "adam@coopr.network";
       description = "Jujutsu user.email configuration value.";
     };
   };

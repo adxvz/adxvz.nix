@@ -41,7 +41,7 @@ in
     zsh = import ../modules/home/shells/zsh.nix;
 
     # Terminals
-    ghostty = import ../modules/home/terminals/ghostty.nix;
+    ghostty = import ../modules/home/terminals/ghostty;
     wezterm = import ../modules/home/terminals/wezterm.nix;
 
     # CLI Tools

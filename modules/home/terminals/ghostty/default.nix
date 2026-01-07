@@ -9,7 +9,6 @@ with lib;
 
 let
   cfg = config.modules.ghostty;
-  isDarwin = pkgs.stdenv.isDarwin;
 in
 {
   ##############################################################################
@@ -32,12 +31,14 @@ in
         default = true;
       };
     };
+
   };
 
   ##############################################################################
   # CONFIG
   ##############################################################################
   config = mkIf cfg.enable {
+    home.packages = [ pkgs.ghostty ];
 
     programs.ghostty = {
       enable = true;

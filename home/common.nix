@@ -11,7 +11,6 @@
     fastfetch.enable = true;
     starship.enable = true;
     yazi.enable = true;
-    ghostty.enable = true;
 
     git = {
       enable = true;
@@ -23,8 +22,6 @@
     jujutsu = {
       enable = true;
       useLatest = true;
-      userName = "Adam Cooper";
-      userEmail = "adam@coopr.network";
     };
     emacs = {
       enable = true;
