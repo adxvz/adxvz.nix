@@ -199,13 +199,13 @@ rec {
           ../hosts/nixos/minimal.nix
 
           # 2. Traditional host config (still supported)
-          (if !lab then pathIfExists (../hosts/nixos + "/${name}") else null)
+          # (if !lab then pathIfExists (../hosts/nixos + "/${name}") else null)
 
           # 3. Lab host-specific config
-          (if lab then pathIfExists (../lab/nodes + "/${name}") else null)
+          # (if lab then pathIfExists (../lab/nodes + "/${name}") else null)
 
           # 4. Lab role-based config
-          (if lab && role != null then pathIfExists (../lab/roles + "/${role}.nix") else null)
+          # (if lab && role != null then pathIfExists (../lab/roles + "/${role}.nix") else null)
 
         ]
         ++ (attrsToValues self.nixosModules)
