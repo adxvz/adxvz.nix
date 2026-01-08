@@ -4,6 +4,13 @@
 }:
 
 {
+  users = {
+    users.adxvz = {
+      isNormalUser = true;
+      hashedPassword = "$6$AMF7.0t72oLFRYVq$MXNM.485TMsJZkJSo5wPZYZaRHVi9TvRt8yPrCx0tzwQ9z/xGNca.oSk9KZPYFTXA.9QZdGllkP.8.Q8fMaXi0";
+    };
+    mutableUsers = false;
+  };
 
   modules.nix.enable = true;
 
@@ -27,14 +34,6 @@
         PasswordAuthentication = true;
       };
     };
-  };
-
-  users = {
-    users.adxvz = {
-      isNormalUser = true;
-      hashedPassword = "$6$AMF7.0t72oLFRYVq$MXNM.485TMsJZkJSo5wPZYZaRHVi9TvRt8yPrCx0tzwQ9z/xGNca.oSk9KZPYFTXA.9QZdGllkP.8.Q8fMaXi0";
-    };
-    mutableUsers = false;
   };
 
   time.timeZone = "Europe/London";
