@@ -60,7 +60,7 @@ rec {
       hostNixosHome = basePath + "/home/nixos/${name}.nix";
 
       # Helper: include only if exists
-      assertExists = path: if builtins.pathExists path then path else null;
+      pathIfExists = p: if builtins.pathExists p then p else null;
 
     in
     {
@@ -77,9 +77,9 @@ rec {
 
         users.${user} = {
           imports = builtins.filter (x: x != null) [
-            (assertExists commonHome)
-            (if pkgs.stdenv.isDarwin then assertExists darwinHome else assertExists nixosHome)
-            (if pkgs.stdenv.isDarwin then assertExists hostDarwinHome else assertExists hostNixosHome)
+            (pathIfExists commonHome)
+            (if pkgs.stdenv.isDarwin then pathIfExists darwinHome else pathIfExists nixosHome)
+            (if pkgs.stdenv.isDarwin then pathIfExists hostDarwinHome else pathIfExists hostNixosHome)
           ];
         };
 
@@ -205,10 +205,8 @@ rec {
     {
       name,
       darwin ? false,
-      nixos ? false,
       targetSystem ? vars.currentSystem,
       pkgs ? inputs.nixos-unstable,
-      hostPkgs ? mkPkgs { },
       configuration ? null,
       hm ? true,
       extraModules ? [ ],
