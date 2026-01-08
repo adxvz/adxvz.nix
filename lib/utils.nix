@@ -174,8 +174,7 @@ rec {
       ...
     }:
     nixpkgs.lib.nixosSystem {
-      inherit targetSystem; # propagate targetSystem
-      system = targetSystem; # <-- THIS IS THE FIX
+      system = targetSystem;
 
       specialArgs = {
         inherit
