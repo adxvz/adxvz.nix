@@ -199,7 +199,7 @@ rec {
           ../hosts/nixos/minimal.nix
 
           # 2. Traditional host config (still supported)
-          # (if !lab then pathIfExists (../hosts/nixos + "/${name}") else null)
+          (if !lab then pathIfExists (../hosts/nixos + "/${name}") else null)
 
           # 3. Lab host-specific config
           # (if lab then pathIfExists (../lab/nodes + "/${name}") else null)
