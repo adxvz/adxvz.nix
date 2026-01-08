@@ -27,8 +27,6 @@ in
     hunspell = sharedModules.hunspell;
     # tuptime = sharedModules.tuptime;
 
-    ghostty = import ../modules/nixos/common/ghostty;
-
     # Surface Pro Hardware Modules
     apfs = import ../modules/nixos/surface/apfs.nix;
     audio = import ../modules/nixos/surface/audio.nix;
@@ -41,6 +39,9 @@ in
     fish = import ../modules/home/shells/fish.nix;
     nushell = import ../modules/home/shells/nushell.nix;
     zsh = import ../modules/home/shells/zsh.nix;
+
+    # Terminals
+    ghostty = import ../modules/home/terminals/ghostty;
 
     # CLI Tools
     atuin = import ../modules/home/cli/atuin.nix;
