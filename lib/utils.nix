@@ -195,6 +195,7 @@ rec {
         ++ labModules
         ++ extraModules
         ++ extraNixosModules
+        ++ (attrsToValues self.nixosModules)
         ++ (
           if hm then
             [
