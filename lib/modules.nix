@@ -17,7 +17,7 @@ in
     fonts = sharedModules.fonts;
     nix = sharedModules.nix;
     hunspell = sharedModules.hunspell;
-    #  tuptime = sharedModules.tuptime;
+    cachix = sharedModules.cachix;
 
   };
 
@@ -25,7 +25,7 @@ in
     fonts = sharedModules.fonts;
     nix = sharedModules.nix;
     hunspell = sharedModules.hunspell;
-    # tuptime = sharedModules.tuptime;
+    cachix = sharedModules.cachix;
 
     ghostty = import ../modules/nixos/common/terminals/ghostty;
 
