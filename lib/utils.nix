@@ -4,15 +4,20 @@
   pkgs,
   ...
 }:
+
 let
   flakeUtils = import ../lib/vars.nix { inherit self inputs; };
   vars = flakeUtils.vars;
   versions = flakeUtils.versions;
   nixpkgs = inputs.nixos-unstable;
+
 in
 rec {
+
+  # Converts attribute sets to a list of values
   attrsToValues = attrs: nixpkgs.lib.attrsets.mapAttrsToList (_: value: value) attrs;
 
+  # Create pkgs with overlays
   mkPkgs =
     {
       system ? vars.currentSystem,
@@ -29,8 +34,12 @@ rec {
       ++ (attrsToValues self.overlays);
     };
 
+  # Call package helper
   callPkg = package: (mkPkgs { }).callPackage package { };
 
+  #========================#
+  # Home Manager Module
+  #========================#
   mkHomeManagerModule =
     {
       name,
@@ -41,19 +50,18 @@ rec {
       basePath = self;
       user = vars.primaryUser;
 
-      # Paths
+      # Common + platform-wide files
       commonHome = basePath + "/home/common.nix";
+      darwinHome = basePath + "/home/darwin";
+      nixosHome = basePath + "/home/nixos";
 
-      # Darwin paths
-      darwinHome = basePath + "/home/darwin.nix";
-      hostDarwinHome = ../home/darwin + "/${name}.nix";
+      # Host-specific files
+      hostDarwinHome = basePath + "/home/darwin/${name}.nix";
+      hostNixosHome = basePath + "/home/nixos/${name}.nix";
 
-      # NixOS/Linux paths
-      nixosHome = basePath + "/home/nixos.nix";
-      hostNixosHome = ../home/nixos + "/${name}.nix";
-
-      # helper
+      # Helper: include only if exists
       assertExists = path: if builtins.pathExists path then path else null;
+
     in
     {
       home-manager = {
@@ -70,24 +78,8 @@ rec {
         users.${user} = {
           imports = builtins.filter (x: x != null) [
             (assertExists commonHome)
-
-            # Darwin
-            (assertExists darwinHome)
-            (
-              if pkgs.stdenv.isDarwin then
-                (if builtins.pathExists hostDarwinHome then hostDarwinHome else null)
-              else
-                null
-            )
-
-            # Linux / NixOS
-            (assertExists nixosHome)
-            (
-              if pkgs.stdenv.isLinux then
-                (if builtins.pathExists hostNixosHome then hostNixosHome else null)
-              else
-                null
-            )
+            (if pkgs.stdenv.isDarwin then assertExists darwinHome else assertExists nixosHome)
+            (if pkgs.stdenv.isDarwin then assertExists hostDarwinHome else assertExists hostNixosHome)
           ];
         };
 
@@ -98,34 +90,29 @@ rec {
       };
     };
 
+  #========================#
+  # Standalone Home Manager
+  #========================#
   mkStandaloneHome =
     {
       name,
       system ? builtins.currentSystem,
+      ...
     }:
     inputs.home-manager.lib.homeManagerConfiguration {
       pkgs = mkPkgs { inherit system; };
 
       modules = [
         ../home/common.nix
-
         {
           home.username = vars.primaryUser;
           home.homeDirectory =
             if pkgs.stdenv.isDarwin then "/Users/${vars.primaryUser}" else "/home/${vars.primaryUser}";
-
           home.stateVersion = versions.homeManager.stateVersion;
         }
       ]
-
-      ++ nixpkgs.lib.optionals pkgs.stdenv.isDarwin [
-        (../home/darwin + "/${name}.nix")
-      ]
-
-      ++ nixpkgs.lib.optionals pkgs.stdenv.isLinux [
-        (../home/nixos + "/${name}.nix")
-      ]
-
+      ++ nixpkgs.lib.optionals pkgs.stdenv.isDarwin [ (../home/darwin + "/${name}.nix") ]
+      ++ nixpkgs.lib.optionals pkgs.stdenv.isLinux [ (../home/nixos + "/${name}.nix") ]
       ++ (attrsToValues self.homeManagerModules);
 
       extraSpecialArgs = {
@@ -139,14 +126,17 @@ rec {
       };
     };
 
+  #========================#
+  # Darwin System
+  #========================#
   mkDarwin =
     {
       name,
       hm ? true,
-      darwin ? false,
       extraModules ? [ ],
       extraDarwinModules ? [ ],
-
+      systemName ? name,
+      ...
     }:
     inputs.nix-darwin.lib.darwinSystem {
       specialArgs = {
@@ -155,9 +145,11 @@ rec {
           vars
           versions
           nixpkgs
+          systemName
           ;
-        systemName = name;
+        pkgs = mkPkgs { };
       };
+
       modules = [
         { nixpkgs.pkgs = mkPkgs { }; }
         inputs.nix-homebrew.darwinModules.nix-homebrew
@@ -187,10 +179,16 @@ rec {
       ++ extraDarwinModules
       ++ nixpkgs.lib.optionals hm [
         inputs.home-manager.darwinModules.home-manager
-        (mkHomeManagerModule { inherit name darwin; })
+        (mkHomeManagerModule {
+          inherit name;
+          version = versions.homeManager.stateVersion;
+        })
       ];
     };
 
+  #========================#
+  # NixOS System
+  #========================#
   mkNixos =
     {
       name,
@@ -200,42 +198,52 @@ rec {
         imports = [ (../hosts/nixos + "/${name}.nix") ];
       },
       hm ? true,
-      darwin ? false,
-
       extraModules ? [ ],
       extraNixosModules ? [ ],
+      systemName ? name,
+      ...
     }:
     nixpkgs.lib.nixosSystem {
       specialArgs = {
-        inherit vars versions nixpkgs;
-        self = self;
-        systemName = name;
+        inherit
+          vars
+          versions
+          nixpkgs
+          self
+          systemName
+          ;
         pkgsStable = mkPkgs {
-          system = targetSystem;
           nixpkgs = inputs.nixos-stable;
+          system = targetSystem;
         };
       };
+
       modules = [
         configuration
         (../hosts/nixos + "/${name}")
       ]
-
       ++ (attrsToValues self.nixosModules)
       ++ extraModules
       ++ extraNixosModules
       ++ nixpkgs.lib.optionals hm [
         inputs.home-manager.nixosModules.home-manager
-        (mkHomeManagerModule { inherit name darwin; })
+        (mkHomeManagerModule {
+          inherit name;
+          version = versions.homeManager.stateVersion;
+        })
       ];
     };
 
+  #========================#
+  # Generic mkSystem
+  #========================#
   mkSystem =
     {
       name,
       darwin ? false,
       nixos ? false,
       targetSystem ? vars.currentSystem,
-      nixpkgs ? inputs.nixos-unstable,
+      pkgs ? inputs.nixos-unstable,
       hostPkgs ? mkPkgs { },
       configuration ? null,
       hm ? true,
@@ -244,14 +252,17 @@ rec {
       extraDarwinModules ? [ ],
       ...
     }:
+    let
+      systemName = name;
+    in
     if darwin then
       mkDarwin {
         inherit
           name
           hm
-          darwin
           extraModules
           extraDarwinModules
+          systemName
           ;
       }
     else
@@ -259,19 +270,14 @@ rec {
         inherit
           name
           targetSystem
-          nixpkgs
+          pkgs
           hm
-          darwin
           extraModules
           extraNixosModules
-
+          systemName
           ;
         configuration =
-          if configuration != null then
-            configuration
-          else
-            {
-              imports = [ (../hosts/nixos + "/${name}") ];
-            };
+          if configuration != null then configuration else { imports = [ (../hosts/nixos + "/${name}") ]; };
       };
+
 }
