@@ -26,7 +26,7 @@ in
     nix = sharedModules.nix;
     hunspell = sharedModules.hunspell;
     # tuptime = sharedModules.tuptime;
-    #
+
     ghostty = import ../modules/nixos/common/terminals/ghostty;
 
     # Surface Pro Hardware Modules

@@ -91,42 +91,6 @@ rec {
     };
 
   #========================#
-  # Standalone Home Manager
-  #========================#
-  mkStandaloneHome =
-    {
-      name,
-      system ? builtins.currentSystem,
-      ...
-    }:
-    inputs.home-manager.lib.homeManagerConfiguration {
-      pkgs = mkPkgs { inherit system; };
-
-      modules = [
-        ../home/common.nix
-        {
-          home.username = vars.primaryUser;
-          home.homeDirectory =
-            if pkgs.stdenv.isDarwin then "/Users/${vars.primaryUser}" else "/home/${vars.primaryUser}";
-          home.stateVersion = versions.homeManager.stateVersion;
-        }
-      ]
-      ++ nixpkgs.lib.optionals pkgs.stdenv.isDarwin [ (../home/darwin + "/${name}.nix") ]
-      ++ nixpkgs.lib.optionals pkgs.stdenv.isLinux [ (../home/nixos + "/${name}.nix") ]
-      ++ (attrsToValues self.homeManagerModules);
-
-      extraSpecialArgs = {
-        inherit
-          inputs
-          self
-          vars
-          versions
-          ;
-        systemName = name;
-      };
-    };
-
-  #========================#
   # Darwin System
   #========================#
   mkDarwin =
