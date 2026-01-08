@@ -40,10 +40,19 @@ rec {
     let
       basePath = self;
       user = vars.primaryUser;
-      commonHome = basePath + "/home/common.nix";
-      darwinHome = basePath + "/home/darwin.nix";
-      nixosHome = basePath + "/home/nixos.nix";
 
+      # Paths
+      commonHome = basePath + "/home/common.nix";
+
+      # Darwin paths
+      darwinHome = basePath + "/home/darwin.nix";
+      hostDarwinHome = ../home/darwin + "/${name}.nix";
+
+      # NixOS/Linux paths
+      nixosHome = basePath + "/home/nixos.nix";
+      hostNixosHome = ../home/nixos + "/${name}.nix";
+
+      # helper
       assertExists = path: if builtins.pathExists path then path else null;
     in
     {
@@ -59,11 +68,27 @@ rec {
         };
 
         users.${user} = {
-          imports = [
+          imports = builtins.filter (x: x != null) [
             (assertExists commonHome)
-          ]
-          ++ nixpkgs.lib.optional pkgs.stdenv.isDarwin (assertExists darwinHome)
-          ++ nixpkgs.lib.optional pkgs.stdenv.isLinux (assertExists nixosHome);
+
+            # Darwin
+            (assertExists darwinHome)
+            (
+              if pkgs.stdenv.isDarwin then
+                (if builtins.pathExists hostDarwinHome then hostDarwinHome else null)
+              else
+                null
+            )
+
+            # Linux / NixOS
+            (assertExists nixosHome)
+            (
+              if pkgs.stdenv.isLinux then
+                (if builtins.pathExists hostNixosHome then hostNixosHome else null)
+              else
+                null
+            )
+          ];
         };
 
         sharedModules = [

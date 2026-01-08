@@ -6,8 +6,6 @@
 
   home.file = {
 
-    ".config/ghostty/".source = ../modules/home/terminals/ghostty/config;
-
   };
 
 }

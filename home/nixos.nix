@@ -7,7 +7,6 @@
   ];
 
   modules = {
-    ghostty.enable = true;
   };
 
 }

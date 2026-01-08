@@ -42,17 +42,19 @@
       direnv
     ];
 
-    #   file = {
-    #     ".config/atuin/".source = ../bin/dots/atuin;
-    #     ".config/bat/".source = ../bin/dots/bat;
-    #     ".config/emacs/".source = ../bin/dots/emacs;
-    #     ".config/fastfetch".source = ../bin/dots/fastfetch;
-    #     ".config/jj/".source = ../bin/dots/jj;
-    #     ".config/nvim/".source = ../bin/dots/nvim;
-    #     ".config/nushell/".source = ../bin/dots/nushell;
-    #     ".config/starship/".source = ../bin/dots/starship;
-    #     ".config/yazi/".source = ../bin/dots/yazi;
-    #   };
+    file = {
+      ".config/ghostty/".source = ../modules/nixos/common/terminals/ghostty/config;
+
+      #     ".config/atuin/".source = ../bin/dots/atuin;
+      #     ".config/bat/".source = ../bin/dots/bat;
+      #     ".config/emacs/".source = ../bin/dots/emacs;
+      #     ".config/fastfetch".source = ../bin/dots/fastfetch;
+      #     ".config/jj/".source = ../bin/dots/jj;
+      #     ".config/nvim/".source = ../bin/dots/nvim;
+      #     ".config/nushell/".source = ../bin/dots/nushell;
+      #     ".config/starship/".source = ../bin/dots/starship;
+      #     ".config/yazi/".source = ../bin/dots/yazi;
+    };
 
   };
 

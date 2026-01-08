@@ -199,6 +199,7 @@
       nixosConfigurations.surface = utils.mkSystem {
         name = "surface";
         targetSystem = "x86_64-linux";
+        hm = false;
 
         extraNixosModules = [
           inputs.nixos-hardware.nixosModules.microsoft-surface-common
