@@ -8,7 +8,7 @@ let
     nix = import ../modules/common/nix.nix;
     fonts = import ../modules/common/fonts;
     hunspell = import ../modules/common/hunspell.nix;
-    # tuptime = import ../modules/common/tuptime.nix;
+    cachix = import ../modules/common/cachix.nix;
 
   };
 in

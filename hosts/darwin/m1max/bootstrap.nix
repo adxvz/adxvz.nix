@@ -11,6 +11,7 @@
     hunspell.enable = true;
     #tuptime.enable = true;
     nix.enable = true;
+    cachix.enable = true;
   };
 
   users.users.${vars.primaryUser} = {

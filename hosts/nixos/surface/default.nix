@@ -14,6 +14,7 @@
 
   modules = {
     nix.enable = true;
+    cachix.enable = true;
     thermald.enable = true;
     iptsd.enable = true;
     audio = {
