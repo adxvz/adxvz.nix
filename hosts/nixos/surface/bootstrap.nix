@@ -14,7 +14,7 @@
   };
 
   hardware.enableAllFirmware = true;
-  hardware.apfs.autoMount = true;
+  #hardware.apfs.autoMount = true;
 
   virtualisation.docker.enable = true;
 
