@@ -7,8 +7,8 @@
 {
   imports = [
     ../minimal.nix
-    ./hardware/hardware-configuration.nix
-    ./hardware/sp8Edid.nix
+    ./hw-fw/hardware-configuration.nix
+    ./hw-fw/sp8Edid.nix
     ./bootstrap.nix
   ];
 

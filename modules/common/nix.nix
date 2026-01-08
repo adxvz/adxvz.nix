@@ -70,6 +70,17 @@ in
         narinfo-cache-positive-ttl = 604800;
         keep-outputs = true;
         keep-derivations = true;
+        trusted-users = [
+          "root"
+          "adxvz"
+          "@wheel"
+        ];
+        # substituters = [
+        #   "https://adxvz.cachix.org"
+        # ];
+        # trusted-public-keys = [
+        #   "adxvz.cachix.org-1:Z9+sZ/yj9AGP6eOPRn5AGRE6yINzSElz2D9GQXwckts="
+        # ];
       };
     };
     nixpkgs.flake = {

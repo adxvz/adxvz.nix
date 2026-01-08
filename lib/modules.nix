@@ -42,8 +42,6 @@ in
     nushell = import ../modules/home/shells/nushell.nix;
     zsh = import ../modules/home/shells/zsh.nix;
 
-    # Terminals
-
     # CLI Tools
     atuin = import ../modules/home/cli/atuin.nix;
     bat = import ../modules/home/cli/bat.nix;
@@ -59,7 +57,9 @@ in
     # Window Managers
     #  niri = import ../modules/home/wm/niri.nix;
 
-    # Applications
-    emacs = import ../modules/home/apps/emacs;
+    # Editors
+    emacs = import ../modules/home/editors/emacs;
+    # nvf = import ../modules/home/editors/nvf.nix;
+
   };
 }

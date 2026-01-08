@@ -11,12 +11,13 @@
     fastfetch.enable = true;
     starship.enable = true;
     yazi.enable = true;
+    # nvf.enable = true;
 
     git = {
       enable = true;
       useLatestGit = true;
       githubCli = true;
-      installTools = true;
+      gitTools.enable = true;
     };
     ssh.enable = true;
     jujutsu = {
@@ -68,14 +69,14 @@
       enableNushellIntegration = true;
     };
 
-    neovim = {
-      enable = true;
-      defaultEditor = true;
-      viAlias = true;
-      vimAlias = true;
-      vimdiffAlias = true;
-      package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
-    };
+    #   neovim = {
+    #     enable = true;
+    #     defaultEditor = true;
+    #     viAlias = true;
+    #     vimAlias = true;
+    #     vimdiffAlias = true;
+    #     package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
+    #   };
 
   };
 
