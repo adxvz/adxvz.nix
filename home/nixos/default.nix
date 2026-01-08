@@ -6,7 +6,4 @@
     pkgs.xclip
   ];
 
-  modules = {
-  };
-
 }
