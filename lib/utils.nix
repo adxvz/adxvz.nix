@@ -162,7 +162,7 @@ rec {
   mkNixos =
     {
       name,
-      targetSystem ? vars.currentSystem,
+      targetSystem ? vars.currentSystem, # system/arch, e.g., "x86_64-linux"
       nixpkgs ? inputs.nixos-unstable,
       configuration ? null,
       hm ? true,
@@ -174,6 +174,9 @@ rec {
       ...
     }:
     nixpkgs.lib.nixosSystem {
+      inherit targetSystem; # propagate targetSystem
+      system = targetSystem; # <-- THIS IS THE FIX
+
       specialArgs = {
         inherit
           vars
@@ -229,7 +232,7 @@ rec {
       configuration ? null,
       hm ? true,
       lab ? false,
-      role ? null, # "worker" | "master" | "storage"
+      role ? null,
       extraModules ? [ ],
       extraNixosModules ? [ ],
       extraDarwinModules ? [ ],
@@ -262,8 +265,5 @@ rec {
           role
           configuration
           ;
-        # configuration =
-        #   if configuration != null then configuration else { imports = [ (../hosts/nixos + "/${name}") ]; };
       };
-
 }
