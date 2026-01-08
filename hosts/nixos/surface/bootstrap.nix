@@ -1,4 +1,7 @@
 {
+  config,
+  pkgs,
+  lib,
   ...
 }:
 
@@ -8,18 +11,14 @@
     ../../../modules/home/wm/gnome.nix
   ];
 
-  modules = {
-    fonts.enable = true;
-    ghostty.enable = true;
-  };
+  fonts.enable = true;
+  ghostty.enable = true;
 
   hardware.enableAllFirmware = true;
-  #hardware.apfs.autoMount = true;
+  hardware.apfs.autoMount = true;
 
   virtualisation.docker.enable = true;
-
   programs.zsh.enable = true;
-
   services.xserver.desktopManager.xfce.enable = true;
 
   system.stateVersion = "25.11";
