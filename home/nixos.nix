@@ -6,4 +6,8 @@
     pkgs.xclip
   ];
 
+  modules = {
+    ghostty.enable = true;
+  };
+
 }
