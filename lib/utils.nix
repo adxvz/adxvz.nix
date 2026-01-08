@@ -195,12 +195,11 @@ rec {
       modules =
         cleanImports [
 
-          # 1. Traditional host config (still supported)
+          # 1. Always load minimal base
+          ../hosts/nixos/minimal.nix
+
+          # 2. Traditional host config (still supported)
           (if !lab then pathIfExists (../hosts/nixos + "/${name}") else null)
-
-          # 2. Always load minimal base
-
-          (if lab && !hm then pathIfExists ../hosts/nixos/minimal.nix else null)
 
           # 3. Lab host-specific config
           (if lab then pathIfExists (../lab/nodes + "/${name}") else null)
