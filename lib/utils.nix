@@ -63,7 +63,9 @@ rec {
             (assertExists commonHome)
           ]
           ++ nixpkgs.lib.optional pkgs.stdenv.isDarwin (assertExists darwinHome)
-          ++ nixpkgs.lib.optional pkgs.stdenv.isLinux (assertExists nixosHome);
+          ++ nixpkgs.lib.optional (
+            builtins.currentSystem == "x86_64-linux" || builtins.currentSystem == "aarch64-linux"
+          ) (assertExists nixosHome);
         };
 
         sharedModules = [
@@ -76,15 +78,42 @@ rec {
   mkStandaloneHome =
     {
       name,
-      system ? vars.currentSystem,
+      system ? builtins.currentSystem,
     }:
     inputs.home-manager.lib.homeManagerConfiguration {
       pkgs = mkPkgs { inherit system; };
+
       modules = [
+        ../home/common.nix
+
+        {
+          home.username = vars.primaryUser;
+          home.homeDirectory =
+            if pkgs.stdenv.isDarwin then "/Users/${vars.primaryUser}" else "/home/${vars.primaryUser}";
+
+          home.stateVersion = versions.homeManager.stateVersion;
+        }
+      ]
+
+      ++ nixpkgs.lib.optionals pkgs.stdenv.isDarwin [
         (../home/darwin + "/${name}.nix")
       ]
+
+      ++ nixpkgs.lib.optionals pkgs.stdenv.isLinux [
+        (../home/nixos + "/${name}.nix")
+      ]
+
       ++ (attrsToValues self.homeManagerModules);
-      extraSpecialArgs = { inherit inputs self; };
+
+      extraSpecialArgs = {
+        inherit
+          inputs
+          self
+          vars
+          versions
+          ;
+        systemName = name;
+      };
     };
 
   mkDarwin =

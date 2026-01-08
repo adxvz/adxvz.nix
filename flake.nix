@@ -213,7 +213,6 @@
 
       homeConfigurations."adxvz" = utils.mkStandaloneHome {
         name = "adxvz";
-        targetSystem = "";
       };
 
       #=========================================#
