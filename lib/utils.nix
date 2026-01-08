@@ -63,9 +63,7 @@ rec {
             (assertExists commonHome)
           ]
           ++ nixpkgs.lib.optional pkgs.stdenv.isDarwin (assertExists darwinHome)
-          ++ nixpkgs.lib.optional (
-            builtins.currentSystem == "x86_64-linux" || builtins.currentSystem == "aarch64-linux"
-          ) (assertExists nixosHome);
+          ++ nixpkgs.lib.optional pkgs.stdenv.isLinux (assertExists nixosHome);
         };
 
         sharedModules = [
