@@ -4,7 +4,7 @@
 
 {
   imports = [
-    ../../common/pkgs.nix
+    ../../shared
     ../../../modules/home/wm/gnome.nix
   ];
 

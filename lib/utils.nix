@@ -17,6 +17,12 @@ rec {
   # Converts attribute sets to a list of values
   attrsToValues = attrs: nixpkgs.lib.attrsets.mapAttrsToList (_: value: value) attrs;
 
+  # Only include a path if it exists
+  pathIfExists = p: if builtins.pathExists p then p else null;
+
+  # Filter nulls from import lists
+  cleanImports = imports: builtins.filter (x: x != null) imports;
+
   # Create pkgs with overlays
   mkPkgs =
     {
@@ -51,7 +57,7 @@ rec {
       user = vars.primaryUser;
 
       # Common + platform-wide files
-      commonHome = basePath + "/home/common.nix";
+      sharedHome = basePath + "/home/shared.nix";
       darwinHome = basePath + "/home/darwin";
       nixosHome = basePath + "/home/nixos";
 
@@ -77,7 +83,7 @@ rec {
 
         users.${user} = {
           imports = builtins.filter (x: x != null) [
-            (pathIfExists commonHome)
+            (pathIfExists sharedHome)
             (if pkgs.stdenv.isDarwin then pathIfExists darwinHome else pathIfExists nixosHome)
             (if pkgs.stdenv.isDarwin then pathIfExists hostDarwinHome else pathIfExists hostNixosHome)
           ];
@@ -158,10 +164,10 @@ rec {
       name,
       targetSystem ? vars.currentSystem,
       nixpkgs ? inputs.nixos-unstable,
-      configuration ? {
-        imports = [ (../hosts/nixos + "/${name}.nix") ];
-      },
+      configuration ? null,
       hm ? true,
+      lab ? false,
+      role ? null,
       extraModules ? [ ],
       extraNixosModules ? [ ],
       systemName ? name,
@@ -175,6 +181,8 @@ rec {
           nixpkgs
           self
           systemName
+          lab
+          role
           ;
         pkgsStable = mkPkgs {
           nixpkgs = inputs.nixos-stable;
@@ -182,20 +190,31 @@ rec {
         };
       };
 
-      modules = [
-        configuration
-        (../hosts/nixos + "/${name}")
-      ]
-      ++ (attrsToValues self.nixosModules)
-      ++ extraModules
-      ++ extraNixosModules
-      ++ nixpkgs.lib.optionals hm [
-        inputs.home-manager.nixosModules.home-manager
-        (mkHomeManagerModule {
-          inherit name;
-          version = versions.homeManager.stateVersion;
-        })
-      ];
+      modules =
+        cleanImports [
+          # 1. Always load minimal base
+          ../hosts/nixos/minimal.nix
+
+          # 2. Lab host-specific config
+          (if lab then pathIfExists (../lab/nodes + "/${name}.nix") else null)
+
+          # 3. Lab role-based config
+          (if lab && role != null then pathIfExists (../lab/roles + "/${role}.nix") else null)
+
+          # 4. Traditional host config (still supported)
+          (if !lab then pathIfExists (../hosts/nixos + "/${name}.nix") else null)
+
+        ]
+        ++ (attrsToValues self.nixosModules)
+        ++ extraModules
+        ++ extraNixosModules
+        ++ nixpkgs.lib.optionals hm [
+          inputs.home-manager.nixosModules.home-manager
+          (mkHomeManagerModule {
+            inherit name;
+            version = versions.homeManager.stateVersion;
+          })
+        ];
     };
 
   #========================#
@@ -209,6 +228,8 @@ rec {
       pkgs ? inputs.nixos-unstable,
       configuration ? null,
       hm ? true,
+      lab ? false,
+      role ? null, # "worker" | "master" | "storage"
       extraModules ? [ ],
       extraNixosModules ? [ ],
       extraDarwinModules ? [ ],
@@ -237,9 +258,12 @@ rec {
           extraModules
           extraNixosModules
           systemName
+          lab
+          role
+          configuration
           ;
-        configuration =
-          if configuration != null then configuration else { imports = [ (../hosts/nixos + "/${name}") ]; };
+        # configuration =
+        #   if configuration != null then configuration else { imports = [ (../hosts/nixos + "/${name}") ]; };
       };
 
 }

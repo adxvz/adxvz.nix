@@ -8,7 +8,7 @@ let
     nix = import ../modules/common/nix.nix;
     fonts = import ../modules/common/fonts;
     hunspell = import ../modules/common/hunspell.nix;
-    cachix = import ../modules/common/cachix.nix;
+    #  cachix = import ../modules/common/cachix.nix;
 
   };
 in
@@ -17,7 +17,7 @@ in
     fonts = sharedModules.fonts;
     nix = sharedModules.nix;
     hunspell = sharedModules.hunspell;
-    cachix = sharedModules.cachix;
+    #    cachix = sharedModules.cachix;
 
   };
 
@@ -25,7 +25,7 @@ in
     fonts = sharedModules.fonts;
     nix = sharedModules.nix;
     hunspell = sharedModules.hunspell;
-    cachix = sharedModules.cachix;
+    #  cachix = sharedModules.cachix;
 
     ghostty = import ../modules/nixos/common/terminals/ghostty;
 

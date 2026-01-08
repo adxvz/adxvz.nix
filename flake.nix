@@ -183,7 +183,7 @@
       };
 
       #=========================================#
-      #         Mac M1 Max                      #
+      #              Nix Darwin                 #
       #=========================================#
       darwinConfigurations."m1max" = utils.mkSystem {
         name = "m1max";
@@ -194,7 +194,7 @@
       };
 
       #=========================================#
-      #         Surface Pro 9                   #
+      #                  Nixos                  #
       #=========================================#
 
       nixosConfigurations.surface = utils.mkSystem {
@@ -209,43 +209,65 @@
       };
 
       #=========================================#
-      #         Homelab Servers                 #
+      #            Homelab Servers              #
       #=========================================#
+
+      nixosConfigurations.mini = utils.mkSystem {
+        name = "mini";
+        targetSystem = "x86_64-linux";
+        hm = false;
+        lab = true;
+      };
 
       nixosConfigurations.do = utils.mkSystem {
         name = "do";
         targetSystem = "x86_64-linux";
         hm = false;
+        lab = true;
+        role = "master";
       };
       nixosConfigurations.re = utils.mkSystem {
         name = "re";
         targetSystem = "x86_64-linux";
         hm = false;
+        lab = true;
+        role = "master";
       };
       nixosConfigurations.mi = utils.mkSystem {
         name = "mi";
         targetSystem = "x86_64-linux";
         hm = false;
+        lab = true;
+        role = "master";
       };
       nixosConfigurations.fa = utils.mkSystem {
         name = "fa";
         targetSystem = "x86_64-linux";
         hm = false;
+        lab = true;
+        role = "worker";
       };
       nixosConfigurations.so = utils.mkSystem {
         name = "so";
         targetSystem = "x86_64-linux";
         hm = false;
+        lab = true;
+        role = "worker";
       };
       nixosConfigurations.la = utils.mkSystem {
         name = "la";
         targetSystem = "x86_64-linux";
         hm = false;
+        lab = true;
+        role = "worker";
       };
       nixosConfigurations.ti = utils.mkSystem {
         name = "ti";
         targetSystem = "x86_64-linux";
         hm = false;
+        lab = true;
+        role = "storage";
       };
+
     };
 }
