@@ -11,9 +11,10 @@
     ../../../modules/home/wm/gnome.nix
   ];
 
-  fonts.enable = true;
-  ghostty.enable = true;
-
+  modules = {
+    fonts.enable = true;
+    ghostty.enable = true;
+  };
   hardware.enableAllFirmware = true;
   hardware.apfs.autoMount = true;
 
