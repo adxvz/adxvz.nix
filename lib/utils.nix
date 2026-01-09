@@ -174,16 +174,15 @@ rec {
       ...
     }:
     let
-      # Resolve paths relative to flake root
-      minimalConfig = pathIfExists (self + "/hosts/nixos/minimal.nix");
+      # Resolve paths relative to flake root - construct safely
+      minimalPath = self + "/hosts/nixos/minimal.nix";
+      hostPath = self + (if lab then "/lab/nodes/${name}.nix" else "/hosts/nixos/${name}.nix");
+      rolePath = if (lab && role != null) then (self + "/lab/roles/${role}.nix") else null;
 
-      hostConfig =
-        if lab then
-          pathIfExists (self + "/lab/nodes/${name}")
-        else
-          pathIfExists (self + "/hosts/nixos/${name}");
-
-      roleConfig = if lab && role != null then pathIfExists (self + "/lab/roles/${role}.nix") else null;
+      # Only include if exists
+      minimalConfig = pathIfExists minimalPath;
+      hostConfig = pathIfExists hostPath;
+      roleConfig = if rolePath != null then pathIfExists rolePath else null;
     in
     nixpkgs.lib.nixosSystem {
       system = targetSystem;
