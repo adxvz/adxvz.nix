@@ -201,10 +201,7 @@ rec {
           #    - If lab=true: load from lab/nodes/hostname.nix
           #    - If lab=false: load from hosts/nixos/hostname.nix
           (
-            if lab then
-              pathIfExists (../lab/nodes + "/${name}.nix")
-            else
-              pathIfExists (../hosts/nixos + "/${name}.nix")
+            if lab then pathIfExists (../lab/nodes + "/${name}") else pathIfExists (../hosts/nixos + "/${name}")
           )
 
           # 3. Lab role-based config (only if lab=true and role is set)
