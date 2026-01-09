@@ -174,15 +174,29 @@ rec {
       ...
     }:
     let
-      # Resolve paths relative to flake root - construct safely
-      minimalPath = self + "/hosts/nixos/minimal.nix";
-      hostPath = self + (if lab then "/lab/nodes/${name}.nix" else "/hosts/nixos/${name}.nix");
-      rolePath = if (lab && role != null) then (self + "/lab/roles/${role}.nix") else null;
+      # Build module list based on conditions
+      minimalModule = [ (self + "/hosts/nixos/minimal.nix") ];
 
-      # Only include if exists
-      minimalConfig = pathIfExists minimalPath;
-      hostConfig = pathIfExists hostPath;
-      roleConfig = if rolePath != null then pathIfExists rolePath else null;
+      hostModule =
+        if lab then
+          let
+            path = self + "/lab/nodes" + "/${name}.nix";
+          in
+          if builtins.pathExists path then [ path ] else [ ]
+        else
+          let
+            path = self + "/hosts/nixos" + "/${name}.nix";
+          in
+          if builtins.pathExists path then [ path ] else [ ];
+
+      roleModule =
+        if (lab && role != null) then
+          let
+            path = self + "/lab/roles" + "/${role}.nix";
+          in
+          if builtins.pathExists path then [ path ] else [ ]
+        else
+          [ ];
     in
     nixpkgs.lib.nixosSystem {
       system = targetSystem;
@@ -210,18 +224,9 @@ rec {
         ++ extraModules
         ++ extraNixosModules
         # 2. Then load configuration files that use those options
-        ++ cleanImports [
-          # Always load minimal base (shared by all machines)
-          (pathIfExists minimalConfig)
-
-          # Host-specific configuration
-          #    - If lab=true: load from lab/nodes/hostname.nix
-          #    - If lab=false: load from hosts/nixos/hostname.nix
-          (pathIfExists hostConfig)
-
-          # Lab role-based config (only if lab=true and role is set)
-          (pathIfExists roleConfig)
-        ]
+        ++ minimalModule
+        ++ hostModule
+        ++ roleModule
         # 3. Home Manager (loaded last)
         ++ nixpkgs.lib.optionals hm [
           inputs.home-manager.nixosModules.home-manager
