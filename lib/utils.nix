@@ -179,9 +179,9 @@ rec {
 
       hostConfig =
         if lab then
-          pathIfExists (self + "/lab/nodes/${name}.nix")
+          pathIfExists (self + "/lab/nodes/${name}")
         else
-          pathIfExists (self + "/hosts/nixos/${name}.nix");
+          pathIfExists (self + "/hosts/nixos/${name}");
 
       roleConfig = if lab && role != null then pathIfExists (self + "/lab/roles/${role}.nix") else null;
     in
