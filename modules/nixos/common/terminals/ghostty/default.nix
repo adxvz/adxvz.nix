@@ -26,14 +26,14 @@ in
     environment.systemPackages = [ pkgs.ghostty ];
 
     # Configure the systemd service
-    systemd.services.ghostty = {
-      description = "Ghostty terminal server";
-      after = [ "network.target" ];
-      wantedBy = [ "multi-user.target" ];
-      serviceConfig = {
-        ExecStart = "${pkgs.ghostty}/bin/ghostty -p ${toString cfg.port}";
-        Restart = "always";
-      };
-    };
+    # systemd.services.ghostty = {
+    #   description = "Ghostty terminal server";
+    #   after = [ "network.target" ];
+    #   wantedBy = [ "multi-user.target" ];
+    #   serviceConfig = {
+    #     ExecStart = "${pkgs.ghostty}/bin/ghostty -p ${toString cfg.port}";
+    #     Restart = "always";
+    #   };
+    # };
   };
 }
