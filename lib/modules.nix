@@ -27,7 +27,11 @@ in
     hunspell = sharedModules.hunspell;
     #  cachix = sharedModules.cachix;
 
+    # Editors
     ghostty = import ../modules/nixos/common/terminals/ghostty;
+
+    # Window Managers
+    niri = import ../modules/nixos/common/wm/niri.nix;
 
     # Surface Pro Hardware Modules
     apfs = import ../modules/nixos/surface/apfs.nix;
@@ -53,9 +57,6 @@ in
     gpg = import ../modules/home/cli/gpg.nix;
     git = import ../modules/home/cli/git.nix;
     jujutsu = import ../modules/home/cli/jujutsu.nix;
-
-    # Window Managers
-    niri = import ../modules/home/wm/niri.nix;
 
     # Editors
     emacs = import ../modules/home/editors/emacs;
