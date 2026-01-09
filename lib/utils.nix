@@ -191,7 +191,7 @@ rec {
 
       modules = builtins.filter (x: x != null) (
         baseModules
-        ++ [ hostModule ] # always load machine-specific
+        ++ [ hostModule ]
         ++ labModules
         ++ extraModules
         ++ extraNixosModules
