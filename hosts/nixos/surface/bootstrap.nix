@@ -13,7 +13,7 @@
     ghostty.enable = true;
     niri = {
       enable = true;
-      defaultSession = true;
+      system.defaultSession = true;
     };
   };
   hardware.enableAllFirmware = true;
