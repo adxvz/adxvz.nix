@@ -180,12 +180,12 @@ rec {
       hostModule =
         if lab then
           let
-            path = self + "/lab/nodes" + "/${name}.nix";
+            path = self + "/lab/nodes" + "/${name}";
           in
           if builtins.pathExists path then [ path ] else [ ]
         else
           let
-            path = self + "/hosts/nixos" + "/${name}.nix";
+            path = self + "/hosts/nixos" + "/${name}";
           in
           if builtins.pathExists path then [ path ] else [ ];
 
