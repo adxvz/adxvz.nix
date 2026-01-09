@@ -82,7 +82,7 @@ in
 
         # Optional utilities based on config
       ]
-      ++ optional cfg.utilities.rofi pkgs.rofi-wayland
+      ++ optional cfg.utilities.rofi pkgs.rofi
       ++ optional cfg.utilities.waybar pkgs.waybar
       ++ optional cfg.utilities.mako pkgs.mako
       ++ optional cfg.utilities.swaylock pkgs.swaylock
