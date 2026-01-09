@@ -18,24 +18,16 @@ in
       description = "Niri package to use";
     };
 
-    rofi = {
-      enable = mkEnableOption "Enable Rofi launcher integration" // {
-        default = true;
-      };
-      package = mkOption {
-        type = types.package;
-        default = pkgs.rofi-wayland;
-        description = "Rofi package to use";
-      };
-      theme = mkOption {
-        type = types.nullOr types.str;
-        default = null;
-        example = "~/.config/rofi/theme.rasi";
-        description = "Path to custom Rofi theme";
-      };
+    defaultSession = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Set Niri as the default session";
     };
 
-    extraUtilities = {
+    utilities = {
+      rofi = mkEnableOption "Enable Rofi launcher" // {
+        default = true;
+      };
       waybar = mkEnableOption "Enable Waybar status bar" // {
         default = true;
       };
@@ -47,160 +39,73 @@ in
       };
     };
 
-    settings = mkOption {
-      type = types.attrs;
-      default = { };
-      description = "Extra Niri settings merged into the configuration";
-      example = literalExpression ''
-        {
-          prefer-no-csd = true;
-          binds = {
-            "Mod+T" = "spawn" "ghostty";
-          };
-        }
-      '';
-    };
-
-    extraConfig = mkOption {
-      type = types.lines;
-      default = "";
-      description = "Extra configuration lines appended to config.kdl";
-      example = ''
-        spawn-at-startup "waybar"
-        prefer-no-csd
-      '';
+    extraPackages = mkOption {
+      type = types.listOf types.package;
+      default = [ ];
+      description = "Additional packages to install with Niri";
     };
   };
 
   config = mkIf cfg.enable {
-    home.packages = [
-      cfg.package
-    ]
-    ++ optional cfg.rofi.enable cfg.rofi.package
-    ++ optional cfg.extraUtilities.waybar pkgs.waybar
-    ++ optional cfg.extraUtilities.mako pkgs.mako
-    ++ optional cfg.extraUtilities.swaylock pkgs.swaylock;
-
-    xdg.configFile."niri/config.kdl".text = ''
-      // Generated Niri configuration
-
-      input {
-          keyboard {
-              xkb {
-                  layout "us"
-              }
-          }
-
-          touchpad {
-              tap
-              natural-scroll
-              dwt
-          }
-
-          mouse {
-              natural-scroll
-          }
-      }
-
-      output "eDP-1" {
-          scale 1.0
-      }
-
-      layout {
-          gaps 8
-          center-focused-column "never"
-
-          preset-column-widths {
-              proportion 0.33333
-              proportion 0.5
-              proportion 0.66667
-          }
-
-          default-column-width { proportion 0.5; }
-
-          focus-ring {
-              width 2
-              active-color "#7fc8ff"
-              inactive-color "#505050"
-          }
-
-          border {
-              width 1
-              active-color "#7fc8ff"
-              inactive-color "#505050"
-          }
-      }
-
-      ${optionalString cfg.rofi.enable ''
-        binds {
-            Mod+D { spawn "rofi" "-show" "drun"; }
-            Mod+Shift+D { spawn "rofi" "-show" "run"; }
-        }
-      ''}
-
-      ${optionalString cfg.extraUtilities.waybar ''
-        spawn-at-startup "waybar"
-      ''}
-
-      ${optionalString cfg.extraUtilities.mako ''
-        spawn-at-startup "mako"
-      ''}
-
-      binds {
-          Mod+Shift+Slash { show-hotkey-overlay; }
-          Mod+T { spawn "ghostty"; }
-          Mod+Q { close-window; }
-
-          Mod+Left  { focus-column-left; }
-          Mod+Down  { focus-window-down; }
-          Mod+Up    { focus-window-up; }
-          Mod+Right { focus-column-right; }
-          Mod+H     { focus-column-left; }
-          Mod+J     { focus-window-down; }
-          Mod+K     { focus-window-up; }
-          Mod+L     { focus-column-right; }
-
-          Mod+Shift+Left  { move-column-left; }
-          Mod+Shift+Down  { move-window-down; }
-          Mod+Shift+Up    { move-window-up; }
-          Mod+Shift+Right { move-column-right; }
-          Mod+Shift+H     { move-column-left; }
-          Mod+Shift+J     { move-window-down; }
-          Mod+Shift+K     { move-window-up; }
-          Mod+Shift+L     { move-column-right; }
-
-          Mod+1 { focus-workspace 1; }
-          Mod+2 { focus-workspace 2; }
-          Mod+3 { focus-workspace 3; }
-          Mod+4 { focus-workspace 4; }
-          Mod+5 { focus-workspace 5; }
-
-          Mod+Shift+1 { move-column-to-workspace 1; }
-          Mod+Shift+2 { move-column-to-workspace 2; }
-          Mod+Shift+3 { move-column-to-workspace 3; }
-          Mod+Shift+4 { move-column-to-workspace 4; }
-          Mod+Shift+5 { move-column-to-workspace 5; }
-
-          Mod+Comma  { consume-window-into-column; }
-          Mod+Period { expel-window-from-column; }
-
-          Mod+R { switch-preset-column-width; }
-          Mod+F { maximize-column; }
-          Mod+Shift+F { fullscreen-window; }
-
-          Mod+Shift+E { quit; }
-          Mod+Shift+P { power-off-monitors; }
-      }
-
-      ${cfg.extraConfig}
-    '';
-
-    # Optional: Rofi configuration if enabled
-    programs.rofi = mkIf cfg.rofi.enable {
+    # Enable required services for Wayland
+    services.displayManager.gdm = {
       enable = true;
-      package = cfg.rofi.package;
-      terminal = "${pkgs.ghostty}/bin/ghostty";
-      theme = mkIf (cfg.rofi.theme != null) cfg.rofi.theme;
+      wayland = true;
+    };
+
+    # Make Niri available as a session
+    services.displayManager.sessionPackages = [ cfg.package ];
+
+    # Set default session if requested
+    services.displayManager.defaultSession = mkIf cfg.defaultSession "niri";
+
+    # Enable XDG portal for screen sharing, file picking, etc.
+    xdg.portal = {
+      enable = true;
+      extraPortals = [ pkgs.xdg-desktop-portal-gnome ];
+      config.common.default = "*";
+    };
+
+    # Required for Wayland compositors
+    security.polkit.enable = true;
+
+    # System packages needed for Niri
+    environment.systemPackages =
+      with pkgs;
+      [
+        cfg.package
+
+        # Core utilities
+        wl-clipboard
+        wlr-randr
+        wayland-utils
+
+        # Optional utilities based on config
+      ]
+      ++ optional cfg.utilities.rofi pkgs.rofi-wayland
+      ++ optional cfg.utilities.waybar pkgs.waybar
+      ++ optional cfg.utilities.mako pkgs.mako
+      ++ optional cfg.utilities.swaylock pkgs.swaylock
+      ++ cfg.extraPackages;
+
+    # Enable required system services
+    programs.dconf.enable = true;
+    services.dbus.enable = true;
+
+    # Pipewire for audio (if not already enabled)
+    services.pipewire = {
+      enable = mkDefault true;
+      alsa.enable = mkDefault true;
+      pulse.enable = mkDefault true;
+    };
+
+    # Fonts
+    fonts.enableDefaultPackages = true;
+
+    # XDG user directories
+    environment.sessionVariables = {
+      NIXOS_OZONE_WL = "1"; # Hint for Electron apps to use Wayland
+      MOZ_ENABLE_WAYLAND = "1"; # Firefox Wayland
     };
   };
 }
