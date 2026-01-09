@@ -194,19 +194,23 @@ rec {
 
       modules =
         cleanImports [
-          # 1. Always load minimal base
+          # 1. Always load minimal base (shared by all machines)
           ../hosts/nixos/minimal.nix
 
-          # 2. Lab host-specific config
-          (if lab then pathIfExists (../lab/nodes + "/${name}.nix") else null)
+          # 2. Host-specific configuration
+          #    - If lab=true: load from lab/nodes/hostname.nix
+          #    - If lab=false: load from hosts/nixos/hostname.nix
+          (
+            if lab then
+              pathIfExists (../lab/nodes + "/${name}.nix")
+            else
+              pathIfExists (../hosts/nixos + "/${name}.nix")
+          )
 
-          # 3. Lab role-based config
+          # 3. Lab role-based config (only if lab=true and role is set)
           (if lab && role != null then pathIfExists (../lab/roles + "/${role}.nix") else null)
-
-          # 4. Traditional host config (still supported)
-          (if !lab then pathIfExists (../hosts/nixos + "/${name}.nix") else null)
-
         ]
+        # 4. Custom modules accessible from the top
         ++ (attrsToValues self.nixosModules)
         ++ extraModules
         ++ extraNixosModules
