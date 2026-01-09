@@ -173,6 +173,12 @@ rec {
       systemName ? name,
       ...
     }:
+    let
+      # Resolve paths relative to flake root
+      minimalConfig = self + "/hosts/nixos/minimal.nix";
+      hostConfig = if lab then self + "/lab/nodes/${name}.nix" else self + "/hosts/nixos/${name}.nix";
+      roleConfig = if lab && role != null then self + "/lab/roles/${role}.nix" else null;
+    in
     nixpkgs.lib.nixosSystem {
       system = targetSystem;
 
@@ -185,6 +191,7 @@ rec {
           systemName
           lab
           role
+          inputs
           ;
         pkgsStable = mkPkgs {
           nixpkgs = inputs.nixos-stable;
@@ -193,24 +200,24 @@ rec {
       };
 
       modules =
-        cleanImports [
-          # 1. Always load minimal base (shared by all machines)
-          ../hosts/nixos/minimal.nix
-
-          # 2. Host-specific configuration
-          #    - If lab=true: load from lab/nodes/hostname.nix
-          #    - If lab=false: load from hosts/nixos/hostname.nix
-          (
-            if lab then pathIfExists (../lab/nodes + "/${name}") else pathIfExists (../hosts/nixos + "/${name}")
-          )
-
-          # 3. Lab role-based config (only if lab=true and role is set)
-          (if lab && role != null then pathIfExists (../lab/roles + "/${role}.nix") else null)
-        ]
-        # 4. Custom modules accessible from the top
-        ++ (attrsToValues self.nixosModules)
+        # 1. Custom modules MUST be loaded FIRST so options are defined
+        (attrsToValues self.nixosModules)
         ++ extraModules
         ++ extraNixosModules
+        # 2. Then load configuration files that use those options
+        ++ cleanImports [
+          # Always load minimal base (shared by all machines)
+          (pathIfExists minimalConfig)
+
+          # Host-specific configuration
+          #    - If lab=true: load from lab/nodes/hostname.nix
+          #    - If lab=false: load from hosts/nixos/hostname.nix
+          (pathIfExists hostConfig)
+
+          # Lab role-based config (only if lab=true and role is set)
+          (pathIfExists roleConfig)
+        ]
+        # 3. Home Manager (loaded last)
         ++ nixpkgs.lib.optionals hm [
           inputs.home-manager.nixosModules.home-manager
           (mkHomeManagerModule {
