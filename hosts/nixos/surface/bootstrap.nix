@@ -13,14 +13,7 @@
     ghostty.enable = true;
     niri = {
       enable = true;
-      rofi.enable = true;
-      extraUtilities = {
-        waybar = true;
-        mako = true;
-      };
-      extraConfig = ''
-        spawn-at-startup "ghostty"
-      '';
+      defaultSession = true;
     };
   };
   hardware.enableAllFirmware = true;
