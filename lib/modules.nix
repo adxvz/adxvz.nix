@@ -55,7 +55,7 @@ in
     jujutsu = import ../modules/home/cli/jujutsu.nix;
 
     # Window Managers
-    #  niri = import ../modules/home/wm/niri.nix;
+    niri = import ../modules/home/wm/niri.nix;
 
     # Editors
     emacs = import ../modules/home/editors/emacs;
