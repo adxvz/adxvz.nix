@@ -162,53 +162,19 @@ rec {
   mkNixos =
     {
       name,
-      targetSystem ? vars.currentSystem,
+      targetSystem ? vars.currentSystem, # system/arch, e.g., "x86_64-linux"
+      nixpkgs ? inputs.nixos-unstable,
+      configuration ? null,
+      hm ? true,
       lab ? false,
       role ? null,
       extraModules ? [ ],
       extraNixosModules ? [ ],
-      hm ? true,
+      systemName ? name,
       ...
     }:
-
-    let
-      # Common modules applied first
-      baseModules = [
-        ../hosts/nixos/minimal.nix
-      ];
-
-      # Machine-specific module (imports hardware-configuration.nix inside)
-      hostModule = pathIfExists (../hosts/nixos + "/${name}");
-
-      # Optional lab / role modules
-      labModules = builtins.filter (x: x != null) [
-        (if lab then pathIfExists (../lab/nodes + "/${name}") else null)
-        (if lab && role != null then pathIfExists (../lab/roles + "/${role}.nix") else null)
-      ];
-    in
     nixpkgs.lib.nixosSystem {
       system = targetSystem;
-
-      modules = builtins.filter (x: x != null) (
-        baseModules
-        ++ [ hostModule ]
-        ++ labModules
-        ++ extraModules
-        ++ extraNixosModules
-        ++ (attrsToValues self.nixosModules)
-        ++ (
-          if hm then
-            [
-              inputs.home-manager.nixosModules.home-manager
-              (mkHomeManagerModule {
-                inherit name;
-                version = versions.homeManager.stateVersion;
-              })
-            ]
-          else
-            [ ]
-        )
-      );
 
       specialArgs = {
         inherit
@@ -216,11 +182,41 @@ rec {
           versions
           nixpkgs
           self
-          name
+          systemName
           lab
           role
           ;
+        pkgsStable = mkPkgs {
+          nixpkgs = inputs.nixos-stable;
+          system = targetSystem;
+        };
       };
+
+      modules =
+        cleanImports [
+          # 1. Always load minimal base
+          ../hosts/nixos/minimal.nix
+
+          # 2. Lab host-specific config
+          (if lab then pathIfExists (../lab/nodes + "/${name}.nix") else null)
+
+          # 3. Lab role-based config
+          (if lab && role != null then pathIfExists (../lab/roles + "/${role}.nix") else null)
+
+          # 4. Traditional host config (still supported)
+          (if !lab then pathIfExists (../hosts/nixos + "/${name}.nix") else null)
+
+        ]
+        ++ (attrsToValues self.nixosModules)
+        ++ extraModules
+        ++ extraNixosModules
+        ++ nixpkgs.lib.optionals hm [
+          inputs.home-manager.nixosModules.home-manager
+          (mkHomeManagerModule {
+            inherit name;
+            version = versions.homeManager.stateVersion;
+          })
+        ];
     };
 
   #========================#
