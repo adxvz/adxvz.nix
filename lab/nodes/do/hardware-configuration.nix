@@ -4,6 +4,7 @@
 {
   config,
   lib,
+  pkgs,
   modulesPath,
   ...
 }:
@@ -15,41 +16,41 @@
 
   boot.initrd.availableKernelModules = [
     "xhci_pci"
-    "thunderbolt"
+    "ahci"
     "nvme"
+    "usbhid"
+    "usb_storage"
+    "sd_mod"
   ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" = {
-    device = "/dev/mapper/cryptroot";
+    device = "/dev/disk/by-uuid/a06d8cbf-d4dd-4b24-a7f2-380cd914d14e";
     fsType = "btrfs";
     options = [ "subvol=root" ];
   };
 
-  boot.initrd.luks.devices."cryptroot".device =
-    "/dev/disk/by-uuid/668a7635-1b3a-468d-904b-d13c8458f8df";
-
-  fileSystems."/nix" = {
-    device = "/dev/mapper/cryptroot";
-    fsType = "btrfs";
-    options = [ "subvol=nix" ];
-  };
-
-  fileSystems."/home" = {
-    device = "/dev/mapper/cryptroot";
-    fsType = "btrfs";
-    options = [ "subvol=home" ];
-  };
-
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/04B3-DEF1";
+    device = "/dev/disk/by-uuid/2268-C223";
     fsType = "vfat";
     options = [
       "fmask=0022"
       "dmask=0022"
     ];
+  };
+
+  fileSystems."/home" = {
+    device = "/dev/disk/by-uuid/a06d8cbf-d4dd-4b24-a7f2-380cd914d14e";
+    fsType = "btrfs";
+    options = [ "subvol=home" ];
+  };
+
+  fileSystems."/nix" = {
+    device = "/dev/disk/by-uuid/a06d8cbf-d4dd-4b24-a7f2-380cd914d14e";
+    fsType = "btrfs";
+    options = [ "subvol=nix" ];
   };
 
   swapDevices = [ ];
