@@ -31,7 +31,7 @@ in
     ghostty = import ../modules/nixos/common/terminals/ghostty;
 
     # Window Managers
-    niri = import ../modules/nixos/common/wm/niri.nix;
+    niri = import ../modules/nixos/common/wm/niri;
 
     # Surface Pro Hardware Modules
     apfs = import ../modules/nixos/surface/apfs.nix;
