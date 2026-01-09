@@ -2,12 +2,14 @@
   lib,
   pkgs,
   config,
+  osConfig ? null,
   ...
 }:
 with lib;
 let
   cfg = config.modules.niri;
-  isNixOS = config ? system; # Detect if we're in NixOS or home-manager context
+  # Better detection: if osConfig exists, we're in home-manager
+  isHomeManager = osConfig != null;
 in
 {
   options.modules.niri = {
@@ -57,12 +59,23 @@ in
       type = types.either types.path types.str;
       default = ./config.kdl;
       description = "Path to Niri config.kdl file or inline configuration string";
+      example = literalExpression ''
+        ./config.kdl
+        # or
+        '''
+          input {
+              mouse {
+                  natural-scroll
+              }
+          }
+        '''
+      '';
     };
   };
 
   config = mkMerge [
     # NixOS system configuration
-    (mkIf (isNixOS && cfg.enable) {
+    (mkIf (!isHomeManager && cfg.enable) {
       # Enable required services for Wayland
       services.displayManager.gdm = {
         enable = true;
@@ -127,7 +140,7 @@ in
     })
 
     # Home-manager user configuration
-    (mkIf (!isNixOS && cfg.enable) {
+    (mkIf (isHomeManager && cfg.enable) {
       xdg.configFile."niri/config.kdl" = {
         # If it's a path, use source; if it's a string, use text
         source = mkIf (builtins.isPath cfg.config) cfg.config;
