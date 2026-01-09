@@ -138,14 +138,5 @@ in
         MOZ_ENABLE_WAYLAND = "1"; # Firefox Wayland
       };
     })
-
-    # Home-manager user configuration
-    (mkIf (isHomeManager && cfg.enable) {
-      xdg.configFile."niri/config.kdl" = {
-        # If it's a path, use source; if it's a string, use text
-        source = mkIf (builtins.isPath cfg.config) cfg.config;
-        text = mkIf (builtins.isString cfg.config) cfg.config;
-      };
-    })
   ];
 }
