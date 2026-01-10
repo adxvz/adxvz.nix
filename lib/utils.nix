@@ -190,14 +190,14 @@ rec {
 
       minimalModule = [ (self + "/hosts/nixos/minimal.nix") ];
 
-      roleModule =
-        if (lab && role != null) then
-          let
-            path = self + "/lab/roles" + "/${role}.nix";
-          in
-          if builtins.pathExists path then [ path ] else [ ]
-        else
-          [ ];
+      #  roleModule =
+      #    if (lab && role != null) then
+      #      let
+      #        path = self + "/lab/roles" + "/${role}.nix";
+      #      in
+      #      if builtins.pathExists path then [ path ] else [ ]
+      #    else
+      #      [ ];
     in
     nixpkgs.lib.nixosSystem {
       system = targetSystem;
@@ -220,14 +220,18 @@ rec {
       };
 
       modules =
-        # 1. Custom modules MUST be loaded FIRST so options are defined
-        (attrsToValues self.nixosModules)
+        # 1. Disk creation module & custom nixos modules MUST be loaded FIRST so options are defined
+        [
+          inputs.disko.nixosModules.disko
+          ./hardware-configuration.nix
+        ]
+        ++ (attrsToValues self.nixosModules)
         ++ extraModules
         ++ extraNixosModules
         # 2. Then load configuration files that use those options
         ++ hostModule
         ++ minimalModule
-        ++ roleModule
+        #  ++ roleModule
         # 3. Home Manager (loaded last)
         ++ nixpkgs.lib.optionals hm [
           inputs.home-manager.nixosModules.home-manager

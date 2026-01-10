@@ -3,8 +3,7 @@
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
 {
-  config,
-  lib,
+
   pkgs,
   ...
 }:
@@ -12,15 +11,14 @@
 {
   imports = [
     # Include the results of the hardware scan.
-    ./disk-config.nix
-    ./hardware-configuration.nix
+    ../disko.nix
   ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = "do"; # Define your hostname.
 
   # Configure network connections interactively with nmcli or nmtui.
   networking.networkmanager.enable = true;
