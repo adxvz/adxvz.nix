@@ -85,6 +85,13 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
+  users.users.root.openssh.authorizedKeys.keys = [
+    # change this to your ssh key
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEZfTnBjCWqQb9sMDKV0/zokVbJlAoaJe/rX8yRBw3GN adam@coopr.network"
+
+    "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDKHju1JLdRacpdkLvkjDthl3xWdWbUDsL828eGOu+L2Mz+agcz27rCrH49gYRhzt9sFDvpMvwoJcnZAZxTLDbQDrYeXf0NBLtW2Wici9x6FecwCJDUYDuCz0C+RHk1l1y6WE2Vc+xe+JoRQ7ZfeVjH32YRamwqRaPyvVGQ8jKvOlDgWa7FahuiV8OhQJB7Q9scuWAejZ01ERSAhEief+G9aQrQzA7YPcDyjVLsphS9uvH2XwKzjLa1VCL/fNjkVJZ8tTGwKJsNzE7b/d39xPRF9f0MjUVuUW+rzfXqHTnhc5ACFwESDMYhp1BM9vWwXoH1bd7oZGSdvZLSvhepRvX+wmhNZXngJq9dA5IWkYzjzy3L8Be9UUWGXjmt1HRLxkVShpo8Ur03KYR10iRS66HwEzO7uBbW5RfjtTCu2sLGxEj7GDqmd+adC/Qh6Iz9c2GlDQ0bShKu7X/5PIfEyhCJzUcxbKqp4ZA/FjMehtyPP1Hfx6lRi41TapxRfD7lABBPeaWRIjbwRVT90eObuDKVS4YgkgGp7vpVJJ+Ncq4wKXcTLrktomNyMVSZRVMm6vZqePJpjs1t2dJHHNJQUrNBrKQkd0b/moibUjKQQEa19XlZ5iKrTyUz9nPBmhF5kDZ2Ue2rMimmJnSBDaC4wl8dI4RVBn9TnIfFoZcduGiv4Q== adam@coopr.network"
+  ];
+
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
