@@ -8,6 +8,7 @@
 {
   imports = [
     # ./hardware-configuration.nix
+    ../disko.nix
   ];
 
   networking = {
@@ -25,15 +26,15 @@
         ];
       };
 
-      enp1s0f0 = {
-        useDHCP = false;
-        ipv4.addresses = [
-          {
-            address = "172.27.120.11";
-            prefixLength = 25;
-          }
-        ];
-      };
+      #     enp1s0f0 = {
+      #       useDHCP = false;
+      #       ipv4.addresses = [
+      #         {
+      #           address = "172.27.120.11";
+      #           prefixLength = 25;
+      #         }
+      #       ];
+      #     };
     };
 
     defaultGateway = {

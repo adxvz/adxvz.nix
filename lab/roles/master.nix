@@ -42,11 +42,11 @@
     };
 
     # Flannel CNI configuration
-    flannel = {
-      enable = true;
-      network = "172.27.120.0/24";
-      iface = "enp1s0f0"; # 10gb interface (primary)
-    };
+    #   flannel = {
+    #     enable = true;
+    #     network = "172.27.120.0/24";
+    #     iface = "enp1s0f0"; # 10gb interface (primary)
+    #   };
   };
 
   # Enable and configure container runtime (containerd)

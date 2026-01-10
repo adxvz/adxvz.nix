@@ -8,8 +8,8 @@
 {
   imports = [
     # ./hardware-configuration.nix
+    ../disko.nix
   ];
-
   networking = {
     hostName = "mi";
     useDHCP = false;
