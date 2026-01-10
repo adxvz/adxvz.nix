@@ -190,14 +190,14 @@ rec {
 
       minimalModule = [ (self + "/hosts/nixos/minimal.nix") ];
 
-      #  roleModule =
-      #    if (lab && role != null) then
-      #      let
-      #        path = self + "/lab/roles" + "/${role}.nix";
-      #      in
-      #      if builtins.pathExists path then [ path ] else [ ]
-      #    else
-      #      [ ];
+      roleModule =
+        if (lab && role != null) then
+          let
+            path = self + "/lab/roles" + "/${role}.nix";
+          in
+          if builtins.pathExists path then [ path ] else [ ]
+        else
+          [ ];
     in
     nixpkgs.lib.nixosSystem {
       system = targetSystem;
@@ -230,7 +230,7 @@ rec {
         # 2. Then load configuration files that use those options
         ++ hostModule
         ++ minimalModule
-        #  ++ roleModule
+        ++ roleModule
         # 3. Home Manager (loaded last)
         ++ nixpkgs.lib.optionals hm [
           inputs.home-manager.nixosModules.home-manager
