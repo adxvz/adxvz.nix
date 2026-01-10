@@ -175,7 +175,6 @@ rec {
     }:
     let
       # Build module list based on conditions
-      minimalModule = [ (self + "/hosts/nixos/minimal.nix") ];
 
       hostModule =
         if lab then
@@ -188,6 +187,8 @@ rec {
             path = self + "/hosts/nixos" + "/${name}";
           in
           if builtins.pathExists path then [ path ] else [ ];
+
+      minimalModule = [ (self + "/hosts/nixos/minimal.nix") ];
 
       roleModule =
         if (lab && role != null) then
@@ -224,8 +225,8 @@ rec {
         ++ extraModules
         ++ extraNixosModules
         # 2. Then load configuration files that use those options
-        ++ minimalModule
         ++ hostModule
+        ++ minimalModule
         ++ roleModule
         # 3. Home Manager (loaded last)
         ++ nixpkgs.lib.optionals hm [
