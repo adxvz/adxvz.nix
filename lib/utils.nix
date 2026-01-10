@@ -223,7 +223,6 @@ rec {
         # 1. Disk creation module & custom nixos modules MUST be loaded FIRST so options are defined
         [
           inputs.disko.nixosModules.disko
-          ./hardware-configuration.nix
         ]
         ++ (attrsToValues self.nixosModules)
         ++ extraModules
