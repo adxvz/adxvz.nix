@@ -5,7 +5,8 @@
 {
   imports = [
     # Import hardware configuration (filesystem info, etc.)
-    #  ./hardware-configuration-mini.nix
+    ./hardware-configuration-mini.nix
+    ./disko.nix
   ];
 
   # Hostname

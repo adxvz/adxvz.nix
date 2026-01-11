@@ -6,9 +6,8 @@
 
 {
   imports = [
+    ./build
     ../minimal.nix
-    ./hw-fw/hardware-configuration.nix
-    ./hw-fw/sp8Edid.nix
     ./bootstrap.nix
   ];
 
