@@ -208,16 +208,15 @@
         ];
       };
 
-      #=========================================#
-      #            Homelab Servers              #
-      #=========================================#
-
       nixosConfigurations.mini = utils.mkSystem {
         name = "mini";
         targetSystem = "x86_64-linux";
         hm = false;
-        lab = true;
       };
+
+      #=========================================#
+      #            Homelab Servers              #
+      #=========================================#
 
       nixosConfigurations.do = utils.mkSystem {
         name = "do";

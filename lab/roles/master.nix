@@ -1,7 +1,6 @@
 {
   config,
   pkgs,
-  lib,
   ...
 }:
 
@@ -42,11 +41,11 @@
     };
 
     # Flannel CNI configuration
-    #   flannel = {
-    #     enable = true;
-    #     network = "172.27.120.0/24";
-    #     iface = "enp1s0f0"; # 10gb interface (primary)
-    #   };
+    flannel = {
+      enable = true;
+      network = "172.27.120.0/24";
+      iface = "enp1s0f0"; # 10gb interface (primary)
+    };
   };
 
   # Enable and configure container runtime (containerd)
@@ -171,17 +170,20 @@
     # Optional: Bond the two 10gb interfaces for 20gb throughput
     # This requires both enp1s0f0 and enp1s0f1 to be working
     # Uncomment this section if you want to enable bonding
-    # bonds = {
-    #   bond0 = {
-    #     interfaces = [ "enp1s0f0" "enp1s0f1" ];
-    #     driverOptions = {
-    #       mode = "802.3ad"; # LACP
-    #       miimon = "100";
-    #       lacp_rate = "fast";
-    #       xmit_hash_policy = "layer3+4";
-    #     };
-    #   };
-    # };
+    bonds = {
+      bond0 = {
+        interfaces = [
+          "enp1s0f0"
+          "enp1s0f1"
+        ];
+        driverOptions = {
+          mode = "802.3ad"; # LACP
+          miimon = "100";
+          lacp_rate = "fast";
+          xmit_hash_policy = "layer3+4";
+        };
+      };
+    };
   };
 
   # If using bonding, update flannel to use bond0
