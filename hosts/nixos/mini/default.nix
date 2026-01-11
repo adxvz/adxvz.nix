@@ -5,7 +5,7 @@
 {
   imports = [
     # Import hardware configuration (filesystem info, etc.)
-    ./hardware-configuration.nix
+    #./hardware-configuration.nix
     ./disko.nix
   ];
 
