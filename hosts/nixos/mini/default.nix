@@ -89,7 +89,7 @@
     curl # Transfer data from/to servers
 
     # === Ventoy & USB Tools ===
-    ventoy-full # Create multiboot USB drives
+    # ventoy-full # Create multiboot USB drives
     pv # Monitor progress of data through pipes
     ddrescue # Data recovery and disk imaging tool
 
