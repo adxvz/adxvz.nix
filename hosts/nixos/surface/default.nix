@@ -45,8 +45,6 @@
   ];
   # Use the systemd-boot EFI boot loader.
   boot = {
-    # loader.systemd-boot.enable = true;
-    # loader.efi.canTouchEfiVariables = true;
     kernelParams = [
       # Mitigate screen flickering
       "i915.enable_psr=0"
