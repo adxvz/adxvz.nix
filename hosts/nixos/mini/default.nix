@@ -58,7 +58,6 @@
     # === Kubernetes Management ===
     kubectl # Official Kubernetes CLI
     kubectx # Quickly switch between Kubernetes contexts
-    kubens # Quickly switch between Kubernetes namespaces
     k9s # Terminal UI for Kubernetes - interactive cluster management
     kubernetes-helm # Kubernetes package manager
     helmfile # Declarative spec for deploying Helm charts
