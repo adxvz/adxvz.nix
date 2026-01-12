@@ -159,6 +159,7 @@
 
   outputs =
     { self, ... }@inputs:
+
     let
 
       flakeUtils = import ./lib/vars.nix { inherit self inputs; };
