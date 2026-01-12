@@ -30,13 +30,11 @@ in
       type = types.bool;
     };
   };
-
   config = mkIf cfg.enable {
     environment.etc = {
       "nix/current".source = self;
       "nix/nixpkgs".source = nixpkgs;
     };
-
     environment.systemPackages = with pkgs; [
       nil
       niv
@@ -44,7 +42,6 @@ in
       nix-index
       nvd
     ];
-
     nix = {
       channel.enable = false;
       nixPath = [ "nixpkgs=${nixpkgs}" ];
@@ -60,7 +57,6 @@ in
             type = "path";
           };
         };
-        #  nixpkgs-unstable = mkRegistry "nixpkgs-unstable" "nixpkgs-unstable";
         nixos-stable = mkRegistry "nixos-stable" "nixos-${versions.nixos.stableVersion}";
         nixos-unstable = mkRegistry "nixos-unstable" "nixos-unstable";
       };
@@ -83,10 +79,13 @@ in
         # ];
       };
     };
-    nixpkgs.flake = {
-      # We take care of this on our own
-      setNixPath = false;
-      setFlakeRegistry = false;
+    nixpkgs = {
+      config.allowUnfree = true; # Enable unfree packages
+      flake = {
+        # We take care of this on our own
+        setNixPath = false;
+        setFlakeRegistry = false;
+      };
     };
   };
 }
