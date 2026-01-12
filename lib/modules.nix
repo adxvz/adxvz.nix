@@ -32,6 +32,7 @@ in
 
     # Window Managers
     niri = import ../modules/nixos/common/wm/niri;
+    i3 = import ../modules/nixos/common/wm/i3;
 
     # Surface Pro Hardware Modules
     apfs = import ../modules/nixos/surface/apfs.nix;
