@@ -10,7 +10,7 @@
 
     file = {
       ".config/ghostty/".source = ../modules/nixos/common/terminals/ghostty/config;
-      ".config/niri/".source = ../modules/nixos/common/wm/niri/config.kdl;
+      # ".config/niri/".source = ../modules/nixos/common/wm/niri/config.kdl;
     };
   };
 }

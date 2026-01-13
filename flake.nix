@@ -212,7 +212,6 @@
       nixosConfigurations.mini = utils.mkSystem {
         name = "mini";
         targetSystem = "x86_64-linux";
-        hm = false;
       };
 
       #=========================================#
