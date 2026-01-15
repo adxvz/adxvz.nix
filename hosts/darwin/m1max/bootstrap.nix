@@ -11,7 +11,7 @@
     hunspell.enable = true;
     #tuptime.enable = true;
     nix.enable = true;
-    sops.enable = true;
+    # sops.enable = true;
     #cachix.enable = true;
   };
 

@@ -42,6 +42,7 @@
 
   environment.systemPackages = with pkgs; [
     surface-control
+    logitech-udev-rules
   ];
   # Use the systemd-boot EFI boot loader.
   boot = {
