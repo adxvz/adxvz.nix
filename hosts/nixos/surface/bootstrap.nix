@@ -22,8 +22,11 @@
       };
     };
   };
-  hardware.enableAllFirmware = true;
-  hardware.apfs.autoMount = true;
+  hardware = {
+    enableAllFirmware = true;
+    apfs.autoMount = true;
+    logitech.wireless.enable = true;
+  };
 
   virtualisation.docker.enable = true;
   programs.zsh.enable = true;
