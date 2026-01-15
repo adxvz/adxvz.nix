@@ -11,7 +11,6 @@
     fastfetch.enable = true;
     starship.enable = true;
     yazi.enable = true;
-    sops.enable = true;
     # nvf.enable = true;
 
     git = {
