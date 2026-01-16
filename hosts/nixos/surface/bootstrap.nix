@@ -5,7 +5,7 @@
 {
   imports = [
     ../../shared
-    ../../../modules/home/wm/gnome.nix
+    ../../../modules/nixos/common/wm/gnome.nix
   ];
 
   modules = {
