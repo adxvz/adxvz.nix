@@ -73,6 +73,7 @@
       # Mac Tools
       # "cleanmymac"
       "daisydisk"
+      "logitech-options"
       "jordanbaird-ice@beta"
 
       # Music Apps
