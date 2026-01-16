@@ -11,6 +11,8 @@
     ../../shared
   ];
 
+  modules.nix.enable = true;
+
   launchd.daemons.tuptime = {
     serviceConfig = {
       ProgramArguments = [
