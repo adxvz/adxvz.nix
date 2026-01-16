@@ -5,22 +5,22 @@
 {
   imports = [
     ../../shared
-    # ../../../modules/home/wm/gnome.nix
+    ../../../modules/home/wm/gnome.nix
   ];
 
   modules = {
     fonts.enable = true;
     ghostty.enable = true;
-    niri = {
-      enable = true;
-      defaultSession = true;
-      utilities = {
-        rofi = true;
-        fuzzel = true;
-        waybar = true;
-        mako = true;
-      };
-    };
+    #niri = {
+    #  enable = true;
+    #  defaultSession = true;
+    #  utilities = {
+    #    rofi = true;
+    #    fuzzel = true;
+    #    waybar = true;
+    #    mako = true;
+    #  };
+    #};
   };
   hardware = {
     enableAllFirmware = true;
