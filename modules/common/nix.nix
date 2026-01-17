@@ -71,21 +71,7 @@ in
           "adxvz"
           "@wheel"
         ];
-        # substituters = [
-        #   "https://adxvz.cachix.org"
-        # ];
-        # trusted-public-keys = [
-        #   "adxvz.cachix.org-1:Z9+sZ/yj9AGP6eOPRn5AGRE6yINzSElz2D9GQXwckts="
-        # ];
       };
     };
-#    nixpkgs = {
-#      config.allowUnfree = true; # Enable unfree packages
-#      flake = {
-#        # We take care of this on our own
-#        setNixPath = false;
-#        setFlakeRegistry = false;
-#      };
-#    };
   };
 }
