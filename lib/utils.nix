@@ -233,6 +233,7 @@ rec {
           inputs.disko.nixosModules.disko
           # Configure nixpkgs declaratively
           {
+            nixpkgs.hostPlatform = vars.currentSystem;
             nixpkgs.config.allowUnfree = true;
             nixpkgs.overlays = [
               inputs.emacs-overlay.overlay
