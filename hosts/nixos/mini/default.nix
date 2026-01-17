@@ -15,28 +15,6 @@
   # Internationalization
   i18n.defaultLocale = "en_US.UTF-8";
 
-  # Enable X11 with i3 window manager (lightweight, keyboard-driven)
-  #  services.xserver = {
-  #    enable = true;
-  #
-  #    # Display manager
-  #    displayManager = {
-  #      lightdm.enable = true;
-  #      defaultSession = "none+i3";
-  #    };
-  #
-  #    # Window manager
-  #    windowManager.i3 = {
-  #      enable = true;
-  #      extraPackages = with pkgs; [
-  #        dmenu # Application launcher
-  #        i3status # Status bar
-  #        i3lock # Screen locker
-  #        i3blocks # Alternative status bar
-  #      ];
-  #    };
-  #  };
-
   # Audio (for system alerts and notifications)
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
