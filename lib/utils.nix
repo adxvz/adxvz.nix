@@ -121,15 +121,7 @@ rec {
       };
 
       modules = [
-        # Configure nixpkgs declaratively instead of passing external instance
-        {
-          nixpkgs.config.allowUnfree = true;
-          nixpkgs.overlays = [
-            inputs.emacs-overlay.overlay
-            inputs.apple-silicon.overlays.apple-silicon-overlay
-            inputs.nix-alien.overlays.default
-          ] ++ (attrsToValues self.overlays);
-        }
+        { nixpkgs.pkgs = mkPkgs { }; }
         inputs.nix-homebrew.darwinModules.nix-homebrew
         {
           nix-homebrew = {
@@ -170,7 +162,7 @@ rec {
   mkNixos =
     {
       name,
-      targetSystem ? vars.currentSystem,
+      targetSystem ? vars.currentSystem, # system/arch, e.g., "x86_64-linux"
       nixpkgs ? inputs.nixos-unstable,
       configuration ? null,
       hm ? true,
@@ -231,16 +223,6 @@ rec {
         # 1. Disk creation module & custom nixos modules MUST be loaded FIRST so options are defined
         [
           inputs.disko.nixosModules.disko
-          # Configure nixpkgs declaratively
-          {
-            nixpkgs.hostPlatform = vars.currentSystem;
-            nixpkgs.config.allowUnfree = true;
-            nixpkgs.overlays = [
-              inputs.emacs-overlay.overlay
-              inputs.apple-silicon.overlays.apple-silicon-overlay
-              inputs.nix-alien.overlays.default
-            ] ++ (attrsToValues self.overlays);
-          }
         ]
         ++ (attrsToValues self.nixosModules)
         ++ extraModules
@@ -258,6 +240,7 @@ rec {
           })
         ];
     };
+
   #========================#
   # Generic mkSystem
   #========================#
