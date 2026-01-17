@@ -79,13 +79,13 @@ in
         # ];
       };
     };
-    nixpkgs = {
-      config.allowUnfree = true; # Enable unfree packages
-      flake = {
-        # We take care of this on our own
-        setNixPath = false;
-        setFlakeRegistry = false;
-      };
-    };
+#    nixpkgs = {
+#      config.allowUnfree = true; # Enable unfree packages
+#      flake = {
+#        # We take care of this on our own
+#        setNixPath = false;
+#        setFlakeRegistry = false;
+#      };
+#    };
   };
 }
