@@ -28,13 +28,16 @@ in
     enable = mkOption {
       default = false;
       type = types.bool;
+      description = "Enable custom Nix configuration";
     };
   };
+
   config = mkIf cfg.enable {
     environment.etc = {
       "nix/current".source = self;
       "nix/nixpkgs".source = nixpkgs;
     };
+
     environment.systemPackages = with pkgs; [
       nil
       niv
@@ -42,9 +45,11 @@ in
       nix-index
       nvd
     ];
+
     nix = {
       channel.enable = false;
       nixPath = [ "nixpkgs=${nixpkgs}" ];
+
       # Use local nixpkgs
       registry = {
         nixpkgs = {
@@ -60,7 +65,9 @@ in
         nixos-stable = mkRegistry "nixos-stable" "nixos-${versions.nixos.stableVersion}";
         nixos-unstable = mkRegistry "nixos-unstable" "nixos-unstable";
       };
+
       optimise.automatic = true;
+
       settings = {
         experimental-features = "nix-command flakes";
         narinfo-cache-positive-ttl = 604800;
@@ -71,7 +78,12 @@ in
           "adxvz"
           "@wheel"
         ];
+        # Allow unfree packages
+        allow-unfree = true;
       };
     };
+
+    # Also set nixpkgs config for the system
+    nixpkgs.config.allowUnfree = true;
   };
 }
