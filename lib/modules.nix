@@ -18,7 +18,7 @@ in
     fonts = sharedModules.fonts;
     nix = sharedModules.nix;
     hunspell = sharedModules.hunspell;
-    #cachix = sharedModules.cachix;
+    cachix = sharedModules.cachix;
 
   };
 

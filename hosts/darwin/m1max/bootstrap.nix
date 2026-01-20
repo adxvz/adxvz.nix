@@ -74,6 +74,7 @@
       "daisydisk"
       "logitech-options"
       "jordanbaird-ice@beta"
+      "elgato-stream-deck"
 
       # Music Apps
       "ableton-live-suite"
