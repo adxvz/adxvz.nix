@@ -78,12 +78,8 @@ in
           "adxvz"
           "@wheel"
         ];
-        # Allow unfree packages
-        allow-unfree = true;
       };
     };
 
-    # Also set nixpkgs config for the system
-    nixpkgs.config.allowUnfree = true;
   };
 }
