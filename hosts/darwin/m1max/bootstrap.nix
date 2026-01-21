@@ -9,7 +9,6 @@
   modules = {
     fonts.enable = true;
     hunspell.enable = true;
-    #tuptime.enable = true;
     # sops.enable = true;
     cachix.enable = true;
   };
@@ -68,6 +67,7 @@
       "microsoft-powerpoint"
       "microsoft-teams"
       "vivaldi"
+      "propresenter@beta"
 
       # Mac Tools
       # "cleanmymac"
