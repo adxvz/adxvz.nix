@@ -40,6 +40,9 @@ in
     audio = import ../modules/nixos/surface/audio.nix;
     iptsd = import ../modules/nixos/surface/iptsd.nix;
     thermald = import ../modules/nixos/surface/thermald;
+
+    # Linux Tools
+    tuptime = import ../modules/nixos/common/tuptime.nix;
   };
 
   homeManagerModules = {
