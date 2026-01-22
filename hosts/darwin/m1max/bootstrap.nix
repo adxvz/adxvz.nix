@@ -67,7 +67,7 @@
       "microsoft-powerpoint"
       "microsoft-teams"
       "vivaldi"
-      "propresenter@beta"
+      "google-chrome"
 
       # Mac Tools
       # "cleanmymac"
