@@ -41,7 +41,6 @@ in
       address = mkOption {
         type = types.str;
         default = "";
-        example = "https://atuin.example.com";
         description = "Custom Atuin server address";
       };
     };
