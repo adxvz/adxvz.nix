@@ -162,7 +162,7 @@ rec {
   mkNixos =
     {
       name,
-      targetSystem ? vars.currentSystem, # system/arch, e.g., "x86_64-linux"
+      targetSystem ? vars.currentSystem,
       nixpkgs ? inputs.nixos-unstable,
       configuration ? null,
       hm ? true,
