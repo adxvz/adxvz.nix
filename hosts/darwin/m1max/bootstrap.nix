@@ -66,6 +66,7 @@
       "microsoft-excel"
       "microsoft-powerpoint"
       "microsoft-teams"
+      "microsoft-outlook"
       "vivaldi"
       "google-chrome"
 
