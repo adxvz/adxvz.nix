@@ -48,8 +48,7 @@
 
       #     ".config/jj/".source = ../bin/dots/jj;
       #     ".config/nushell/".source = ../bin/dots/nushell;
-      #     ".config/starship/".source = ../bin/dots/starship;
-      #     ".config/yazi/".source = ../bin/dots/yazi;
+
     };
 
   };
