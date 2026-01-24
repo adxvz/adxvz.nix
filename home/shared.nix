@@ -46,9 +46,6 @@
       ".config/ghostty/".source = ../modules/nixos/common/terminals/ghostty/config;
       ".config/nvim/".source = ../modules/home/editors/nvim;
 
-      #     ".config/atuin/".source = ../bin/dots/atuin;
-      #     ".config/bat/".source = ../bin/dots/bat;
-      #     ".config/emacs/".source = ../bin/dots/emacs;
       #     ".config/fastfetch".source = ../bin/dots/fastfetch;
       #     ".config/jj/".source = ../bin/dots/jj;
       #     ".config/nushell/".source = ../bin/dots/nushell;
@@ -69,7 +66,6 @@
     };
 
     neovim = {
-      enable = true;
       defaultEditor = true;
       viAlias = true;
       vimAlias = true;
