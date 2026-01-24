@@ -46,7 +46,6 @@
       ".config/ghostty/".source = ../modules/nixos/common/terminals/ghostty/config;
       ".config/nvim/".source = ../modules/home/editors/nvim;
 
-      #     ".config/fastfetch".source = ../bin/dots/fastfetch;
       #     ".config/jj/".source = ../bin/dots/jj;
       #     ".config/nushell/".source = ../bin/dots/nushell;
       #     ".config/starship/".source = ../bin/dots/starship;
