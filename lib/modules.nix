@@ -65,7 +65,6 @@ in
 
     # Editors
     emacs = import ../modules/home/editors/emacs;
-    # nvf = import ../modules/home/editors/nvf.nix;
 
   };
 }

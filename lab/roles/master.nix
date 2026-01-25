@@ -186,6 +186,15 @@
   # If using bonding, update flannel to use bond0
   # services.kubernetes.flannel.iface = lib.mkIf (config.networking.bonds ? bond0) "bond0";
 
+  # boot.kernel.sysctl = {
+  #   "net.ipv4.ip_forward" = 1;
+  #   #  "net.bridge.bridge-nf-call-iptables" = 1;
+  #   # "net.bridge.bridge-nf-call-ip6tables" = 1;
+  #   # Increase for Longhorn
+  #   "vm.max_map_count" = 262144;
+  #   "fs.inotify.max_user_instances" = 524288;
+  # };
+
   # Load required kernel modules
   boot.kernelModules = [
     "br_netfilter"
