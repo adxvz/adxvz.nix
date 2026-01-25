@@ -11,7 +11,7 @@
   ];
 
   networking = {
-    hostName = "fa"; # ← Change this
+    hostName = "fa";
     useDHCP = false;
 
     interfaces = {
@@ -20,7 +20,7 @@
         useDHCP = false;
         ipv4.addresses = [
           {
-            address = "10.10.110.4"; # ← Change this
+            address = "10.10.110.4";
             prefixLength = 28;
           }
         ];
@@ -31,7 +31,7 @@
         useDHCP = false;
         ipv4.addresses = [
           {
-            address = "172.27.120.14"; # ← Change this
+            address = "172.27.120.14";
             prefixLength = 25;
           }
         ];
