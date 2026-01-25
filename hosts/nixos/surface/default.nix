@@ -13,7 +13,6 @@
 
   modules = {
     nix.enable = true;
-    #cachix.enable = true;
     thermald.enable = true;
     iptsd.enable = true;
     audio = {
@@ -78,8 +77,7 @@
       "surface_aggregator_cdev"
     ];
 
-    # Disable the problematic suspend kernel module, it makes waking up
-    # impossible after closing the cover.
+    # Disable the problematic suspend kernel module
     blacklistedKernelModules = [ "surface_gpe" ];
   };
 
@@ -100,7 +98,6 @@
 
   # Use wpa_supplicant in iso but not for full install
   networking.wireless.enable = lib.mkDefault true;
-  #  networking.networkmanager.enable = lib.mkDefault false;
 
   hardware.microsoft-surface.kernelVersion = "stable";
 
