@@ -11,16 +11,6 @@
   modules = {
     fonts.enable = true;
     ghostty.enable = true;
-    #niri = {
-    #  enable = true;
-    #  defaultSession = true;
-    #  utilities = {
-    #    rofi = true;
-    #    fuzzel = true;
-    #    waybar = true;
-    #    mako = true;
-    #  };
-    #};
   };
   hardware = {
     enableAllFirmware = true;
