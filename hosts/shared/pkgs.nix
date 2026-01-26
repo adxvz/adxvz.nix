@@ -6,7 +6,11 @@ let
 
   commonPackages = with pkgs; [
     asciinema_3
+    ansible
+    ansible-lint
     croc
+    composer-require-checker
+    php84Packages.composer
     ttyd
     fd
     ripgrep
@@ -29,6 +33,7 @@ let
     cargo
     go
     gzip
+    slack
   ];
 
   darwinPackages = with pkgs; [
