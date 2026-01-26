@@ -36,7 +36,6 @@
     taps = builtins.attrNames config.nix-homebrew.taps;
 
     brews = [
-      # "composer"
     ];
 
     # To look up the App ID for the application you want installed, run the following command in a teminal:

@@ -25,6 +25,7 @@ let
     tree-sitter
     tlrc
     p7zip
+    python314
     ffmpeg
     ffmpegthumbnailer
     zoxide
