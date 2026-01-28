@@ -1576,6 +1576,22 @@
         "type": "github"
       }
     },
+    "opencode-ai": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1769633887,
+        "narHash": "sha256-GKKVYmZwB8uYitZzxlKfL1vIrbjQt60hAy4SK/xYJ/I=",
+        "owner": "anomalyco",
+        "repo": "homebrew-tap",
+        "rev": "d2f7b9cc01bf7a9a7474202f28bae056465f4ff4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "anomalyco",
+        "repo": "homebrew-tap",
+        "type": "github"
+      }
+    },
     "pre-commit": {
       "inputs": {
         "flake-compat": "flake-compat_7",
@@ -1703,6 +1719,7 @@
         "nixos-stable": "nixos-stable_2",
         "nixos-unstable": "nixos-unstable",
         "nur": "nur",
+        "opencode-ai": "opencode-ai",
         "rust-overlay": "rust-overlay_2",
         "sops-nix": "sops-nix",
         "stylix": "stylix",

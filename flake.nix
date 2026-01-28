@@ -139,6 +139,12 @@
       url = "github:roots/homebrew-tap";
       flake = false;
     };
+
+    opencode-ai = {
+      url = "github:anomalyco/homebrew-tap";
+      flake = false;
+    };
+
   };
 
   outputs =
