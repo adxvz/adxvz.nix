@@ -56,6 +56,7 @@
       "local"
       "canva"
       "zed"
+      "claude-code"
 
       # Productivity
       "logos"
