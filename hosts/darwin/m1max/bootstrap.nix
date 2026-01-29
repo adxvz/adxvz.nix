@@ -56,7 +56,10 @@
       "local"
       "canva"
       "zed"
+
+      # AI Agents
       "claude-code"
+      "opencode-desktop"
 
       # Productivity
       "logos"
